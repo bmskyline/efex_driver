@@ -2,6 +2,7 @@ import 'package:dartin/dartin.dart';
 import 'package:dio/dio.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:driver_app/utils/shared_preferences_utils.dart';
+import 'package:driver_app/view/detail/detail_provider.dart';
 import 'package:driver_app/view/home/cancel/cancel_provider.dart';
 import 'package:driver_app/view/home/home_provider.dart';
 import 'package:driver_app/view/home/new/new_provider.dart';
@@ -15,7 +16,8 @@ final viewModelModule = Module([
   lazy<NewProvider>(({params}) => NewProvider(get())),
   lazy<SuccessProvider>(({params}) => SuccessProvider(get())),
   lazy<CancelProvider>(({params}) => CancelProvider(get())),
-  factory<HomeProvider>(({params}) => HomeProvider())
+  factory<HomeProvider>(({params}) => HomeProvider()),
+  factory<DetailProvider>(({params}) => DetailProvider(get()))
 ])
   ..addOthers(testScope, [
     ///other scope

@@ -46,7 +46,7 @@ class LoginProvider extends BaseProvider {
 
   Observable login() => _repo
       .login(userName, password)
-      .doOnData((r) => response = r.toString())
+      .doOnData((r) => _response = r.toString())
       .doOnError((e, stacktrace) {
         if (e is DioError) {
           response = e.response.data.toString();

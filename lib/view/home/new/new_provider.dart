@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/user_model.dart';
+import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:rxdart/rxdart.dart';
 

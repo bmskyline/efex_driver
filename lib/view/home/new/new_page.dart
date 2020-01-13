@@ -102,46 +102,50 @@ class _NewContentState extends State<_NewContentPage>
                               homeContext,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    DetailPage(user: value.response[index]),
+                                    DetailPage(),
                               ),
                             );
                           },
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                            Text(value.response[index].id.toString(),
-                              style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),
-                            ),
-                            Row(
-                              children: <Widget>[
-                              Icon(Icons.phone),
-                                SizedBox(width: 16),
-                                Text(value.response[index].title,
-                                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.0)),
-                            ]),
-                            Row(
-                              children: <Widget>[
-                                Icon(Icons.phone),
-                                SizedBox(width: 16),
-                                Text(value.response[index].title,
-                                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.0),)
-                              ],),
-                            Row(
-                              children: <Widget>[
-                                Icon(Icons.phone),
-                                SizedBox(width: 16),
-                                Text(value.response[index].title,
-                                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.0),)
-                              ],),
+                                Text(value.response[index].name,
+                                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),
+                                ),
+                                SizedBox(height: 8),
                                 Row(
-                              children: <Widget>[
-                                Icon(Icons.phone),
-                                SizedBox(width: 16),
-                                Text(value.response[index].title,
-                                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.0),)
-                              ],)
+                                    children: <Widget>[
+                                      Icon(Icons.location_on, size: 20),
+                                      SizedBox(width: 16),
+                                      Text(value.response[index].address,
+                                          style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
+                                    ]),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: <Widget>[
+                                    Icon(Icons.phone, size: 20),
+                                    SizedBox(width: 16),
+                                    Text(value.response[index].phone,
+                                      style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2),)
+                                  ],),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: <Widget>[
+                                    Icon(Icons.border_color, size: 20),
+                                    SizedBox(width: 16),
+                                    Text(value.response[index].totalOrders.toString() + " orders",
+                                      style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2),)
+                                  ],),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: <Widget>[
+                                    Icon(Icons.access_time, size: 20),
+                                    SizedBox(width: 16),
+                                    Text(value.response[index].time,
+                                      style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2),)
+                                  ],)
 
-                          ]),
+                              ]),
                         ),
                       ),
                     ),

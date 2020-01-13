@@ -1,17 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CancelProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  String _response;
+  List<Shop> _response = List();
 
   CancelProvider(this._repo);
 
-  String get response => _response;
-  set response(String response) {
+  List<Shop> get response => _response;
+  set response(List<Shop> response) {
     _response = response;
     notifyListeners();
   }
@@ -24,7 +25,7 @@ class CancelProvider extends BaseProvider {
 
   Observable getUsers() => _repo
       .getUsers()
-      .doOnData((r) => response = r.toString())
+      .doOnData((r) => _response.addAll((r as List).map((user) => Shop.fromJson(user)).toList()))
       .doOnError((e, stacktrace) {
         if (e is DioError) {
           response = null;
