@@ -46,7 +46,7 @@ class _DetailPageState extends State<_DetailContentPage>
           return Column(
             children: <Widget>[
               Text("scan screen"+ value.response.name),
-              //Text("scan screen"+ value.response.orders.length.toString()),
+              Text("scan screen"+ value.response.orders.length.toString()),
             ],
           );
         }

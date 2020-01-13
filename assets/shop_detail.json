@@ -3,6 +3,35 @@
   "name": "Shop ABC",
   "address": "124 Lê Lợi, Phường Bến Nghé, Quận 1",
   "phone": "0999999999",
-  "total": 5
-
+  "total": 5,
+  "orders": [
+    {
+      "id": "#123456",
+      "number": 10,
+      "weight": 1500,
+      "checkProduct": true,
+      "note": "I don't wanna note anything"
+    },
+    {
+      "id": "#123456",
+      "number": 8,
+      "weight": 1000,
+      "checkProduct": true,
+      "note": "I don't wanna note anything"
+    },
+    {
+      "id": "#123456",
+      "number": 6,
+      "weight": 23500,
+      "checkProduct": true,
+      "note": "I don't wanna note anything"
+    },
+    {
+      "id": "#123456",
+      "number": 20,
+      "weight": 200,
+      "checkProduct": true,
+      "note": "I don't wanna note anything"
+    }
+  ]
 }

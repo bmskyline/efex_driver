@@ -6,15 +6,17 @@ class ShopDetail {
   int totalOrders;
   String phone;
   String address;
-  //List<Order> orders = List();
+  List<Order> orders = List();
 
-  ShopDetail(this.id, this.name, this.totalOrders, this.phone, this.address);
+
+  ShopDetail(this.id, this.name, this.totalOrders, this.phone, this.address,
+      this.orders);
 
   ShopDetail.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json["name"],
         address = json["address"],
         phone = json["phone"],
-        totalOrders = json["total"];
-        //orders = json["orders"];
+        totalOrders = json["total"],
+        orders = (json["orders"] as List).map((order) => Order.fromJson(order)).toList();//json["orders"];
 }

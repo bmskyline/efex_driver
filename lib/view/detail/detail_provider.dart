@@ -28,7 +28,7 @@ class DetailProvider extends BaseProvider {
   Observable getShopDetail() => _repo
       .getShopDetail()
       .doOnData((r){
-        print("data" +r);
+        _response = ShopDetail.fromJson(r);
       }
   )
       .doOnError((e, stacktrace) {

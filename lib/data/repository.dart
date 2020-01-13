@@ -26,7 +26,6 @@ class GithubRepo {
   }
 
   Observable getShopDetail() {
-    print("data ne" + _remote.getShopDetail().toString());
     return _remote.getShopDetail();
   }
 }
