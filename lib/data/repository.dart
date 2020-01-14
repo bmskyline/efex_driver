@@ -1,12 +1,13 @@
-import 'dart:convert';
 import 'package:driver_app/utils/network_utils.dart';
 import 'package:driver_app/utils/shared_preferences_utils.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'model/shop_model.dart';
+
 class GithubService {
-  Observable login() => get("user");
-  Observable getUsers() => get("shop.json");
-  Observable getShopDetail() => get("shop_detail.json");
+  Observable login(map) => post("user/login", map);
+  Observable getShops(map) => post("tracking", map);
+  Observable getShopDetail(map) => post("tracking/detail", map);
 }
 
 class GithubRepo {
@@ -16,16 +17,35 @@ class GithubRepo {
   GithubRepo(this._remote, this._spUtil);
 
   Observable login(String username, String password) {
-    _spUtil.putString(
-        "TOKEN", "basic " + base64Encode(utf8.encode('$username:$password')));
-    return _remote.login();
+    Map<String, String> someMap = {
+    "username": username,
+    "pw": password,
+    };
+    return _remote.login(someMap);
   }
 
-  Observable getUsers() {
-    return _remote.getUsers();
+  Observable getShops(int offset, int limit) {
+    Map<String, dynamic> someMap = {
+      "Offset": offset,
+      "Limit": limit,
+      "FromDate": "2020-01-13",
+    };
+    return _remote.getShops(someMap);
   }
 
-  Observable getShopDetail() {
-    return _remote.getShopDetail();
+  Observable getShopDetail(Shop shop) {
+    Map<String, dynamic> someMap = {
+      "FromAddress": shop.fromAddress,
+      "FromPhone": shop.fromPhone,
+      "FromName": shop.fromName,
+      "FromDate": "2020-01-13",
+      "Limit": 9,
+      "Offset": 0,
+    };
+    return _remote.getShopDetail(someMap);
+  }
+
+  void saveToken(String token) {
+    _spUtil.putString("TOKEN", token);
   }
 }

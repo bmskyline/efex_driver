@@ -24,9 +24,9 @@ dispatchFailure(BuildContext context, dynamic e) {
     } else {
       message = "Oops!!";
     }
+    if (context != null) {
+      Toast.show(message);
+    }
   }
   print("error ：" + message);
-  if (context != null) {
-    Toast.show(message);
-  }
 }

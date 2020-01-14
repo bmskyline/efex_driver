@@ -55,13 +55,13 @@ class _DetailPageState extends State<_DetailContentPage>
   }
 
   void _loadData() {
-    final s =
+    /*final s =
     mProvider.getShopDetail().doOnListen(() {}).doOnDone(() {}).listen((data) {
       //success
     }, onError: (e) {
       //error
       dispatchFailure(context, e);
     });
-    mProvider.addSubscription(s);
+    mProvider.addSubscription(s);*/
   }
 }

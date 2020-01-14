@@ -18,5 +18,5 @@ class ShopDetail {
         address = json["address"],
         phone = json["phone"],
         totalOrders = json["total"],
-        orders = (json["orders"] as List).map((order) => Order.fromJson(order)).toList();//json["orders"];
+        orders = (json["orders"] as List).map((order) => Order.fromJson(order)).toList();
 }

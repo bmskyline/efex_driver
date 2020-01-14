@@ -45,7 +45,7 @@ class _NewContentState extends State<_NewContentPage>
 
   void _loadData() {
     final s =
-        mProvider.getUsers().doOnListen(() {}).doOnDone(() {}).listen((data) {
+        mProvider.getShops().doOnListen(() {}).doOnDone(() {}).listen((data) {
       //success
     }, onError: (e) {
       //error
@@ -68,8 +68,7 @@ class _NewContentState extends State<_NewContentPage>
                 Navigator.push(
                   homeContext,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        ScanPage(),
+                    builder: (context) => ScanPage(),
                   ),
                 );
               },
@@ -89,7 +88,9 @@ class _NewContentState extends State<_NewContentPage>
               Stack(alignment: AlignmentDirectional.center, children: <Widget>[
             Consumer<NewProvider>(builder: (context, value, child) {
               return ListView.builder(
-                itemCount: value.response.length,
+                itemCount: value.response == null
+                    ? 0
+                    : value.response.data.shops.length,
                 itemBuilder: (BuildContext context, int index) {
                   return SizedBox(
                     child: Card(
@@ -101,50 +102,74 @@ class _NewContentState extends State<_NewContentPage>
                             Navigator.push(
                               homeContext,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailPage(),
+                                builder: (context) => DetailPage(),
                               ),
                             );
                           },
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(value.response[index].name,
-                                  style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),
+                                Text(
+                                  value.response.data.shops[index].fromName,
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .apply(fontSizeFactor: 1.5),
                                 ),
                                 SizedBox(height: 8),
-                                Row(
-                                    children: <Widget>[
-                                      Icon(Icons.location_on, size: 20),
-                                      SizedBox(width: 16),
-                                      Text(value.response[index].address,
-                                          style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2)),
-                                    ]),
+                                Row(children: <Widget>[
+                                  Icon(Icons.location_on, size: 20),
+                                  SizedBox(width: 16),
+                                  Text(
+                                      value.response.data.shops[index]
+                                          .fromAddress,
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .apply(fontSizeFactor: 1.2)),
+                                ]),
                                 SizedBox(height: 8),
                                 Row(
                                   children: <Widget>[
                                     Icon(Icons.phone, size: 20),
                                     SizedBox(width: 16),
-                                    Text(value.response[index].phone,
-                                      style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2),)
-                                  ],),
+                                    Text(
+                                      value
+                                          .response.data.shops[index].fromPhone,
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .apply(fontSizeFactor: 1.2),
+                                    )
+                                  ],
+                                ),
                                 SizedBox(height: 8),
                                 Row(
                                   children: <Widget>[
                                     Icon(Icons.border_color, size: 20),
                                     SizedBox(width: 16),
-                                    Text(value.response[index].totalOrders.toString() + " orders",
-                                      style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2),)
-                                  ],),
+                                    Text(
+                                      value.response.data.shops[index]
+                                              .totalOrders
+                                              .toString() +
+                                          " orders",
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .apply(fontSizeFactor: 1.2),
+                                    )
+                                  ],
+                                ),
                                 SizedBox(height: 8),
                                 Row(
                                   children: <Widget>[
                                     Icon(Icons.access_time, size: 20),
                                     SizedBox(width: 16),
-                                    Text(value.response[index].time,
-                                      style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.2),)
-                                  ],)
-
+                                    Text(
+                                      value
+                                          .response.data.shops[index].fullCount,
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .apply(fontSizeFactor: 1.2),
+                                    )
+                                  ],
+                                )
                               ]),
                         ),
                       ),

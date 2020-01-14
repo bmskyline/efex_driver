@@ -25,7 +25,7 @@ class DetailProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable getShopDetail() => _repo
+  /*Observable getShopDetail() => _repo
       .getShopDetail()
       .doOnData((r){
         _response = ShopDetail.fromJson(r);
@@ -37,5 +37,5 @@ class DetailProvider extends BaseProvider {
     }
   })
       .doOnListen(() => loading = true)
-      .doOnDone(() => loading = false);
+      .doOnDone(() => loading = false);*/
 }

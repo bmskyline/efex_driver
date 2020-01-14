@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -10,7 +11,7 @@ class LoginProvider extends BaseProvider {
   bool _loading = false;
   bool _validateUserName = false;
   bool _validatePassword = false;
-  String _response = "";
+  LoginResponse _response;
   final String title;
 
   double _btnWidth = 295.0;
@@ -22,7 +23,6 @@ class LoginProvider extends BaseProvider {
     notifyListeners();
   }
 
-
   bool get validateUserName => _validateUserName;
 
   set validateUserName(bool value) {
@@ -30,8 +30,8 @@ class LoginProvider extends BaseProvider {
     notifyListeners();
   }
 
-  String get response => _response;
-  set response(String response) {
+  LoginResponse get response => _response;
+  set response(LoginResponse response) {
     _response = response;
     notifyListeners();
   }
@@ -46,10 +46,15 @@ class LoginProvider extends BaseProvider {
 
   Observable login() => _repo
       .login(userName, password)
-      .doOnData((r) => _response = r.toString())
+      .doOnData((r) {
+        LoginResponse res = LoginResponse.fromJson(r);
+        if (res.result) {
+          _repo.saveToken(res.data.token);
+        }
+      })
       .doOnError((e, stacktrace) {
         if (e is DioError) {
-          response = e.response.data.toString();
+          //response = e.response.data.toString();
         }
       })
       .doOnListen(() => loading = true)

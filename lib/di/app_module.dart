@@ -43,14 +43,14 @@ class AuthInterceptor extends Interceptor {
   onRequest(RequestOptions options) {
     final token = spUtil.getString("TOKEN");
     options.headers
-        .update("Authorization", (_) => token, ifAbsent: () => token);
+        .update("x-token", (_) => token, ifAbsent: () => token);
     return super.onRequest(options);
   }
 }
 
 final dio = Dio()
   ..options = BaseOptions(
-      baseUrl: 'https://jsonplaceholder.typicode.com/',
+      baseUrl: 'https://apimobiletest.efex.vn/api/v1/',
       connectTimeout: 30,
       receiveTimeout: 30)
   ..interceptors.add(AuthInterceptor())

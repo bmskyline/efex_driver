@@ -1,4 +1,6 @@
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/login_response.dart';
+import 'package:driver_app/utils/toast_utils.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/home/home_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,16 +74,21 @@ class _LoginContentState extends State<_LoginContentPage>
   }
 
   void login() {
-    /*Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );*/
     final s = mProvider.login().doOnListen(() {
       _controller.forward();
     }).doOnDone(() {
       _controller.reverse();
     }).listen((_) {
       //success
+      LoginResponse res = LoginResponse.fromJson(_);
+      if (res.result) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        Toast.show(res.msg);
+      }
     }, onError: (e) {
       //error
       dispatchFailure(context, e);

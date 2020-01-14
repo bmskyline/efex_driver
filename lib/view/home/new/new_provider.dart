@@ -1,20 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/shop_model.dart';
+import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class NewProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  List<Shop> _response = List();
+  ShopResponse _response;
 
   NewProvider(this._repo);
 
-  List<Shop> get response {
+  ShopResponse get response {
     return _response;
   }
-  set response(List<Shop> response) {
+  set response(ShopResponse response) {
     _response = response;
     notifyListeners();
   }
@@ -25,10 +25,10 @@ class NewProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable getUsers() => _repo
-      .getUsers()
+  Observable getShops() => _repo
+      .getShops(0, 9)
       .doOnData((r) {
-          _response.addAll((r as List).map((user) => Shop.fromJson(user)).toList());
+          _response = ShopResponse.fromJson(r);
   })
       .doOnError((e, stacktrace) {
         if (e is DioError) {
