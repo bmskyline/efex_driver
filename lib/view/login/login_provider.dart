@@ -12,7 +12,6 @@ class LoginProvider extends BaseProvider {
   bool _validateUserName = false;
   bool _validatePassword = false;
   LoginResponse _response;
-  final String title;
 
   double _btnWidth = 295.0;
 
@@ -42,7 +41,7 @@ class LoginProvider extends BaseProvider {
     notifyListeners();
   }
 
-  LoginProvider(this.title, this._repo);
+  LoginProvider(this._repo);
 
   Observable login() => _repo
       .login(userName, password)

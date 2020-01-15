@@ -100,21 +100,24 @@ class _LoginContentState extends State<_LoginContentPage>
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(mProvider.title),
-        ),
-        body: DefaultTextStyle(
-          style: TextStyle(color: Colors.black),
-          child: SingleChildScrollView(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/bg.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: DefaultTextStyle(
+            style: TextStyle(color: Colors.black),
             child: Column(
               children: <Widget>[
-                const Padding(padding: EdgeInsets.only(top: 64.0)),
+                const Padding(padding: EdgeInsets.only(top: 160.0)),
                 Image(
                   image: AssetImage('assets/logo.png'),
                   width: 120,
                   height: 120,
                 ),
-                const Padding(padding: EdgeInsets.only(top: 32.0)),
+                const Padding(padding: EdgeInsets.only(top: 96.0)),
                 Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Consumer<LoginProvider>(

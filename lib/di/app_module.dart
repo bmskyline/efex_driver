@@ -12,7 +12,7 @@ import 'package:driver_app/view/login/login_provider.dart';
 const testScope = DartInScope('test');
 
 final viewModelModule = Module([
-  factory<LoginProvider>(({params}) => LoginProvider(params.get(0), get())),
+  factory<LoginProvider>(({params}) => LoginProvider(get())),
   lazy<NewProvider>(({params}) => NewProvider(get())),
   lazy<SuccessProvider>(({params}) => SuccessProvider(get())),
   lazy<CancelProvider>(({params}) => CancelProvider(get())),
