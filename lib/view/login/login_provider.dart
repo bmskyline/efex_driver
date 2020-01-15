@@ -9,23 +9,14 @@ class LoginProvider extends BaseProvider {
   String userName = "";
   String password = "";
   bool _loading = false;
-  bool _validateUserName = false;
-  bool _validatePassword = false;
   LoginResponse _response;
 
-  double _btnWidth = 295.0;
+  double _btnWidth = double.infinity;
 
   double get btnWidth => _btnWidth;
 
   set btnWidth(double btnWidth) {
     _btnWidth = btnWidth;
-    notifyListeners();
-  }
-
-  bool get validateUserName => _validateUserName;
-
-  set validateUserName(bool value) {
-    _validateUserName = value;
     notifyListeners();
   }
 
@@ -58,11 +49,4 @@ class LoginProvider extends BaseProvider {
       })
       .doOnListen(() => loading = true)
       .doOnDone(() => loading = false);
-
-  bool get validatePassword => _validatePassword;
-
-  set validatePassword(bool value) {
-    _validatePassword = value;
-    notifyListeners();
-  }
 }

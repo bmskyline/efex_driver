@@ -56,10 +56,6 @@ class _CancelContentState extends State<_CancelContentPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Cancel"),
-        backgroundColor: Colors.red,
-      ),
       backgroundColor: Colors.black12,
       body: SizedBox.expand(
         child: NotificationListener<ScrollNotification>(

@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
   Provider.debugCheckInvalidValueType = null;
-  Widget _defaultHome = LoginPage("Login");
+  Widget _defaultHome = LoginPage();
   if (spUtil.getString("TOKEN") != null && spUtil.getString("TOKEN") != "") {
     _defaultHome = HomePage();
   }

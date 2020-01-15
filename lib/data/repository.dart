@@ -48,4 +48,8 @@ class GithubRepo {
   void saveToken(String token) {
     _spUtil.putString("TOKEN", token);
   }
+
+  void removeToken() {
+    _spUtil.clear();
+  }
 }

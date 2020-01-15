@@ -7,7 +7,7 @@ class ScanPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _ScanPageState();
+    return _ScanPageState();
   }
 }
 
