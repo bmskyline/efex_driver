@@ -29,11 +29,13 @@ class GithubRepo {
       "Offset": offset,
       "Limit": limit,
       "FromDate": "2020-01-13",
+      "Status": "new",
+      "Type": 1
     };
     return _remote.getShops(someMap);
   }
 
-  Observable getShopDetail(Shop shop) {
+  Observable getShopDetail(Shop shop, String date, int limit, int offset) {
     Map<String, dynamic> someMap = {
       "FromAddress": shop.fromAddress,
       "FromPhone": shop.fromPhone,

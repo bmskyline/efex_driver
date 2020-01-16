@@ -2,44 +2,46 @@ import 'package:driver_app/base/base.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
-import 'package:driver_app/view/home/new/new_provider.dart';
+import 'package:driver_app/view/home/return/return_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class NewPage extends PageProvideNode<NewProvider> {
+class ReturnPage extends PageProvideNode<ReturnProvider> {
   final BuildContext homeContext;
-  NewPage(this.homeContext);
+  ReturnPage(this.homeContext);
 
   @override
   Widget buildContent(BuildContext context) {
-    return _NewContentPage(homeContext, mProvider);
+    return _ReturnContentPage(homeContext, mProvider);
   }
 }
 
-class _NewContentPage extends StatefulWidget {
+class _ReturnContentPage extends StatefulWidget {
   final BuildContext homeContext;
-  final NewProvider provider;
-  _NewContentPage(this.homeContext, this.provider);
+  final ReturnProvider provider;
+  _ReturnContentPage(this.homeContext, this.provider);
 
   @override
   State<StatefulWidget> createState() {
-    return _NewContentState(homeContext);
+    return _ReturnContentState(homeContext);
   }
 }
 
-class _NewContentState extends State<_NewContentPage>
-    with TickerProviderStateMixin<_NewContentPage>
+class _ReturnContentState extends State<_ReturnContentPage>
+    with TickerProviderStateMixin<_ReturnContentPage>,
+        AutomaticKeepAliveClientMixin<_ReturnContentPage>
     implements Presenter {
   BuildContext homeContext;
 
-  _NewContentState(this.homeContext);
+  _ReturnContentState(this.homeContext);
 
-  NewProvider mProvider;
+  ReturnProvider mProvider;
 
   @override
   void initState() {
     super.initState();
     mProvider = widget.provider;
+    print("tao lai cai moi roi oop! return");
     _loadData();
   }
 
@@ -56,22 +58,23 @@ class _NewContentState extends State<_NewContentPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black12,
-      body: SizedBox.expand(
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (!mProvider.loading &&
-                mProvider.page * mProvider.limit < mProvider.total &&
-                scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent) {
-              _loadData();
-            }
-          },
-          child:
-              Stack(alignment: AlignmentDirectional.center, children: <Widget>[
-            Consumer<NewProvider>(builder: (context, value, child) {
-              return ListView.builder(
+    return  SizedBox.expand(
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (!mProvider.loading &&
+              mProvider.page * mProvider.limit < mProvider.total &&
+              scrollInfo.metrics.pixels ==
+                  scrollInfo.metrics.maxScrollExtent) {
+            _loadData();
+          }
+        },
+        child:
+        Stack(alignment: AlignmentDirectional.center, children: <Widget>[
+          Consumer<ReturnProvider>(builder: (context, value, child) {
+            return MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: ListView.builder(
                 itemCount: value.shops == null ? 0 : value.shops.length,
                 itemBuilder: (BuildContext context, int index) {
                   return SizedBox(
@@ -97,8 +100,8 @@ class _NewContentState extends State<_NewContentPage>
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .apply(
-                                          fontSizeFactor: 1.5,
-                                          color: Colors.white),
+                                      fontSizeFactor: 1.5,
+                                      color: Colors.white),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
@@ -113,8 +116,8 @@ class _NewContentState extends State<_NewContentPage>
                                       style: DefaultTextStyle.of(context)
                                           .style
                                           .apply(
-                                              fontSizeFactor: 1.2,
-                                              color: Colors.white60),
+                                          fontSizeFactor: 1.2,
+                                          color: Colors.white60),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                     ),
@@ -131,8 +134,8 @@ class _NewContentState extends State<_NewContentPage>
                                       style: DefaultTextStyle.of(context)
                                           .style
                                           .apply(
-                                              fontSizeFactor: 1.2,
-                                              color: Colors.white60),
+                                          fontSizeFactor: 1.2,
+                                          color: Colors.white60),
                                     )
                                   ],
                                 ),
@@ -144,13 +147,13 @@ class _NewContentState extends State<_NewContentPage>
                                     SizedBox(width: 16),
                                     Text(
                                       value.shops[index].totalOrders
-                                              .toString() +
+                                          .toString() +
                                           " orders",
                                       style: DefaultTextStyle.of(context)
                                           .style
                                           .apply(
-                                              fontSizeFactor: 1.2,
-                                              color: Colors.white60),
+                                          fontSizeFactor: 1.2,
+                                          color: Colors.white60),
                                     )
                                   ],
                                 ),
@@ -165,8 +168,8 @@ class _NewContentState extends State<_NewContentPage>
                                       style: DefaultTextStyle.of(context)
                                           .style
                                           .apply(
-                                              fontSizeFactor: 1.2,
-                                              color: Colors.white60),
+                                          fontSizeFactor: 1.2,
+                                          color: Colors.white60),
                                     )
                                   ],
                                 )
@@ -176,17 +179,17 @@ class _NewContentState extends State<_NewContentPage>
                     ),
                   );
                 },
-              );
-            }),
-            buildProgress()
-          ]),
-        ),
+              ),
+            );
+          }),
+          buildProgress()
+        ]),
       ),
     );
   }
 
-  Consumer<NewProvider> buildProgress() {
-    return Consumer<NewProvider>(builder: (context, value, child) {
+  Consumer<ReturnProvider> buildProgress() {
+    return Consumer<ReturnProvider>(builder: (context, value, child) {
       return Visibility(
         child: const CircularProgressIndicator(),
         visible: value.loading,
@@ -198,4 +201,7 @@ class _NewContentState extends State<_NewContentPage>
   void onClick(String action) {
     // TODO: implement onClick
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -15,7 +15,6 @@ const List<Destination> allDestinations = <Destination>[
   Destination(2, 'Cancel', Icons.cancel, Colors.red),
 ];
 
-
 class HomePage extends PageProvideNode<HomeProvider> {
   @override
   Widget buildContent(BuildContext context) {
@@ -77,20 +76,20 @@ class _HomePageState extends State<_HomeContentPage>
                   .textTheme
                   .copyWith(caption: TextStyle(color: Colors.white60))),
           child: BottomNavigationBar(
-                backgroundColor: primaryColorHome,
-                type: BottomNavigationBarType.fixed,
-                currentIndex: value.currentIndex,
-                onTap: (int index) {
-                  value.currentIndex = index;
-                },
-                items: allDestinations.map((Destination destination) {
-                  return BottomNavigationBarItem(
-                      icon: Icon(destination.icon),
-                      backgroundColor: destination.color,
-                      title: Text(destination.title));
-                }).toList(),
-              ),
-            ),
+            backgroundColor: primaryColorHome,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: value.currentIndex,
+            onTap: (int index) {
+              value.currentIndex = index;
+            },
+            items: allDestinations.map((Destination destination) {
+              return BottomNavigationBarItem(
+                  icon: Icon(destination.icon),
+                  backgroundColor: destination.color,
+                  title: Text(destination.title));
+            }).toList(),
+          ),
+        ),
       );
     });
   }

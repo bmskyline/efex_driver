@@ -12,14 +12,14 @@ class ShopResponse {
   });
 
   factory ShopResponse.fromJson(Map<String, dynamic> json) => ShopResponse(
-    result: json["result"] == null ? null : json["result"],
-    msg: json["msg"] == null ? null : json["msg"],
-    data: json["data"] == null ? null : ShopData.fromJson(json["data"]),
-  );
+        result: json["result"] == null ? null : json["result"],
+        msg: json["msg"] == null ? null : json["msg"],
+        data: json["data"] == null ? null : ShopData.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "result": result == null ? null : result,
-    "msg": msg == null ? null : msg,
-    "data": data == null ? null : data.toJson(),
-  };
+        "result": result == null ? null : result,
+        "msg": msg == null ? null : msg,
+        "data": data == null ? null : data.toJson(),
+      };
 }

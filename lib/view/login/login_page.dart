@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import 'login_provider.dart';
 
 class LoginPage extends PageProvideNode<LoginProvider> {
-
   @override
   Widget buildContent(BuildContext context) {
     return _LoginContentPage(mProvider);
@@ -60,9 +59,9 @@ class _LoginContentState extends State<_LoginContentPage>
   @override
   void onClick(String action) {
     if (ACTION_LOGIN == action) {
-      if(mProvider.userName.isEmpty) {
+      if (mProvider.userName.isEmpty) {
         Toast.show("Phonenumber can't be empty");
-      } else if (mProvider.password.isEmpty){
+      } else if (mProvider.password.isEmpty) {
         Toast.show("password can't be empty");
       } else {
         login();
@@ -98,80 +97,81 @@ class _LoginContentState extends State<_LoginContentPage>
     return Material(
         child: Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: ExactAssetImage("assets/bg.png"),
-            fit: BoxFit.fitWidth,
-            alignment:Alignment.topCenter,
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: ExactAssetImage("assets/bg.png"),
+              fit: BoxFit.fitWidth,
+              alignment: Alignment.topCenter,
+            ),
           ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Container(
-              child: SingleChildScrollView(
-                child: DefaultTextStyle(
-                  style: TextStyle(color: Colors.black),
-                  child: Column(
-                    children: <Widget>[
-                      const Padding(padding: EdgeInsets.only(top: 160.0)),
-                      Image(
-                        image: AssetImage('assets/logo.png'),
-                        width: 120,
-                        height: 120,
-                      ),
-                      const Padding(padding: EdgeInsets.only(top: 128.0)),
-                      Container(
-                        margin: const EdgeInsets.only(left: 64.0, right: 64.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                color: primaryColor, width: 2.0)),
-                        child: Column(
-                          children: <Widget>[
-                            Consumer<LoginProvider>(builder: (context, value, child) {
-                              return TextField(
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.next,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                    EdgeInsets.only(left: 10.0, right: 10.0),
-                                    hintText: '0999999999',
-                                  ),
-                                  onSubmitted: (v) {
-                                    FocusScope.of(context).requestFocus(focus);
-                                  },
-                                  autofocus: false,
-                                  onChanged: (str) => value.userName = str
-                                  );
-                            }),
-                            Consumer<LoginProvider>(builder: (context, value, child) {
-                              return TextField(
-                                  focusNode: focus,
-                                  obscureText: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                    EdgeInsets.only(left: 10.0, right: 10.0),
-                                    hintText: 'Password',
-                                  ),
-                                  autofocus: false,
-                                  onChanged: (str) => value.password = str
-                                    );
-                            }),
-                          ],
+          child: Stack(
+            children: <Widget>[
+              Container(
+                child: SingleChildScrollView(
+                  child: DefaultTextStyle(
+                    style: TextStyle(color: Colors.black),
+                    child: Column(
+                      children: <Widget>[
+                        const Padding(padding: EdgeInsets.only(top: 160.0)),
+                        Image(
+                          image: AssetImage('assets/logo.png'),
+                          width: 120,
+                          height: 120,
                         ),
-                      ),
-                      buildLoginBtnProvide()
-                    ],
+                        const Padding(padding: EdgeInsets.only(top: 128.0)),
+                        Container(
+                          margin:
+                              const EdgeInsets.only(left: 64.0, right: 64.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border:
+                                  Border.all(color: primaryColor, width: 2.0)),
+                          child: Column(
+                            children: <Widget>[
+                              Consumer<LoginProvider>(
+                                  builder: (context, value, child) {
+                                return TextField(
+                                    keyboardType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10.0, right: 10.0),
+                                      hintText: '0999999999',
+                                    ),
+                                    onSubmitted: (v) {
+                                      FocusScope.of(context)
+                                          .requestFocus(focus);
+                                    },
+                                    autofocus: false,
+                                    onChanged: (str) => value.userName = str);
+                              }),
+                              Consumer<LoginProvider>(
+                                  builder: (context, value, child) {
+                                return TextField(
+                                    focusNode: focus,
+                                    obscureText: true,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10.0, right: 10.0),
+                                      hintText: 'Password',
+                                    ),
+                                    autofocus: false,
+                                    onChanged: (str) => value.password = str);
+                              }),
+                            ],
+                          ),
+                        ),
+                        buildLoginBtnProvide()
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
-        )
-      ),
+              )
+            ],
+          )),
     ));
   }
 

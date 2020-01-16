@@ -7,14 +7,14 @@ import 'package:rxdart/rxdart.dart';
 
 class SuccessProvider extends BaseProvider {
   final GithubRepo _repo;
-  bool _loading = false;
+  /*bool _loading = false;
   List<Shop> _shops = List();
   int page = 0;
   int limit = 10;
-  int total = 0;
+  int total = 0;*/
   SuccessProvider(this._repo);
 
-  List<Shop> get shops => _shops;
+ /* List<Shop> get shops => _shops;
 
   set shops(List<Shop> value) {
     _shops = value;
@@ -29,20 +29,20 @@ class SuccessProvider extends BaseProvider {
   Observable getShops() => _repo
       .getShops(page, limit)
       .doOnData((r) {
-    ShopResponse response = ShopResponse.fromJson(r);
-    if(response.result) {
-      page++;
-      total = response.data.total;
-      _shops.addAll(response.data.shops);
-    }
-  })
+        ShopResponse response = ShopResponse.fromJson(r);
+        if (response.result) {
+          page++;
+          total = response.data.total;
+          _shops.addAll(response.data.shops);
+        }
+      })
       .doOnError((e, stacktrace) {
-    if (e is DioError) {
-      //response = null;
-    }
-  })
+        if (e is DioError) {
+          //response = null;
+        }
+      })
       .doOnListen(() => loading = true)
-      .doOnDone(() => loading = false);
+      .doOnDone(() => loading = false);*/
 
   void removeToken() {
     _repo.removeToken();

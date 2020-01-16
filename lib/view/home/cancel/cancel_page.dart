@@ -70,9 +70,9 @@ class _CancelContentState extends State<_CancelContentPage>
               Stack(alignment: AlignmentDirectional.center, children: <Widget>[
             Consumer<CancelProvider>(builder: (context, value, child) {
               return ListView.builder(
-                itemCount: value.response == null
+                itemCount: value.shops == null
                     ? 0
-                    : value.response.data.shops.length,
+                    : value.shops.length,
                 itemBuilder: (BuildContext context, int index) {
                   return SizedBox(
                     child: Card(
@@ -84,7 +84,8 @@ class _CancelContentState extends State<_CancelContentPage>
                             Navigator.push(
                               homeContext,
                               MaterialPageRoute(
-                                builder: (context) => DetailPage(),
+                                builder: (context) => DetailPage(
+                                    value.shops[index]),
                               ),
                             );
                           },
@@ -92,7 +93,7 @@ class _CancelContentState extends State<_CancelContentPage>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  value.response.data.shops[index].fromName,
+                                  value.shops[index].fromName,
                                   style: DefaultTextStyle.of(context)
                                       .style
                                       .apply(fontSizeFactor: 1.5),
@@ -102,7 +103,7 @@ class _CancelContentState extends State<_CancelContentPage>
                                   Icon(Icons.location_on, size: 20),
                                   SizedBox(width: 16),
                                   Text(
-                                      value.response.data.shops[index]
+                                      value.shops[index]
                                           .fromAddress,
                                       style: DefaultTextStyle.of(context)
                                           .style
@@ -114,8 +115,7 @@ class _CancelContentState extends State<_CancelContentPage>
                                     Icon(Icons.phone, size: 20),
                                     SizedBox(width: 16),
                                     Text(
-                                      value
-                                          .response.data.shops[index].fromPhone,
+                                      value.shops[index].fromPhone,
                                       style: DefaultTextStyle.of(context)
                                           .style
                                           .apply(fontSizeFactor: 1.2),
@@ -128,7 +128,7 @@ class _CancelContentState extends State<_CancelContentPage>
                                     Icon(Icons.border_color, size: 20),
                                     SizedBox(width: 16),
                                     Text(
-                                      value.response.data.shops[index]
+                                      value.shops[index]
                                               .totalOrders
                                               .toString() +
                                           " orders",
@@ -144,8 +144,7 @@ class _CancelContentState extends State<_CancelContentPage>
                                     Icon(Icons.access_time, size: 20),
                                     SizedBox(width: 16),
                                     Text(
-                                      value
-                                          .response.data.shops[index].fullCount,
+                                      value.shops[index].fullCount,
                                       style: DefaultTextStyle.of(context)
                                           .style
                                           .apply(fontSizeFactor: 1.2),

@@ -11,13 +11,11 @@ class ColoredTabBar extends Container implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    elevation: 25,
-    child: Container(
-      color: color,
-      child: Material(
-        elevation: 15,
-        type: MaterialType.transparency,
-          child: tabBar),
-    ),
-  );
+        elevation: 25,
+        child: Container(
+          color: color,
+          child: Material(
+              elevation: 15, type: MaterialType.transparency, child: tabBar),
+        ),
+      );
 }

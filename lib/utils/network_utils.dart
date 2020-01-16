@@ -6,8 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 Future _get(String url, {Map<String, dynamic> params}) async {
-  var response = await rootBundle.loadString('assets/$url');//dio.get(url, queryParameters: params);
-  return json.decode(response);//response.data;
+  var response = await rootBundle
+      .loadString('assets/$url'); //dio.get(url, queryParameters: params);
+  return json.decode(response); //response.data;
 }
 
 Observable post(String url, Map<String, dynamic> params) =>

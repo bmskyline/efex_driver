@@ -6,6 +6,8 @@ import 'package:driver_app/view/detail/detail_provider.dart';
 import 'package:driver_app/view/home/cancel/cancel_provider.dart';
 import 'package:driver_app/view/home/home_provider.dart';
 import 'package:driver_app/view/home/new/new_provider.dart';
+import 'package:driver_app/view/home/pickup/pickup_provider.dart';
+import 'package:driver_app/view/home/return/return_provider.dart';
 import 'package:driver_app/view/home/success/success_provider.dart';
 import 'package:driver_app/view/login/login_provider.dart';
 
@@ -16,12 +18,14 @@ final viewModelModule = Module([
   lazy<NewProvider>(({params}) => NewProvider(get())),
   lazy<SuccessProvider>(({params}) => SuccessProvider(get())),
   lazy<CancelProvider>(({params}) => CancelProvider(get())),
+  lazy<PickupProvider>(({params}) => PickupProvider(get())),
+  lazy<ReturnProvider>(({params}) => ReturnProvider(get())),
   factory<HomeProvider>(({params}) => HomeProvider()),
   factory<DetailProvider>(({params}) => DetailProvider(get()))
 ])
   ..addOthers(testScope, [
     ///other scope
-  //factory<HomeProvider>(({params}) => HomeProvider()),
+    //factory<HomeProvider>(({params}) => HomeProvider()),
   ]);
 
 final repoModule = Module([
@@ -42,8 +46,7 @@ class AuthInterceptor extends Interceptor {
   @override
   onRequest(RequestOptions options) {
     final token = spUtil.getString("TOKEN");
-    options.headers
-        .update("x-token", (_) => token, ifAbsent: () => token);
+    options.headers.update("x-token", (_) => token, ifAbsent: () => token);
     return super.onRequest(options);
   }
 }

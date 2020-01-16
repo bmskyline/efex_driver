@@ -5,14 +5,14 @@ import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NewProvider extends BaseProvider {
+class ReturnProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
   List<Shop> _shops = List();
   int page = 0;
   int limit = 10;
   int total = 0;
-  NewProvider(this._repo);
+  ReturnProvider(this._repo);
 
   List<Shop> get shops => _shops;
 

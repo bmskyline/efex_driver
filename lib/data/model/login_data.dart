@@ -6,11 +6,10 @@ class LoginData {
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
-    token: json["token"] == null ? null : json["token"],
-  );
+        token: json["token"] == null ? null : json["token"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "token": token == null ? null : token,
-  };
-  
+        "token": token == null ? null : token,
+      };
 }

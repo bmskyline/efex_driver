@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ScanPage extends StatefulWidget {
-
-
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -11,8 +8,7 @@ class ScanPage extends StatefulWidget {
   }
 }
 
-class _ScanPageState extends State<ScanPage>{
-
+class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
