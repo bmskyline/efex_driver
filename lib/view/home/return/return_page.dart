@@ -29,8 +29,7 @@ class _ReturnContentPage extends StatefulWidget {
 
 class _ReturnContentState extends State<_ReturnContentPage>
     with TickerProviderStateMixin<_ReturnContentPage>,
-        AutomaticKeepAliveClientMixin<_ReturnContentPage>
-    implements Presenter {
+        AutomaticKeepAliveClientMixin<_ReturnContentPage> {
   BuildContext homeContext;
 
   _ReturnContentState(this.homeContext);
@@ -195,11 +194,6 @@ class _ReturnContentState extends State<_ReturnContentPage>
         visible: value.loading,
       );
     });
-  }
-
-  @override
-  void onClick(String action) {
-    // TODO: implement onClick
   }
 
   @override

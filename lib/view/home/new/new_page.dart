@@ -28,8 +28,7 @@ class _NewContentPage extends StatefulWidget {
 }
 
 class _NewContentState extends State<_NewContentPage>
-    with TickerProviderStateMixin<_NewContentPage>
-    implements Presenter {
+    with TickerProviderStateMixin<_NewContentPage> {
   BuildContext homeContext;
 
   _NewContentState(this.homeContext);
@@ -192,10 +191,5 @@ class _NewContentState extends State<_NewContentPage>
         visible: value.loading,
       );
     });
-  }
-
-  @override
-  void onClick(String action) {
-    // TODO: implement onClick
   }
 }

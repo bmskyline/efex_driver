@@ -29,8 +29,7 @@ class _PickupContentPage extends StatefulWidget {
 
 class _PickupContentState extends State<_PickupContentPage>
     with TickerProviderStateMixin<_PickupContentPage>,
-    AutomaticKeepAliveClientMixin
-    implements Presenter {
+    AutomaticKeepAliveClientMixin {
   BuildContext homeContext;
 
   _PickupContentState(this.homeContext);
@@ -195,11 +194,6 @@ class _PickupContentState extends State<_PickupContentPage>
         visible: value.loading,
       );
     });
-  }
-
-  @override
-  void onClick(String action) {
-    // TODO: implement onClick
   }
 
   @override
