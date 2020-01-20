@@ -6,6 +6,7 @@ import 'model/shop_model.dart';
 
 class GithubService {
   Observable login(map) => post("user/login", map);
+  Observable logout(map) => post("user/logoff", map);
   Observable getShops(map) => post("tracking", map);
   Observable getShopDetail(map) => post("tracking/detail", map);
 }
@@ -18,31 +19,41 @@ class GithubRepo {
 
   Observable login(String username, String password) {
     Map<String, String> someMap = {
-    "username": username,
-    "pw": password,
+      "username": username,
+      "pw": password,
     };
     return _remote.login(someMap);
   }
 
-  Observable getShops(int offset, int limit) {
+  Observable logout() {
+    Map<String, String> someMap = {
+      "x-token": _spUtil.getString("TOKEN")
+    };
+    return _remote.login(someMap);
+  }
+
+  Observable getShops(
+      int offset, int limit, String date, String status, int type) {
     Map<String, dynamic> someMap = {
       "Offset": offset,
       "Limit": limit,
-      "FromDate": "2020-01-13",
-      "Status": "new",
-      "Type": 1
+      "FromDate": date,
+      "Status": status,
+      "Type": type
     };
     return _remote.getShops(someMap);
   }
 
-  Observable getShopDetail(Shop shop, String date, int limit, int offset) {
+  Observable getShopDetail(Shop shop, String date, int limit, int offset, String status, int type) {
     Map<String, dynamic> someMap = {
       "FromAddress": shop.fromAddress,
       "FromPhone": shop.fromPhone,
       "FromName": shop.fromName,
-      "FromDate": "2020-01-13",
-      "Limit": 9,
-      "Offset": 0,
+      "FromDate": date,
+      "Limit": limit,
+      "Offset": offset,
+      "Status": status,
+      "Type": type
     };
     return _remote.getShopDetail(someMap);
   }

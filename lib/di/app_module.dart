@@ -10,6 +10,7 @@ import 'package:driver_app/view/home/pickup/pickup_provider.dart';
 import 'package:driver_app/view/home/return/return_provider.dart';
 import 'package:driver_app/view/home/success/success_provider.dart';
 import 'package:driver_app/view/login/login_provider.dart';
+import 'package:driver_app/view/order_detail/order_detail_provider.dart';
 
 const testScope = DartInScope('test');
 
@@ -21,7 +22,8 @@ final viewModelModule = Module([
   lazy<PickupProvider>(({params}) => PickupProvider(get())),
   lazy<ReturnProvider>(({params}) => ReturnProvider(get())),
   factory<HomeProvider>(({params}) => HomeProvider()),
-  factory<DetailProvider>(({params}) => DetailProvider(get()))
+  factory<DetailProvider>(({params}) => DetailProvider(get())),
+  factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get()))
 ])
   ..addOthers(testScope, [
     ///other scope
