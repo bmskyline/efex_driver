@@ -164,18 +164,38 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         },
                       ),
                     )),
-                CupertinoButton(
-                  onPressed: () => {},
-                  color: Colors.orange,
-                  borderRadius: new BorderRadius.circular(0),
-                  child: Container(
-                    width: double.infinity,
-                    child: Text(
-                      "Xác nhận lấy hàng thành công",
-                      textAlign: TextAlign.center,
-                      style: new TextStyle(color: Colors.white),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: CupertinoButton(
+                        onPressed: () => {},
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(0),
+                        child: Text(
+                          "Xác nhận",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      child: CupertinoButton(
+                        onPressed: () =>  showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogPage();
+                            }
+                        ),
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(0),
+                        child: Text(
+                          "Hủy",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -191,5 +211,90 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
         visible: value.loading,
       );
     });
+  }
+}
+
+class DialogPage extends PageProvideNode<OrderDetailProvider> {
+
+  @override
+  Widget buildContent(BuildContext context) {
+    return DialogContent(mProvider);
+  }
+
+}
+
+class DialogContent extends StatefulWidget{
+
+  final OrderDetailProvider provider;
+
+  DialogContent(this.provider);
+
+  @override
+  State<StatefulWidget> createState() => _DialogContentState();
+
+}
+
+class _DialogContentState extends State<DialogContent>{
+
+  OrderDetailProvider mProvider;
+  @override
+  void initState() {
+    super.initState();
+    mProvider = widget.provider;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(title: Text("Status Update"),
+      contentPadding: const EdgeInsets.all(8),
+      content: Consumer<OrderDetailProvider>(
+        builder: (context, value, child) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              DropdownButton<String>(
+                isExpanded: true,
+                hint: Text("Status"),
+                value: value.selectedText,
+                items: <String>['SSD', 'Meeting', 'Home', 'Space']
+                    .map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String val) {
+                  value.selectedText = val;
+                },
+              ),
+              Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: TextField(
+                  maxLines: 4,
+                  onChanged: (value) => print(value),
+                  decoration: InputDecoration(
+                      hintText: "Ghi chú!", fillColor: Colors.white),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("Xác nhận"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        FlatButton(
+          child: Text("Hủy"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );;
   }
 }

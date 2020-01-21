@@ -62,7 +62,7 @@ class _DetailPageState extends State<_DetailContentPage>
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                    builder: (context) => ScanPage()));
+                    builder: (context) => ScanPage(mProvider.response.orders)));
               },
             ),
           ],

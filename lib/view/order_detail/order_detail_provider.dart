@@ -7,6 +7,7 @@ class OrderDetailProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
   File _image;
+  String _selectedText = "SSD";
   OrderDetailProvider(this._repo);
 
   bool get loading => _loading;
@@ -22,5 +23,10 @@ class OrderDetailProvider extends BaseProvider {
     notifyListeners();
   }
 
+  String get selectedText => _selectedText;
 
+  set selectedText(String value) {
+    _selectedText = value;
+    notifyListeners();
+  }
 }
