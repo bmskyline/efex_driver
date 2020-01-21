@@ -1,14 +1,11 @@
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/utils/const.dart';
-import 'package:driver_app/utils/widget_utils.dart';
-import 'package:driver_app/view/detail/detail_page.dart';
 import 'package:driver_app/view/home/new/new_provider.dart';
 import 'package:driver_app/view/home/pickup/pickup_page.dart';
 import 'package:driver_app/view/home/return/return_page.dart';
 import 'package:driver_app/view/login/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NewPage extends PageProvideNode<NewProvider> {
   final BuildContext homeContext;

@@ -5,6 +5,7 @@ import 'package:driver_app/view/detail/detail_page.dart';
 import 'package:driver_app/view/home/pickup/pickup_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PickupPage extends PageProvideNode<PickupProvider> {
   final BuildContext homeContext;
@@ -35,6 +36,7 @@ class _PickupContentState extends State<_PickupContentPage>
         AutomaticKeepAliveClientMixin {
   BuildContext homeContext;
   String status;
+  bool switchValue = false;
 
   _PickupContentState(this.homeContext, this.status);
 
@@ -91,9 +93,7 @@ class _PickupContentState extends State<_PickupContentPage>
             }
           }
         },
-        child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: <Widget>[
+        child: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           Consumer<PickupProvider>(builder: (context, value, child) {
             return MediaQuery.removePadding(
               context: context,
@@ -117,10 +117,7 @@ class _PickupContentState extends State<_PickupContentPage>
                         color: secondColorHome,
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 16.0,
-                              right: 16.0,
-                              top: 8.0,
-                              bottom: 8.0),
+                              left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
@@ -134,105 +131,171 @@ class _PickupContentState extends State<_PickupContentPage>
                                                 value.shopsSuccess[index],
                                                 status,
                                                 1)
-                                            : DetailPage(value.shopsCancel[index],
-                                                status, 1))),
+                                            : DetailPage(
+                                                value.shopsCancel[index],
+                                                status,
+                                                1))),
                               );
                             },
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    status == "new"
-                                        ? value.shopsNew[index].fromName+ " ("+value.shopsNew[index].fullCount+")"
-                                        : (status == "picked"
-                                            ? value.shopsSuccess[index].fromName
-                                            : value.shopsCancel[index].fromName),
-                                    style: TextStyle(fontSize: 22,color: Colors.white),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Row(children: <Widget>[
-                                    Icon(Icons.location_on,
-                                        size: 20, color: Colors.white60),
-                                    SizedBox(width: 16),
-                                    Expanded(
-                                      child: Text(
-                                        status == "new"
-                                            ? value.shopsNew[index].fromAddress
-                                            : (status == "picked"
-                                                ? value.shopsSuccess[index]
-                                                    .fromAddress
-                                                : value.shopsCancel[index]
-                                                    .fromAddress),
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ]),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(Icons.phone,
-                                          size: 20, color: Colors.white60),
-                                      SizedBox(width: 16),
-                                      Text(
-                                        status == "new"
-                                            ? value.shopsNew[index].fromPhone
-                                            : (status == "picked"
-                                                ? value
-                                                    .shopsSuccess[index].fromPhone
-                                                : value.shopsCancel[index]
-                                                    .fromPhone),
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(Icons.border_color,
-                                          size: 20, color: Colors.white60),
-                                      SizedBox(width: 16),
-                                      Text(
-                                        status == "new"
-                                            ? value
-                                                    .shopsNew[index].totalOrders
-                                                    .toString() +
-                                                " don hang - nang " +value.shopsNew[index].totalWeight+"g"
-                                            : (status == "picked"
-                                                ? value.shopsSuccess[index]
-                                                        .totalOrders
-                                                        .toString() +
-                                            " don hang - nang " +value.shopsSuccess[index].totalWeight+"g"
-                                                : value.shopsCancel[index]
-                                                        .totalOrders
-                                                        .toString() +
-                                            " don hang - nang " +value.shopsCancel[index].totalWeight+"g"),
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(Icons.access_time,
-                                          size: 20, color: Colors.white60),
-                                      SizedBox(width: 16),
-                                      Text(
-                                        status == "new"
-                                            ? value.shopsNew[index].fullCount
-                                            : (status == "picked"
-                                                ? value
-                                                    .shopsSuccess[index].fullCount
-                                                : value.shopsCancel[index]
-                                                    .fullCount),
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
-                                      )
-                                    ],
-                                  )
-                                ]),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          status == "new"
+                                              ? value.shopsNew[index].fromName +
+                                                  " (" +
+                                                  value.shopsNew[index]
+                                                      .fullCount +
+                                                  ")"
+                                              : (status == "picked"
+                                                  ? value.shopsSuccess[index]
+                                                      .fromName
+                                                  : value.shopsCancel[index]
+                                                      .fromName),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(children: <Widget>[
+                                          Icon(Icons.location_on,
+                                              size: 18, color: Colors.white60),
+                                          SizedBox(width: 16),
+                                          Expanded(
+                                            child: Text(
+                                              status == "new"
+                                                  ? value.shopsNew[index]
+                                                      .fromAddress
+                                                  : (status == "picked"
+                                                      ? value
+                                                          .shopsSuccess[index]
+                                                          .fromAddress
+                                                      : value.shopsCancel[index]
+                                                          .fromAddress),
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white60),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                        ]),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(Icons.phone,
+                                                size: 18,
+                                                color: Colors.white60),
+                                            SizedBox(width: 16),
+                                            InkWell(
+                                              onTap: () => launch("tel://" +
+                                                  value.shopsNew[index]
+                                                      ?.fromPhone),
+                                              child: Text(
+                                                status == "new"
+                                                    ? value.shopsNew[index]
+                                                        .fromPhone
+                                                    : (status == "picked"
+                                                        ? value
+                                                            .shopsSuccess[index]
+                                                            .fromPhone
+                                                        : value
+                                                            .shopsCancel[index]
+                                                            .fromPhone),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.blueAccent,
+                                                    decoration: TextDecoration
+                                                        .underline),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(Icons.border_color,
+                                                size: 18,
+                                                color: Colors.white60),
+                                            SizedBox(width: 16),
+                                            Text(
+                                              status == "new"
+                                                  ? value.shopsNew[index]
+                                                          .totalOrders
+                                                          .toString() +
+                                                      " đơn hàng - nặng " +
+                                                      value.shopsNew[index]
+                                                          .totalWeight +
+                                                      "g"
+                                                  : (status == "picked"
+                                                      ? value
+                                                              .shopsSuccess[
+                                                                  index]
+                                                              .totalOrders
+                                                              .toString() +
+                                                          " đơn hàng - nặng " +
+                                                          value
+                                                              .shopsSuccess[
+                                                                  index]
+                                                              .totalWeight +
+                                                          "g"
+                                                      : value.shopsCancel[index]
+                                                              .totalOrders
+                                                              .toString() +
+                                                          " đơn hàng - nặng " +
+                                                          value
+                                                              .shopsCancel[
+                                                                  index]
+                                                              .totalWeight +
+                                                          "g"),
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white60),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: <Widget>[
+                                            Icon(Icons.access_time,
+                                                size: 18,
+                                                color: Colors.white60),
+                                            SizedBox(width: 16),
+                                            Text(
+                                              status == "new"
+                                                  ? value
+                                                      .shopsNew[index].fullCount
+                                                  : (status == "picked"
+                                                      ? value
+                                                          .shopsSuccess[index]
+                                                          .fullCount
+                                                      : value.shopsCancel[index]
+                                                          .fullCount),
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white60),
+                                            )
+                                          ],
+                                        )
+                                      ]),
+                                ),
+                                Switch(
+                                  activeColor: Colors.white,
+                                  value: switchValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      switchValue = value;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

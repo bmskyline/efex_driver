@@ -5,6 +5,7 @@ import 'package:driver_app/view/order_detail/order_detail_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetailPage extends PageProvideNode<OrderDetailProvider> {
@@ -32,22 +33,23 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
     with TickerProviderStateMixin<_OrderDetailContentPage> {
   OrderDetailProvider mProvider;
   Order order;
-
   _OrderDetailState(this.order);
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    mProvider.image = image;
+  }
 
   @override
   void initState() {
     super.initState();
     mProvider = widget.provider;
     Future.delayed(const Duration(milliseconds: 4000), () {
-
-
       setState(() {
-        for(int i=0;i<20;i++) {
+        for (int i = 0; i < 20; i++) {
           order.products.add(order.products[0]);
         }
       });
-
     });
   }
 
@@ -72,18 +74,22 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 16.0, right: 16.0, top: 8),
-                          child: Text(order.fromName, style: TextStyle(fontSize: 22,color: Colors.white))),
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, top: 8),
+                          child: Text(order.fromName,
+                              style: TextStyle(
+                                  fontSize: 22, color: Colors.white))),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 16.0, right: 16.0, bottom: 8),
                         child: Text(
-                            "Tong san pham: " +
+                            "Tổng sản phẩm: " +
                                 order.fullCount +
-                                " - Tong trong luong: " +
-                                order.weightOfProduct().toString()+"g",
-                            style: TextStyle(fontSize: 18, color: Colors.white60)),
+                                " - Tổng trọng lượng: " +
+                                order.weightOfProduct().toString() +
+                                "g",
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white60)),
                       ),
                     ],
                   ),
@@ -108,7 +114,8 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                                 order.products[index].quantity.toString() +
                                     " x " +
                                     order.products[index].name,
-                                style: TextStyle(fontSize: 18, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.white),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                               ),
@@ -119,35 +126,52 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                     }),
                 Container(
                   color: Colors.white,
-                  margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+                  margin: const EdgeInsets.only(
+                      left: 16, right: 16, top: 8, bottom: 8),
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: TextField(
                     maxLines: 4,
+                    onChanged: (value) => print(value),
                     decoration: InputDecoration(
-                      hintText: "Comment!",
-                      fillColor: Colors.white
-                    ),
+                        hintText: "Ghi chú!", fillColor: Colors.white),
                   ),
                 ),
                 Container(
-                  height: 200,
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 16),
-                  color: Colors.white,
-                  child: Image(
-                    image: AssetImage('assets/logo.png'),
-                    fit: BoxFit.fill,
-                    width: 30,
-                    height: 30,
-                  ),
-                ),
-                CupertinoButton (
-                  onPressed: ()=>{},
+                    height: 200,
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(
+                        left: 16, right: 16, top: 8, bottom: 16),
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: Consumer<OrderDetailProvider>(
+                        builder: (context, value, child) {
+                          return value.image == null
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.image,
+                                      color: Colors.grey,
+                                      size: 30.0,
+                                    ),
+                                    Text("Hình ảnh")
+                                  ],
+                                )
+                              : Image.file(value.image);
+                        },
+                      ),
+                    )),
+                CupertinoButton(
+                  onPressed: () => {},
                   color: Colors.orange,
                   borderRadius: new BorderRadius.circular(0),
                   child: Container(
                     width: double.infinity,
-                    child: Text("Xac nhan",
+                    child: Text(
+                      "Xác nhận lấy hàng thành công",
                       textAlign: TextAlign.center,
                       style: new TextStyle(color: Colors.white),
                     ),

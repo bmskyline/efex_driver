@@ -1,13 +1,13 @@
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/utils/const.dart';
-import 'package:driver_app/utils/toast_utils.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_provider.dart';
 import 'package:driver_app/view/order_detail/order_detail.dart';
+import 'package:driver_app/view/scan/scan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends PageProvideNode<DetailProvider> {
   final Shop _shop;
@@ -59,7 +59,10 @@ class _DetailPageState extends State<_DetailContentPage>
             IconButton(
               icon: Image.asset("assets/barcode.png"),
               onPressed: () {
-                Toast.show("Scan barcode");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => ScanPage()));
               },
             ),
           ],
@@ -78,17 +81,27 @@ class _DetailPageState extends State<_DetailContentPage>
                             value.response?.orders == null
                                 ? ""
                                 : value.response?.orders[0].fromName,
-                            style: TextStyle(fontSize: 22,color: Colors.white)),
-                        Text(
-                            value.response?.orders == null
-                                ? ""
-                                : value.response?.orders[0].fromPhone,
-                            style: TextStyle(fontSize: 18,color: Colors.blueAccent)),
+                            style:
+                                TextStyle(fontSize: 22, color: Colors.white)),
+                        InkWell(
+                          onTap: () => launch(
+                              "tel://" + value.response?.orders[0].fromPhone),
+                          child: Text(
+                              value.response?.orders == null
+                                  ? ""
+                                  : value.response?.orders[0].fromPhone,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.blueAccent,
+                                decoration: TextDecoration.underline,
+                              )),
+                        ),
                         Text(
                             value.response?.orders == null
                                 ? ""
                                 : value.response.orders[0].fromAddress,
-                            style: TextStyle(fontSize: 18,color: Colors.white60)),
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white60)),
                       ],
                     ),
                   ),
@@ -124,34 +137,40 @@ class _DetailPageState extends State<_DetailContentPage>
                                       Text(
                                         value.response.orders[index]
                                             .trackingNumber,
-                                        style: TextStyle(fontSize: 20,color: Colors.white),
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.white),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        "Tong san pham: " +
+                                        "Tổng sản phẩm: " +
                                             value.response.orders[index]
                                                 .products.length
                                                 .toString(),
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white60),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                       ),
                                       Text(
-                                        "Tong trong luong: " +
+                                        "Tổng trọng lượng: " +
                                             value.response.orders[index]
                                                 .weightOfProduct()
                                                 .toString() +
                                             "g",
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white60),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                       ),
                                       Text(
-                                        "Ghi chu: " +
-                                            value.response.orders[index]
-                                                .note,
-                                        style: TextStyle(fontSize: 18,color: Colors.white60),
+                                        "Ghi chú: " +
+                                            value.response.orders[index].note,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white60),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                       ),

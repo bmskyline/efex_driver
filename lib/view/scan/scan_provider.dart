@@ -1,26 +1,16 @@
-import 'dart:io';
-
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/repository.dart';
 
-class OrderDetailProvider extends BaseProvider {
+class ScanProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  File _image;
-  OrderDetailProvider(this._repo);
+
+  ScanProvider(this._repo);
+
 
   bool get loading => _loading;
   set loading(bool loading) {
     _loading = loading;
     notifyListeners();
   }
-
-  File get image => _image;
-
-  set image(File value) {
-    _image = value;
-    notifyListeners();
-  }
-
-
 }

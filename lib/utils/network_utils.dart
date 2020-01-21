@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:driver_app/di/app_module.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';

@@ -98,8 +98,8 @@ class _CancelContentState extends State<_CancelContentPage>
             },
             body: TabBarView(
               children: <Widget>[
-                PickupPage(homeContext, "picking_fail"),
-                ReturnPage(homeContext, "picking_fail")
+                PickupPage(homeContext, "fail"),
+                ReturnPage(homeContext, "fail")
               ],
               controller: _tabController,
             )));

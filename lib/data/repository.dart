@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:driver_app/utils/network_utils.dart';
 import 'package:driver_app/utils/shared_preferences_utils.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,6 +12,7 @@ class GithubService {
   Observable logout(map) => post("user/logoff", map);
   Observable getShops(map) => post("tracking", map);
   Observable getShopDetail(map) => post("tracking/detail", map);
+  Observable updateStatus(map) => post("tracking/status/list ", map);
 }
 
 class GithubRepo {
@@ -29,7 +33,7 @@ class GithubRepo {
     Map<String, String> someMap = {
       "x-token": _spUtil.getString("TOKEN")
     };
-    return _remote.login(someMap);
+    return _remote.logout(someMap);
   }
 
   Observable getShops(
@@ -56,6 +60,14 @@ class GithubRepo {
       "Type": type
     };
     return _remote.getShopDetail(someMap);
+  }
+
+  Observable updateStatus(File image) {
+    FormData formData = FormData.from({
+      "Trackings": "wendux",
+      "Img": image
+    });
+    return _remote.updateStatus(formData);
   }
 
   void saveToken(String token) {

@@ -60,9 +60,9 @@ class _LoginContentState extends State<_LoginContentPage>
   void onClick(String action) {
     if (ACTION_LOGIN == action) {
       if (mProvider.userName.isEmpty) {
-        Toast.show("Phonenumber can't be empty");
+        Toast.show("Bạn chưa nhập số điện thoại!");
       } else if (mProvider.password.isEmpty) {
-        Toast.show("password can't be empty");
+        Toast.show("Bạn chưa nhập mật khẩu!");
       } else {
         login();
       }
