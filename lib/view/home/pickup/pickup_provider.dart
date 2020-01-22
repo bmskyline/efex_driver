@@ -86,8 +86,7 @@ class PickupProvider extends BaseProvider {
 
   Observable updateStatus(Shop shop){
     List<Status> list = List();
-    for()
-    return _repo.updateStatusList(null, statusToJson(s))
+    return _repo.updateStatusList(null, statusToJson(list))
         .doOnData((r) {
 
     });

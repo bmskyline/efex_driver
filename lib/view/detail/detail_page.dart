@@ -78,18 +78,14 @@ class _DetailPageState extends State<_DetailContentPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                            value.response?.orders == null
-                                ? ""
-                                : value.response?.orders[0].fromName,
+                            value.response?.orders?.elementAt(0)?.fromName ?? "",
                             style:
                                 TextStyle(fontSize: 22, color: Colors.white)),
                         InkWell(
                           onTap: () => launch(
-                              "tel://" + value.response?.orders[0].fromPhone),
+                              "tel://"+value.response?.orders?.elementAt(0)?.fromPhone) ??  "",
                           child: Text(
-                              value.response?.orders == null
-                                  ? ""
-                                  : value.response?.orders[0].fromPhone,
+                              value.response?.orders?.elementAt(0)?.fromPhone ?? "",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.blueAccent,
@@ -97,9 +93,7 @@ class _DetailPageState extends State<_DetailContentPage>
                               )),
                         ),
                         Text(
-                            value.response?.orders == null
-                                ? ""
-                                : value.response.orders[0].fromAddress,
+                            value.response?.orders?.elementAt(0)?.fromAddress ?? "",
                             style:
                                 TextStyle(fontSize: 18, color: Colors.white60)),
                       ],

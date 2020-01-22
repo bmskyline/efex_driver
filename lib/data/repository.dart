@@ -12,8 +12,8 @@ class GithubService {
   Observable logout(map) => post("user/logoff", map);
   Observable getShops(map) => post("tracking", map);
   Observable getShopDetail(map) => post("tracking/detail", map);
-  Observable updateStatusList(map) => post("tracking/status/list ", map);
-  //Observable updateStatus(map) => post("tracking/status/list ", map);
+  Observable updateStatusList(map) => post("tracking/status/list", map);
+  Observable updateStatus(map) => post("tracking/status", map);
 }
 
 class GithubRepo {
@@ -70,7 +70,7 @@ class GithubRepo {
       "Reason": reason,
       "Img": image
     });
-    return _remote.updateStatusList(formData);
+    return _remote.updateStatus(formData);
   }
 
   Observable updateStatusList(File image, String list) {

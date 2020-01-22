@@ -116,47 +116,47 @@ class _PickupContentState extends State<_PickupContentPage>
                       child: Card(
                         margin: EdgeInsets.all(0.5),
                         color: secondColorHome,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
-                          child: InkWell(
-                            onTap: () {
-                              switch (status) {
-                                case "new":
-                                  if (value.shopsNew[index].isActive) {
-                                    Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsNew[index],
-                                                status,
-                                                1)));
-                                  }
-                                  break;
-                                case "picked":
-                                  if (value.shopsSuccess[index].isActive) {
-                                    Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsSuccess[index],
-                                                status,
-                                                1)));
-                                  }
-                                  break;
-                                case "fail":
-                                  if (value.shopsCancel[index].isActive) {
-                                    Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsCancel[index],
-                                                status,
-                                                1)));
-                                  }
-                                  break;
-                              }
-                            },
+                        child: InkWell(
+                          onTap: () {
+                            switch (status) {
+                              case "new":
+                                //if (value.shopsNew[index].isActive) {
+                                  Navigator.push(
+                                      homeContext,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailPage(
+                                              value.shopsNew[index],
+                                              status,
+                                              1)));
+                                //}
+                                break;
+                              case "picked":
+                                //if (value.shopsSuccess[index].isActive) {
+                                  Navigator.push(
+                                      homeContext,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailPage(
+                                              value.shopsSuccess[index],
+                                              status,
+                                              1)));
+                               // }
+                                break;
+                              case "fail":
+                                //if (value.shopsCancel[index].isActive) {
+                                  Navigator.push(
+                                      homeContext,
+                                      MaterialPageRoute(
+                                          builder: (context) => DetailPage(
+                                              value.shopsCancel[index],
+                                              status,
+                                              1)));
+                               // }
+                                break;
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                             child: Row(
                               children: <Widget>[
                                 Expanded(
