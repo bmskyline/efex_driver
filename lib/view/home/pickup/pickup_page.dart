@@ -1,8 +1,10 @@
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
 import 'package:driver_app/view/home/pickup/pickup_provider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,7 +38,6 @@ class _PickupContentState extends State<_PickupContentPage>
         AutomaticKeepAliveClientMixin {
   BuildContext homeContext;
   String status;
-  bool switchValue = false;
 
   _PickupContentState(this.homeContext, this.status);
 
@@ -120,22 +121,41 @@ class _PickupContentState extends State<_PickupContentPage>
                               left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
-                                homeContext,
-                                MaterialPageRoute(
-                                    builder: (context) => status == "new"
-                                        ? DetailPage(
-                                            value.shopsNew[index], status, 1)
-                                        : (status == "picked"
-                                            ? DetailPage(
+                              switch (status) {
+                                case "new":
+                                  if (value.shopsNew[index].isActive) {
+                                    Navigator.push(
+                                        homeContext,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailPage(
+                                                value.shopsNew[index],
+                                                status,
+                                                1)));
+                                  }
+                                  break;
+                                case "picked":
+                                  if (value.shopsSuccess[index].isActive) {
+                                    Navigator.push(
+                                        homeContext,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailPage(
                                                 value.shopsSuccess[index],
                                                 status,
-                                                1)
-                                            : DetailPage(
+                                                1)));
+                                  }
+                                  break;
+                                case "fail":
+                                  if (value.shopsCancel[index].isActive) {
+                                    Navigator.push(
+                                        homeContext,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailPage(
                                                 value.shopsCancel[index],
                                                 status,
-                                                1))),
-                              );
+                                                1)));
+                                  }
+                                  break;
+                              }
                             },
                             child: Row(
                               children: <Widget>[
@@ -285,14 +305,58 @@ class _PickupContentState extends State<_PickupContentPage>
                                         )
                                       ]),
                                 ),
-                                Switch(
-                                  activeColor: Colors.white,
-                                  value: switchValue,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      switchValue = value;
-                                    });
-                                  },
+                                Transform.scale(
+                                  scale: 1.5,
+                                  child: Checkbox(
+                                    value: status == "new"
+                                        ? value.shopsNew[index].isActive
+                                        : (status == "picked"
+                                            ? value.shopsSuccess[index].isActive
+                                            : value
+                                                .shopsCancel[index].isActive),
+                                    onChanged: (val) {
+                                      if (val) {
+                                        switch (status) {
+                                          case "new":
+                                            if(!value.shopsNew[index].isActive) {
+                                              mProvider.updateStatus(value.shopsNew[index]).doOnData((r){
+                                                LoginResponse res = LoginResponse.fromJson(r);
+                                                if(res.result) {
+                                                  setState(() {
+                                                    value.shopsNew[index].isActive = true;
+                                                  });
+                                                }
+                                              });
+                                            }
+                                            break;
+                                          case "picked":
+                                            if(!value.shopsSuccess[index].isActive) {
+                                              mProvider.updateStatus(value.shopsSuccess[index]).doOnData((r){
+                                                LoginResponse res = LoginResponse.fromJson(r);
+                                                if(res.result) {
+                                                  setState(() {
+                                                    value.shopsSuccess[index].isActive = true;
+                                                  });
+                                                }
+                                              });
+                                            }
+                                            break;
+                                          case "fail":
+                                            if(!value.shopsCancel[index].isActive) {
+                                              mProvider.updateStatus(value.shopsCancel[index]).doOnData((r){
+                                                LoginResponse res = LoginResponse.fromJson(r);
+                                                if(res.result) {
+                                                  setState(() {
+                                                    value.shopsCancel[index].isActive = true;
+                                                  });
+                                                }
+                                              });
+                                            }
+                                            break;
+                                        }
+                                      }
+                                    },
+                                  ),
                                 )
                               ],
                             ),

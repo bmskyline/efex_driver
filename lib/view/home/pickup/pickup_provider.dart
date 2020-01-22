@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/model/shop_response.dart';
+import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:driver_app/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PickupProvider extends BaseProvider {
@@ -80,5 +82,14 @@ class PickupProvider extends BaseProvider {
         })
         .doOnListen(() => loading = true)
         .doOnDone(() => loading = false);
+  }
+
+  Observable updateStatus(Shop shop){
+    List<Status> list = List();
+    for()
+    return _repo.updateStatusList(null, statusToJson(s))
+        .doOnData((r) {
+
+    });
   }
 }

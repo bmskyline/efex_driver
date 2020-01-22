@@ -5,15 +5,16 @@ class Shop {
   String totalWeight;
   String totalOrders;
   String fullCount;
+  bool isActive;
 
-  Shop({
-    this.fromAddress,
-    this.fromPhone,
-    this.fromName,
-    this.totalWeight,
-    this.totalOrders,
-    this.fullCount,
-  });
+  Shop(
+      {this.fromAddress,
+      this.fromPhone,
+      this.fromName,
+      this.totalWeight,
+      this.totalOrders,
+      this.fullCount,
+      this.isActive});
 
   factory Shop.fromJson(Map<String, dynamic> json) => Shop(
         fromAddress: json["from_address"] == null ? null : json["from_address"],
@@ -22,6 +23,7 @@ class Shop {
         totalWeight: json["total_weight"] == null ? null : json["total_weight"],
         totalOrders: json["total_orders"] == null ? null : json["total_orders"],
         fullCount: json["full_count"] == null ? null : json["full_count"],
+        isActive: json["is_active"] == null ? null : json["is_active"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,5 +33,8 @@ class Shop {
         "total_weight": totalWeight == null ? null : totalWeight,
         "total_orders": totalOrders == null ? null : totalOrders,
         "full_count": fullCount == null ? null : fullCount,
+        "is_active": isActive == null ? null : isActive,
       };
+
+
 }

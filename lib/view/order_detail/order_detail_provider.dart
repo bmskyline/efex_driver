@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/repository.dart';
+import 'package:rxdart/rxdart.dart';
 
 class OrderDetailProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
   File _image;
-  String _selectedText = "SSD";
+  String _selectedText = "picking_fail";
   OrderDetailProvider(this._repo);
 
   bool get loading => _loading;

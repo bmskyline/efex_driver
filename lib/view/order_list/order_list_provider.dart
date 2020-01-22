@@ -1,14 +1,14 @@
-import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/order_model.dart';
-import 'package:driver_app/data/repository.dart';
+import 'dart:io';
 
-class ScanProvider extends BaseProvider {
+import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/repository.dart';
+import 'package:rxdart/rxdart.dart';
+
+class OrderListProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  Set<Order> _list = Set();
-
-  ScanProvider(this._repo);
-
+  File _image;
+  OrderListProvider(this._repo);
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -16,12 +16,10 @@ class ScanProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Set<Order> getList() => _list;
+  File get image => _image;
 
-  set list(Order value) {
-    _list.add(value);
+  set image(File value) {
+    _image = value;
     notifyListeners();
   }
-
-
 }

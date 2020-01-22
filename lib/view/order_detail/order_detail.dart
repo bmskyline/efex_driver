@@ -44,13 +44,6 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
   void initState() {
     super.initState();
     mProvider = widget.provider;
-    Future.delayed(const Duration(milliseconds: 4000), () {
-      setState(() {
-        for (int i = 0; i < 20; i++) {
-          order.products.add(order.products[0]);
-        }
-      });
-    });
   }
 
   @override
@@ -180,12 +173,11 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                     ),
                     Expanded(
                       child: CupertinoButton(
-                        onPressed: () =>  showDialog<void>(
+                        onPressed: () => showDialog<void>(
                             context: context,
                             builder: (BuildContext context) {
                               return DialogPage();
-                            }
-                        ),
+                            }),
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(0),
                         child: Text(
@@ -215,36 +207,40 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
 }
 
 class DialogPage extends PageProvideNode<OrderDetailProvider> {
-
   @override
   Widget buildContent(BuildContext context) {
     return DialogContent(mProvider);
   }
-
 }
 
-class DialogContent extends StatefulWidget{
-
+class DialogContent extends StatefulWidget {
   final OrderDetailProvider provider;
 
   DialogContent(this.provider);
 
   @override
   State<StatefulWidget> createState() => _DialogContentState();
-
 }
 
-class _DialogContentState extends State<DialogContent>{
-
+class _DialogContentState extends State<DialogContent> {
   OrderDetailProvider mProvider;
+  static const Map<String, String> items = {
+    "picking_fail": "Không lấy được hàng sau 3 lần",
+    "picking_fail_by_shop": "Shop từ chối giao hàng",
+    "return_fail": "Không trả được hàng sau 3 lần",
+    "return_fail_by_shop": "Shop từ chối nhận hàng",
+  };
+
   @override
   void initState() {
     super.initState();
     mProvider = widget.provider;
   }
+
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(title: Text("Status Update"),
+    return AlertDialog(
+      title: Text("Status Update"),
       contentPadding: const EdgeInsets.all(8),
       content: Consumer<OrderDetailProvider>(
         builder: (context, value, child) {
@@ -256,13 +252,15 @@ class _DialogContentState extends State<DialogContent>{
                 isExpanded: true,
                 hint: Text("Status"),
                 value: value.selectedText,
-                items: <String>['SSD', 'Meeting', 'Home', 'Space']
-                    .map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items: items
+                    .map((key, value) {
+                      return MapEntry(
+                          key,
+                          DropdownMenuItem<String>(
+                            value: key,
+                            child: Text(value),
+                          ));
+                    }).values.toList(),
                 onChanged: (String val) {
                   value.selectedText = val;
                 },
@@ -295,6 +293,7 @@ class _DialogContentState extends State<DialogContent>{
           },
         ),
       ],
-    );;
+    );
+    ;
   }
 }

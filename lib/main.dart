@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import 'di/app_module.dart';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
@@ -13,7 +15,9 @@ void main() async {
   if (spUtil.getString("TOKEN") != null && spUtil.getString("TOKEN") != "") {
     _defaultHome = HomePage();
   }
-  runApp(MyApp(_defaultHome));
+  runApp(MyApp(
+    _defaultHome,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -23,11 +27,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: defaultHome);
+      debugShowCheckedModeBanner: false,
+      title: 'Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: defaultHome,
+      navigatorObservers: [routeObserver],
+    );
   }
 }

@@ -12,7 +12,8 @@ class GithubService {
   Observable logout(map) => post("user/logoff", map);
   Observable getShops(map) => post("tracking", map);
   Observable getShopDetail(map) => post("tracking/detail", map);
-  Observable updateStatus(map) => post("tracking/status/list ", map);
+  Observable updateStatusList(map) => post("tracking/status/list ", map);
+  //Observable updateStatus(map) => post("tracking/status/list ", map);
 }
 
 class GithubRepo {
@@ -62,12 +63,22 @@ class GithubRepo {
     return _remote.getShopDetail(someMap);
   }
 
-  Observable updateStatus(File image) {
+  Observable updateStatus(File image, String number, String status, String reason) {
     FormData formData = FormData.from({
-      "Trackings": "wendux",
+      "Trackingnumber": number,
+      "Status": status,
+      "Reason": reason,
       "Img": image
     });
-    return _remote.updateStatus(formData);
+    return _remote.updateStatusList(formData);
+  }
+
+  Observable updateStatusList(File image, String list) {
+    FormData formData = FormData.from({
+      "Trackings": list,
+      "Img": image
+    });
+    return _remote.updateStatusList(formData);
   }
 
   void saveToken(String token) {
