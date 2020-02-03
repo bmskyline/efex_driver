@@ -5,7 +5,6 @@ import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:driver_app/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PickupProvider extends BaseProvider {

@@ -10,7 +10,9 @@ import 'package:qr_mobile_vision/qr_camera.dart';
 
 class ScanPage extends PageProvideNode<ScanProvider> {
   final List<Order> orders;
-  ScanPage(this.orders);
+  ScanPage(this.orders, List<Order> result) {
+    mProvider.addList(result);
+  }
 
   @override
   Widget buildContent(BuildContext context) {
@@ -65,14 +67,17 @@ class _ScanPageState extends State<_ScanContentPage>
             ),
             Expanded(
               child: Consumer<ScanProvider>(builder: (context, value, child) {
-                return ListView.builder(
-                  itemCount: value.getList().length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Text(
-                      value.getList().elementAt(index).trackingNumber,
-                      style: TextStyle(color: Colors.white, fontSize: 22),
-                    );
-                  },
+                return Container(
+                  margin: EdgeInsets.all(16.0),
+                  child: ListView.builder(
+                    itemCount: value.getList().length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Text(
+                        value.getList().elementAt(index).trackingNumber,
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      );
+                    },
+                  ),
                 );
               }),
             ),
@@ -83,12 +88,14 @@ class _ScanPageState extends State<_ScanContentPage>
                   child: Container(
                     width: double.infinity,
                     child: CupertinoButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    OrderListPage(value.getList().toList())));
+                                    OrderListPage(widget.orders, value.getList().toList())));
+                        Navigator.pop(context, result);
+
                       },
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(0),

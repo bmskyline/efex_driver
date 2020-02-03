@@ -1,6 +1,8 @@
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
+import 'package:driver_app/utils/toast_utils.dart';
 import 'package:driver_app/view/order_detail/order_detail_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -157,38 +159,54 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         },
                       ),
                     )),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: CupertinoButton(
-                        onPressed: () => {},
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(0),
-                        child: Text(
-                          "Xác nhận",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  margin: const EdgeInsets.only(right: 16.0),
+                  child: CupertinoButton(
+                    onPressed: () => showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return DialogPage(order.trackingNumber);
+                        }),
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(32.0),
+                    child: Text(
+                      "Hủy Đơn Hàng",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white),
                     ),
-                    Expanded(
-                      child: CupertinoButton(
-                        onPressed: () => showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogPage();
-                            }),
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(0),
-                        child: Text(
-                          "Hủy",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
+                  child: Consumer<OrderDetailProvider>(
+                      builder: (context, value, child) {
+                        return Visibility(
+                          visible: value.image == null ? false : true,
+                          child: CupertinoButton(
+                            onPressed: () {
+                              mProvider.updateOrder(order.trackingNumber, "picked", null)
+                              .listen((r) {
+                                LoginResponse res = LoginResponse.fromJson(r);
+                                if(res.result) {
+                                  Toast.show("Xác nhận thành công!");
+                                  Navigator.pop(context, [order.trackingNumber]);
+                                } else Toast.show("Vui lòng thử lại!");
+                              });
+                            },
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(0),
+                            child: Text(
+                              "Xác Nhận Lấy Hàng Thành Công",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        );
+                      }
+                  ),
+                ),
               ],
             ),
           ),
@@ -207,16 +225,21 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
 }
 
 class DialogPage extends PageProvideNode<OrderDetailProvider> {
+  final String number;
+
+  DialogPage(this.number);
+
   @override
   Widget buildContent(BuildContext context) {
-    return DialogContent(mProvider);
+    return DialogContent(mProvider, number);
   }
 }
 
 class DialogContent extends StatefulWidget {
   final OrderDetailProvider provider;
+  final String number;
 
-  DialogContent(this.provider);
+  DialogContent(this.provider, this.number);
 
   @override
   State<StatefulWidget> createState() => _DialogContentState();
@@ -270,7 +293,7 @@ class _DialogContentState extends State<DialogContent> {
                 color: Colors.white,
                 child: TextField(
                   maxLines: 4,
-                  onChanged: (value) => print(value),
+                  onChanged: (value) => mProvider.reason = value,
                   decoration: InputDecoration(
                       hintText: "Ghi chú!", fillColor: Colors.white),
                 ),
@@ -283,7 +306,15 @@ class _DialogContentState extends State<DialogContent> {
         FlatButton(
           child: Text("Xác nhận"),
           onPressed: () {
-            Navigator.pop(context);
+            mProvider.updateOrder(widget.number, mProvider.selectedText, mProvider.reason)
+            .listen((r) {
+              LoginResponse res = LoginResponse.fromJson(r);
+              if(res.result) {
+                Navigator.pop(context);
+                Toast.show("Hủy đơn hàng thành công!");
+                Navigator.pop(context, widget.number);
+              } else Toast.show("Hủy đơn hàng thất bại!");
+            });
           },
         ),
         FlatButton(
@@ -294,6 +325,5 @@ class _DialogContentState extends State<DialogContent> {
         ),
       ],
     );
-    ;
   }
 }

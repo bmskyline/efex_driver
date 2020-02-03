@@ -23,5 +23,8 @@ class ScanProvider extends BaseProvider {
     notifyListeners();
   }
 
+  addList(List<Order> l) {
+    _list.addAll(l);
+  }
 
 }

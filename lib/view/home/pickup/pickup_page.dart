@@ -4,7 +4,6 @@ import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
 import 'package:driver_app/view/home/pickup/pickup_provider.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -120,7 +119,7 @@ class _PickupContentState extends State<_PickupContentPage>
                           onTap: () {
                             switch (status) {
                               case "new":
-                                //if (value.shopsNew[index].isActive) {
+                                if (value.shopsNew[index].isActive) {
                                   Navigator.push(
                                       homeContext,
                                       MaterialPageRoute(
@@ -128,10 +127,10 @@ class _PickupContentState extends State<_PickupContentPage>
                                               value.shopsNew[index],
                                               status,
                                               1)));
-                                //}
+                                }
                                 break;
                               case "picked":
-                                //if (value.shopsSuccess[index].isActive) {
+                                if (value.shopsSuccess[index].isActive) {
                                   Navigator.push(
                                       homeContext,
                                       MaterialPageRoute(
@@ -139,10 +138,10 @@ class _PickupContentState extends State<_PickupContentPage>
                                               value.shopsSuccess[index],
                                               status,
                                               1)));
-                               // }
+                                }
                                 break;
                               case "fail":
-                                //if (value.shopsCancel[index].isActive) {
+                                if (value.shopsCancel[index].isActive) {
                                   Navigator.push(
                                       homeContext,
                                       MaterialPageRoute(
@@ -150,7 +149,7 @@ class _PickupContentState extends State<_PickupContentPage>
                                               value.shopsCancel[index],
                                               status,
                                               1)));
-                               // }
+                                }
                                 break;
                             }
                           },

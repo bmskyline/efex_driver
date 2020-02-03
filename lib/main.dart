@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'di/app_module.dart';
 
-final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
@@ -33,7 +31,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: defaultHome,
-      navigatorObservers: [routeObserver],
+      initialRoute: "/",
+      routes: {
+        '/login': (context) => LoginPage(),
+      },
     );
   }
 }

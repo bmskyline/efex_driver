@@ -4,7 +4,6 @@ import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/view/home/pickup/pickup_page.dart';
 import 'package:driver_app/view/home/return/return_page.dart';
 import 'package:driver_app/view/home/success/success_provider.dart';
-import 'package:driver_app/view/login/login_page.dart';
 import 'package:flutter/material.dart';
 
 class SuccessPage extends PageProvideNode<SuccessProvider> {
@@ -78,10 +77,8 @@ class _SuccessContentState extends State<_SuccessContentPage>
                                 (data) {
                               LoginResponse res = LoginResponse.fromJson(data);
                               if(res.result) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                Navigator.of(context)
+                                    .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
                               }
                             }
                         );

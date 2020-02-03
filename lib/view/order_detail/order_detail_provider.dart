@@ -10,6 +10,7 @@ class OrderDetailProvider extends BaseProvider {
   File _image;
   String _selectedText = "picking_fail";
   OrderDetailProvider(this._repo);
+  String _reason;
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -24,10 +25,24 @@ class OrderDetailProvider extends BaseProvider {
     notifyListeners();
   }
 
+  String get reason => _reason;
+
+  set reason(String value) {
+    _reason = value;
+  }
+
   String get selectedText => _selectedText;
 
   set selectedText(String value) {
     _selectedText = value;
     notifyListeners();
+  }
+
+  Observable updateOrder(String number, String status, String reason) {
+    return _repo
+        .updateStatus(image, number, status, reason)
+        .doOnData((r) {})
+        .doOnListen(() => loading = true)
+        .doOnDone(() => loading = false);
   }
 }

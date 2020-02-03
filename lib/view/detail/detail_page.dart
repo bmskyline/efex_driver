@@ -58,11 +58,19 @@ class _DetailPageState extends State<_DetailContentPage>
             // action button
             IconButton(
               icon: Image.asset("assets/barcode.png"),
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                    builder: (context) => ScanPage(mProvider.response.orders)));
+                    builder: (context) => ScanPage(mProvider.response.orders, List())));
+                mProvider.response.orders?.forEach((e) {
+                  (result as List<String>)?.forEach((
+                      eResult) {
+                    if(e.trackingNumber == eResult) {
+                      mProvider.response.orders.remove(e);
+                    }
+                  });
+                });
               },
             ),
           ],
@@ -78,12 +86,12 @@ class _DetailPageState extends State<_DetailContentPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                            value.response?.orders?.elementAt(0)?.fromName ?? "",
+                            value.response?.orders?.elementAt(0) == null ? "" : value.response?.orders?.elementAt(0)?.fromName,
                             style:
                                 TextStyle(fontSize: 22, color: Colors.white)),
                         InkWell(
                           onTap: () => launch(
-                              "tel://"+value.response?.orders?.elementAt(0)?.fromPhone) ??  "",
+                              "tel://"+(value.response?.orders?.elementAt(0) == null ? "" : value.response?.orders?.elementAt(0)?.fromPhone)),
                           child: Text(
                               value.response?.orders?.elementAt(0)?.fromPhone ?? "",
                               style: TextStyle(
@@ -93,7 +101,7 @@ class _DetailPageState extends State<_DetailContentPage>
                               )),
                         ),
                         Text(
-                            value.response?.orders?.elementAt(0)?.fromAddress ?? "",
+                            value.response?.orders?.elementAt(0) == null ? "" : value.response?.orders?.elementAt(0)?.fromAddress,
                             style:
                                 TextStyle(fontSize: 18, color: Colors.white60)),
                       ],
@@ -116,13 +124,21 @@ class _DetailPageState extends State<_DetailContentPage>
                                     top: 8.0,
                                     bottom: 8.0),
                                 child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
+                                  onTap: () async {
+                                    final result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => OrderDetailPage(
                                               value.response.orders[index])),
                                     );
+                                    value.response.orders.forEach((e) {
+                                      (result as List<String>).forEach((
+                                          eResult) {
+                                        if(e.trackingNumber == eResult) {
+                                          value.response.orders.remove(e);
+                                        }
+                                      });
+                                    });
                                   },
                                   child: Column(
                                     crossAxisAlignment:
@@ -200,6 +216,7 @@ class _DetailPageState extends State<_DetailContentPage>
         .doOnDone(() {})
         .listen((data) {
       //success
+
     }, onError: (e) {
       //error
       dispatchFailure(context, e);

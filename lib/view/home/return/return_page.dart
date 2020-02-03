@@ -120,22 +120,42 @@ class _ReturnContentState extends State<_ReturnContentPage>
                               left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
-                                homeContext,
-                                MaterialPageRoute(
-                                    builder: (context) => status == "new"
-                                        ? DetailPage(
-                                            value.shopsNew[index], status, 1)
-                                        : (status == "picked"
-                                            ? DetailPage(
+                              switch (status) {
+                                case "new":
+                                  if (value.shopsNew[index].isActive) {
+                                    Navigator.push(
+                                        homeContext,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailPage(
+                                                value.shopsNew[index],
+                                                status,
+                                                2)));
+                                  }
+                                  break;
+                                case "picked":
+                                  if (value.shopsSuccess[index].isActive) {
+                                    Navigator.push(
+                                        homeContext,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailPage(
                                                 value.shopsSuccess[index],
                                                 status,
-                                                1)
-                                            : DetailPage(
+                                                2)));
+                                  }
+                                  break;
+                                case "fail":
+                                  if (value.shopsCancel[index].isActive) {
+                                    Navigator.push(
+                                        homeContext,
+                                        MaterialPageRoute(
+                                            builder: (context) => DetailPage(
                                                 value.shopsCancel[index],
                                                 status,
-                                                1))),
-                              );
+                                                2)));
+                                  }
+                                  break;
+                              }
+
                             },
                             child: Row(
                               children: <Widget>[
