@@ -15,7 +15,7 @@ class ShopDetailData {
 
   factory ShopDetailData.fromJson(Map<String, dynamic> json) => ShopDetailData(
         orders: json["tracking"] == null
-            ? null
+            ? List()
             : List<Order>.from(json["tracking"].map((x) => Order.fromJson(x))),
         total: json["total"] == null ? null : json["total"],
         offset: json["offset"] == null ? null : json["offset"],
