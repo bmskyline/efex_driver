@@ -169,7 +169,6 @@ class _ReturnContentState extends State<_ReturnContentPage>
                                   }
                                   break;
                               }
-
                             },
                             child: Row(
                               children: <Widget>[

@@ -73,15 +73,13 @@ class _SuccessContentState extends State<_SuccessContentPage>
                     IconButton(
                       icon: Icon(Icons.power_settings_new, color: Colors.white),
                       onPressed: () {
-                        mProvider.logout().listen(
-                                (data) {
-                              LoginResponse res = LoginResponse.fromJson(data);
-                              if(res.result) {
-                                Navigator.of(context)
-                                    .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
-                              }
-                            }
-                        );
+                        mProvider.logout().listen((data) {
+                          LoginResponse res = LoginResponse.fromJson(data);
+                          if (res.result) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/login', (Route<dynamic> route) => false);
+                          }
+                        });
                       },
                     ),
                   ],
@@ -96,7 +94,7 @@ class _SuccessContentState extends State<_SuccessContentPage>
             body: TabBarView(
               children: <Widget>[
                 PickupPage(homeContext, "picked"),
-                ReturnPage(homeContext,  "picked")
+                ReturnPage(homeContext, "picked")
               ],
               controller: _tabController,
             )));

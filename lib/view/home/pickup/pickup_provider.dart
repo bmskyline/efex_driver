@@ -83,11 +83,8 @@ class PickupProvider extends BaseProvider {
         .doOnDone(() => loading = false);
   }
 
-  Observable updateStatus(Shop shop){
+  Observable updateStatus(Shop shop) {
     List<Status> list = List();
-    return _repo.updateStatusList(null, statusToJson(list))
-        .doOnData((r) {
-
-    });
+    return _repo.updateStatusList(null, statusToJson(list)).doOnData((r) {});
   }
 }

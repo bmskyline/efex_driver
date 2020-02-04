@@ -92,10 +92,9 @@ class _ScanPageState extends State<_ScanContentPage>
                         final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    OrderListPage(widget.orders, value.getList().toList())));
+                                builder: (context) => OrderListPage(
+                                    widget.orders, value.getList().toList())));
                         Navigator.pop(context, result);
-
                       },
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(0),

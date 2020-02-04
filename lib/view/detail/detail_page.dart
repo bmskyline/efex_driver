@@ -62,11 +62,11 @@ class _DetailPageState extends State<_DetailContentPage>
                 final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                    builder: (context) => ScanPage(mProvider.response.orders, List())));
+                        builder: (context) =>
+                            ScanPage(mProvider.response.orders, List())));
                 mProvider.response.orders?.forEach((e) {
-                  (result as List<String>)?.forEach((
-                      eResult) {
-                    if(e.trackingNumber == eResult) {
+                  (result as List<String>)?.forEach((eResult) {
+                    if (e.trackingNumber == eResult) {
                       mProvider.response.orders.remove(e);
                     }
                   });
@@ -86,14 +86,32 @@ class _DetailPageState extends State<_DetailContentPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                            value.response == null ? "" : (value.response?.orders?.isEmpty == true ? "" : value.response?.orders?.elementAt(0)?.fromName),
+                            value.response == null
+                                ? ""
+                                : (value.response?.orders?.isEmpty == true
+                                    ? ""
+                                    : value.response?.orders
+                                        ?.elementAt(0)
+                                        ?.fromName),
                             style:
                                 TextStyle(fontSize: 22, color: Colors.white)),
                         InkWell(
-                          onTap: () => launch(
-                              "tel://"+ (value.response == null ? "" : (value.response?.orders?.isEmpty == true ? "" : value.response?.orders?.elementAt(0)?.fromPhone))),
+                          onTap: () => launch("tel://" +
+                              (value.response == null
+                                  ? ""
+                                  : (value.response?.orders?.isEmpty == true
+                                      ? ""
+                                      : value.response?.orders
+                                          ?.elementAt(0)
+                                          ?.fromPhone))),
                           child: Text(
-                              value.response == null ? "" : (value.response?.orders?.isEmpty == true ? "" : value.response?.orders?.elementAt(0)?.fromPhone),
+                              value.response == null
+                                  ? ""
+                                  : (value.response?.orders?.isEmpty == true
+                                      ? ""
+                                      : value.response?.orders
+                                          ?.elementAt(0)
+                                          ?.fromPhone),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.blueAccent,
@@ -101,7 +119,13 @@ class _DetailPageState extends State<_DetailContentPage>
                               )),
                         ),
                         Text(
-                            value.response == null ? "" : (value.response?.orders?.isEmpty == true ? "" : value.response?.orders?.elementAt(0)?.fromAddress),
+                            value.response == null
+                                ? ""
+                                : (value.response?.orders?.isEmpty == true
+                                    ? ""
+                                    : value.response?.orders
+                                        ?.elementAt(0)
+                                        ?.fromAddress),
                             style:
                                 TextStyle(fontSize: 18, color: Colors.white60)),
                       ],
@@ -109,9 +133,11 @@ class _DetailPageState extends State<_DetailContentPage>
                   ),
                   Flexible(
                     child: ListView.builder(
-                        itemCount: value.response == null ? 0 :(value.response?.orders?.isEmpty == true
+                        itemCount: value.response == null
                             ? 0
-                            : value.response.orders.length),
+                            : (value.response?.orders?.isEmpty == true
+                                ? 0
+                                : value.response.orders.length),
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
                             child: Card(
@@ -132,9 +158,9 @@ class _DetailPageState extends State<_DetailContentPage>
                                               value.response.orders[index])),
                                     );
                                     value.response.orders?.forEach((e) {
-                                      (result as List<String>)?.forEach((
-                                          eResult) {
-                                        if(e.trackingNumber == eResult) {
+                                      (result as List<String>)
+                                          ?.forEach((eResult) {
+                                        if (e.trackingNumber == eResult) {
                                           value.response.orders.remove(e);
                                         }
                                       });
@@ -216,7 +242,6 @@ class _DetailPageState extends State<_DetailContentPage>
         .doOnDone(() {})
         .listen((data) {
       //success
-
     }, onError: (e) {
       //error
       dispatchFailure(context, e);

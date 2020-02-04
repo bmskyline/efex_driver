@@ -29,7 +29,6 @@ class _NewContentPage extends StatefulWidget {
 
 class _NewContentState extends State<_NewContentPage>
     with TickerProviderStateMixin<_NewContentPage> {
-
   final BuildContext homeContext;
   ScrollController _scrollViewController;
   TabController _tabController;
@@ -73,15 +72,13 @@ class _NewContentState extends State<_NewContentPage>
                     IconButton(
                       icon: Icon(Icons.power_settings_new, color: Colors.white),
                       onPressed: () {
-                        mProvider.logout().listen(
-                            (data) {
-                              LoginResponse res = LoginResponse.fromJson(data);
-                              if(res.result) {
-                                Navigator.of(context)
-                                    .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
-                              }
-                            }
-                        );
+                        mProvider.logout().listen((data) {
+                          LoginResponse res = LoginResponse.fromJson(data);
+                          if (res.result) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/login', (Route<dynamic> route) => false);
+                          }
+                        });
                       },
                     ),
                   ],
@@ -96,7 +93,7 @@ class _NewContentState extends State<_NewContentPage>
             body: TabBarView(
               children: <Widget>[
                 PickupPage(homeContext, "new"),
-                ReturnPage(homeContext,  "new")
+                ReturnPage(homeContext, "new")
               ],
               controller: _tabController,
             )));

@@ -9,7 +9,6 @@ class ScanProvider extends BaseProvider {
 
   ScanProvider(this._repo);
 
-
   bool get loading => _loading;
   set loading(bool loading) {
     _loading = loading;
@@ -26,5 +25,4 @@ class ScanProvider extends BaseProvider {
   addList(List<Order> l) {
     _list.addAll(l);
   }
-
 }

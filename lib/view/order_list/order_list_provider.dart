@@ -27,11 +27,13 @@ class OrderListProvider extends BaseProvider {
   Observable updateOrders(List<Order> list) {
     String result = "[";
     list.forEach((e) {
-      result += "{\"Trackingnumber\":\"${e.trackingNumber}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
+      result +=
+          "{\"Trackingnumber\":\"${e.trackingNumber}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
     });
-    result +="]";
+    result += "]";
     print(result);
-    return _repo.updateStatusList(image, result)
+    return _repo
+        .updateStatusList(image, result)
         .doOnData((r) {})
         .doOnListen(() => loading = true)
         .doOnDone(() => loading = false);

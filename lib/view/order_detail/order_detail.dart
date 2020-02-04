@@ -182,30 +182,31 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
                   child: Consumer<OrderDetailProvider>(
                       builder: (context, value, child) {
-                        return Visibility(
-                          visible: value.image == null ? false : true,
-                          child: CupertinoButton(
-                            onPressed: () {
-                              mProvider.updateOrder(order.trackingNumber, "picked", null)
+                    return Visibility(
+                      visible: value.image == null ? false : true,
+                      child: CupertinoButton(
+                        onPressed: () {
+                          mProvider
+                              .updateOrder(order.trackingNumber, "picked", null)
                               .listen((r) {
-                                LoginResponse res = LoginResponse.fromJson(r);
-                                if(res.result) {
-                                  Toast.show("Xác nhận thành công!");
-                                  Navigator.pop(context, [order.trackingNumber]);
-                                } else Toast.show("Vui lòng thử lại!");
-                              });
-                            },
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(0),
-                            child: Text(
-                              "Xác Nhận Lấy Hàng Thành Công",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        );
-                      }
-                  ),
+                            LoginResponse res = LoginResponse.fromJson(r);
+                            if (res.result) {
+                              Toast.show("Xác nhận thành công!");
+                              Navigator.pop(context, [order.trackingNumber]);
+                            } else
+                              Toast.show("Vui lòng thử lại!");
+                          });
+                        },
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(0),
+                        child: Text(
+                          "Xác Nhận Lấy Hàng Thành Công",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),
@@ -283,7 +284,9 @@ class _DialogContentState extends State<DialogContent> {
                             value: key,
                             child: Text(value),
                           ));
-                    }).values.toList(),
+                    })
+                    .values
+                    .toList(),
                 onChanged: (String val) {
                   value.selectedText = val;
                 },
@@ -306,14 +309,17 @@ class _DialogContentState extends State<DialogContent> {
         FlatButton(
           child: Text("Xác nhận"),
           onPressed: () {
-            mProvider.updateOrder(widget.number, mProvider.selectedText, mProvider.reason)
-            .listen((r) {
+            mProvider
+                .updateOrder(
+                    widget.number, mProvider.selectedText, mProvider.reason)
+                .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
-              if(res.result) {
+              if (res.result) {
                 Navigator.pop(context);
                 Toast.show("Hủy đơn hàng thành công!");
                 Navigator.pop(context, widget.number);
-              } else Toast.show("Hủy đơn hàng thất bại!");
+              } else
+                Toast.show("Hủy đơn hàng thất bại!");
             });
           },
         ),

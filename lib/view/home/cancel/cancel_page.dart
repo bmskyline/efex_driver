@@ -73,15 +73,13 @@ class _CancelContentState extends State<_CancelContentPage>
                     IconButton(
                       icon: Icon(Icons.power_settings_new, color: Colors.white),
                       onPressed: () {
-                        mProvider.logout().listen(
-                                (data) {
-                              LoginResponse res = LoginResponse.fromJson(data);
-                              if(res.result) {
-                                Navigator.of(context)
-                                    .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
-                              }
-                            }
-                        );
+                        mProvider.logout().listen((data) {
+                          LoginResponse res = LoginResponse.fromJson(data);
+                          if (res.result) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/login', (Route<dynamic> route) => false);
+                          }
+                        });
                       },
                     ),
                   ],

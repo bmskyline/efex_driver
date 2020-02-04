@@ -74,16 +74,12 @@ class _OrderListState extends State<_OrderListContentPage>
                                 ScanPage(widget.orders, widget.result)));
                   },
                   child: Container(
-                    decoration: BoxDecoration(
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.black54,
-                              blurRadius: 15.0,
-                              offset: Offset(0.0, 0.75)
-                          )
-                        ],
-                        color: primaryColorHome
-                    ),
+                    decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 15.0,
+                          offset: Offset(0.0, 0.75))
+                    ], color: primaryColorHome),
                     height: 64,
                     width: double.infinity,
                     padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -173,7 +169,8 @@ class _OrderListState extends State<_OrderListContentPage>
                                 result.add(e.trackingNumber);
                               });
                               Navigator.pop(context, result);
-                            } else Toast.show("Vui lòng thử lại!");
+                            } else
+                              Toast.show("Vui lòng thử lại!");
                           })
                         },
                         color: Colors.orange,
