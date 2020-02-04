@@ -49,6 +49,20 @@ class _ReturnContentState extends State<_ReturnContentPage>
     _loadData();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    mProvider.shopsNew = List();
+    mProvider.shopsCancel = List();
+    mProvider.shopsSuccess = List();
+    mProvider.pageNew = 0;
+    mProvider.pageSuccess = 0;
+    mProvider.pageCancel = 0;
+    mProvider.totalNew = 0;
+    mProvider.totalSuccess = 0;
+    mProvider.totalCancel = 0;
+  }
+
   void _loadData() {
     final s = mProvider
         .getShops(widget.status)
