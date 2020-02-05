@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
@@ -35,13 +37,21 @@ class _ScanContentPage extends StatefulWidget {
 class _ScanPageState extends State<_ScanContentPage>
     with TickerProviderStateMixin<_ScanContentPage> {
   ScanProvider mProvider;
+  static AudioCache player = AudioCache();
 
   @override
   void initState() {
     super.initState();
+    player.load('effect.mp3');
     mProvider = widget.provider;
   }
 
+  @override
+  void dispose() {
+    player.clear('effect.mp3');
+    player = null;
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,10 +67,16 @@ class _ScanPageState extends State<_ScanContentPage>
               height: 200.0,
               child: QrCamera(
                 qrCodeCallback: (code) {
+                  bool hasInList = false;
                   for (Order o in widget.orders) {
                     if (o.trackingNumber == code) {
                       mProvider.list = o;
+                      hasInList = true;
+                      break;
                     }
+                  }
+                  if(!hasInList) {
+                    player.play('effect.mp3');
                   }
                 },
               ),
