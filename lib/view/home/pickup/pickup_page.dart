@@ -182,13 +182,19 @@ class _PickupContentState extends State<_PickupContentPage>
                                               ? value.shopsNew[index].fromName +
                                                   " (" +
                                                   value.shopsNew[index]
-                                                      .fullCount +
+                                                      .totalOrders +
                                                   ")"
                                               : (status == "picked"
                                                   ? value.shopsSuccess[index]
-                                                      .fromName
+                                                      .fromName + " (" +
+                                              value.shopsSuccess[index]
+                                                  .totalOrders +
+                                              ")"
                                                   : value.shopsCancel[index]
-                                                      .fromName),
+                                                      .fromName + " (" +
+                                              value.shopsCancel[index]
+                                                  .totalOrders +
+                                              ")"),
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white),

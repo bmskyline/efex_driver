@@ -192,7 +192,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              Navigator.pop(context, [order.trackingNumber]);
+                              Navigator.pop(context, order.trackingNumber);
                             } else
                               Toast.show("Vui lòng thử lại!");
                           });

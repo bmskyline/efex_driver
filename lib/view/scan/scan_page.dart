@@ -37,11 +37,12 @@ class _ScanContentPage extends StatefulWidget {
 class _ScanPageState extends State<_ScanContentPage>
     with TickerProviderStateMixin<_ScanContentPage> {
   ScanProvider mProvider;
-  static AudioCache player = AudioCache();
+  AudioCache player;
 
   @override
   void initState() {
     super.initState();
+    player = AudioCache();
     player.load('effect.mp3');
     mProvider = widget.provider;
   }
@@ -53,7 +54,7 @@ class _ScanPageState extends State<_ScanContentPage>
     super.dispose();
   }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext mainContext) {
     return Scaffold(
         backgroundColor: primaryColorHome,
         appBar: AppBar(
@@ -105,12 +106,12 @@ class _ScanPageState extends State<_ScanContentPage>
                     width: double.infinity,
                     child: CupertinoButton(
                       onPressed: () async {
-                        final result = await Navigator.push(
+                        final result = await Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => OrderListPage(
                                     widget.orders, value.getList().toList())));
-                        Navigator.pop(context, result);
+                        Navigator.pop(mainContext, result);
                       },
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(0),

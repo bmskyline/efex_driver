@@ -64,13 +64,9 @@ class _DetailPageState extends State<_DetailContentPage>
                     MaterialPageRoute(
                         builder: (context) =>
                             ScanPage(mProvider.response.orders, List())));
-                mProvider.response.orders?.forEach((e) {
-                  (result as List<String>)?.forEach((eResult) {
-                    if (e.trackingNumber == eResult) {
-                      mProvider.response.orders.remove(e);
-                    }
-                  });
-                });
+                if(result != null) {
+                  mProvider.response.orders?.removeWhere((e) => (result as List<String>)?.contains(e.trackingNumber));
+                }
               },
             ),
           ],
@@ -157,14 +153,13 @@ class _DetailPageState extends State<_DetailContentPage>
                                           builder: (context) => OrderDetailPage(
                                               value.response.orders[index])),
                                     );
-                                    value.response.orders?.forEach((e) {
-                                      (result as List<String>)
-                                          ?.forEach((eResult) {
-                                        if (e.trackingNumber == eResult) {
+                                    if(result != null) {
+                                      value.response.orders?.forEach((e) {
+                                        if (e.trackingNumber == result) {
                                           value.response.orders.remove(e);
                                         }
                                       });
-                                    });
+                                    }
                                   },
                                   child: Column(
                                     crossAxisAlignment:

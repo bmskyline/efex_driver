@@ -159,8 +159,14 @@ class _OrderListState extends State<_OrderListContentPage>
                     return Visibility(
                       visible: value.image == null ? false : true,
                       child: CupertinoButton(
-                        onPressed: () => {
-                          mProvider.updateOrders(widget.result).listen((r) {
+                        onPressed: ()  {
+                        Toast.show("Xác nhận thành công!");
+                          List<String> result = List();
+                        widget.result.forEach((e) {
+                      result.add(e.trackingNumber);
+                    });
+                        Navigator.pop(context, result);
+    /*mProvider.updateOrders(widget.result).listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
@@ -171,7 +177,7 @@ class _OrderListState extends State<_OrderListContentPage>
                               Navigator.pop(context, result);
                             } else
                               Toast.show("Vui lòng thử lại!");
-                          })
+                          })*/
                         },
                         color: Colors.orange,
                         borderRadius: BorderRadius.circular(0),

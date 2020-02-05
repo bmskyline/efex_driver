@@ -5,7 +5,7 @@ class Shop {
   String totalWeight;
   String totalOrders;
   String fullCount;
-  bool isActive;
+  bool isActive = false;
 
   Shop(
       {this.fromAddress,
@@ -23,7 +23,7 @@ class Shop {
         totalWeight: json["total_weight"] == null ? null : json["total_weight"],
         totalOrders: json["total_orders"] == null ? null : json["total_orders"],
         fullCount: json["full_count"] == null ? null : json["full_count"],
-        isActive: json["is_active"] == null ? null : json["is_active"],
+        isActive: json["is_active"] == null ? false : json["is_active"],
       );
 
   Map<String, dynamic> toJson() => {
