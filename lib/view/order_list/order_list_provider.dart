@@ -24,17 +24,15 @@ class OrderListProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable updateOrders(List<Order> list) {
+  Observable updateOrders(List<String> list) {
     String result = "[";
     for(int i=0; i<list.length; i++) {
       if(i == list.length -1) {
         result +=
-        "{\"Trackingnumber\":\"${list[i]
-            .trackingNumber}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
+        "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
       } else {
         result +=
-        "{\"Trackingnumber\":\"${list[i]
-            .trackingNumber}\",\"Status\":\"picked\",\"Reason\":\"picked\"},";
+        "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"},";
       }
     }
     result += "]";

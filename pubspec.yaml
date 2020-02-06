@@ -36,6 +36,7 @@ dependencies:
   path_provider: ^1.5.1
   qr_mobile_vision: ^0.3.1
   audioplayers: ^0.14.0
+  pull_to_refresh: ^1.5.7
 
 dev_dependencies:
   flutter_test:

@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 class OrderListPage extends PageProvideNode<OrderListProvider> {
   final List<Order> orders;
-  final List<Order> result;
+  final List<String> result;
   OrderListPage(this.orders, this.result);
 
   @override
@@ -25,7 +25,7 @@ class OrderListPage extends PageProvideNode<OrderListProvider> {
 class _OrderListContentPage extends StatefulWidget {
   final OrderListProvider provider;
   final List<Order> orders;
-  final List<Order> result;
+  final List<String> result;
   _OrderListContentPage(this.provider, this.orders, this.result);
 
   @override
@@ -37,7 +37,7 @@ class _OrderListContentPage extends StatefulWidget {
 class _OrderListState extends State<_OrderListContentPage>
     with TickerProviderStateMixin<_OrderListContentPage> {
   OrderListProvider mProvider;
-  List<Order> result;
+  List<String> result;
   _OrderListState(this.result);
 
   Future getImage() async {
@@ -66,12 +66,15 @@ class _OrderListState extends State<_OrderListContentPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
+                  onTap: () async {
+                    final res = await Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ScanPage(widget.orders, widget.result)));
+                                ScanPage(widget.orders, result)));
+                    if(res != null) {
+                      this.result = (res as List<String>);
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(boxShadow: <BoxShadow>[
@@ -102,7 +105,7 @@ class _OrderListState extends State<_OrderListContentPage>
                             child: InkWell(
                               onTap: () {},
                               child: Text(
-                                result[index].trackingNumber,
+                                result[index],
                                 style: TextStyle(
                                     fontSize: 22, color: Colors.white),
                               ),
@@ -157,27 +160,17 @@ class _OrderListState extends State<_OrderListContentPage>
                   child: Consumer<OrderListProvider>(
                       builder: (context, value, child) {
                     return Visibility(
-                      visible: value.image == null ? false : true,
+                      visible: (value.image != null && result.isNotEmpty) ? true : false,
                       child: CupertinoButton(
                         onPressed: ()  {
-                        Toast.show("Xác nhận thành công!");
-                          List<String> result = List();
-                        widget.result.forEach((e) {
-                      result.add(e.trackingNumber);
-                    });
-                        Navigator.pop(context, result);
-    /*mProvider.updateOrders(widget.result).listen((r) {
+                        mProvider.updateOrders(result).listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              List<String> result = List();
-                              widget.result.forEach((e) {
-                                result.add(e.trackingNumber);
-                              });
                               Navigator.pop(context, result);
                             } else
                               Toast.show("Vui lòng thử lại!");
-                          })*/
+                          });
                         },
                         color: Colors.orange,
                         borderRadius: BorderRadius.circular(0),

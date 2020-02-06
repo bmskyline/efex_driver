@@ -3,6 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
+import 'package:driver_app/view/home/home_page.dart';
 import 'package:driver_app/view/order_list/order_list.dart';
 import 'package:driver_app/view/scan/scan_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ import 'package:qr_mobile_vision/qr_camera.dart';
 
 class ScanPage extends PageProvideNode<ScanProvider> {
   final List<Order> orders;
-  ScanPage(this.orders, List<Order> result) {
+  ScanPage(this.orders, List<String> result) {
     mProvider.addList(result);
   }
 
@@ -71,7 +72,7 @@ class _ScanPageState extends State<_ScanContentPage>
                   bool hasInList = false;
                   for (Order o in widget.orders) {
                     if (o.trackingNumber == code) {
-                      mProvider.list = o;
+                      mProvider.list = o.trackingNumber;
                       hasInList = true;
                       break;
                     }
@@ -90,7 +91,7 @@ class _ScanPageState extends State<_ScanContentPage>
                     itemCount: value.getList().length,
                     itemBuilder: (BuildContext context, int index) {
                       return Text(
-                        value.getList().elementAt(index).trackingNumber,
+                        value.getList().elementAt(index),
                         style: TextStyle(color: Colors.white, fontSize: 22),
                       );
                     },
@@ -105,13 +106,8 @@ class _ScanPageState extends State<_ScanContentPage>
                   child: Container(
                     width: double.infinity,
                     child: CupertinoButton(
-                      onPressed: () async {
-                        final result = await Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OrderListPage(
-                                    widget.orders, value.getList().toList())));
-                        Navigator.pop(mainContext, result);
+                      onPressed: () {
+                        Navigator.pop(context, value.getList().toList());
                       },
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(0),

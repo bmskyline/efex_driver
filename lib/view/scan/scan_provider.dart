@@ -5,7 +5,7 @@ import 'package:driver_app/data/repository.dart';
 class ScanProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  Set<Order> _list = Set();
+  Set<String> _list = Set();
 
   ScanProvider(this._repo);
 
@@ -15,14 +15,14 @@ class ScanProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Set<Order> getList() => _list;
+  Set<String> getList() => _list;
 
-  set list(Order value) {
+  set list(String value) {
     _list.add(value);
     notifyListeners();
   }
 
-  addList(List<Order> l) {
+  addList(List<String> l) {
     _list.addAll(l);
   }
 }

@@ -4,6 +4,7 @@ import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_provider.dart';
 import 'package:driver_app/view/order_detail/order_detail.dart';
+import 'package:driver_app/view/order_list/order_list.dart';
 import 'package:driver_app/view/scan/scan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class _DetailPageState extends State<_DetailContentPage>
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ScanPage(mProvider.response.orders, List())));
+                            OrderListPage(mProvider.response.orders, List())));
                 if(result != null) {
                   mProvider.response.orders?.removeWhere((e) => (result as List<String>)?.contains(e.trackingNumber));
                 }
@@ -154,11 +155,7 @@ class _DetailPageState extends State<_DetailContentPage>
                                               value.response.orders[index])),
                                     );
                                     if(result != null) {
-                                      value.response.orders?.forEach((e) {
-                                        if (e.trackingNumber == result) {
-                                          value.response.orders.remove(e);
-                                        }
-                                      });
+                                      value.response.orders?.removeWhere((e) => e.trackingNumber == result);
                                     }
                                   },
                                   child: Column(
