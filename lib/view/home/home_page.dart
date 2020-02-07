@@ -33,7 +33,9 @@ class _HomeContentPage extends StatefulWidget {
 }
 
 class _HomePageState extends State<_HomeContentPage>
-    with TickerProviderStateMixin<_HomeContentPage> {
+    with
+        TickerProviderStateMixin<_HomeContentPage>,
+        AutomaticKeepAliveClientMixin {
   HomeProvider mProvider;
 
   @override
@@ -93,4 +95,7 @@ class _HomePageState extends State<_HomeContentPage>
       );
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

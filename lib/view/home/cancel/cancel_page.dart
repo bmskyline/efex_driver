@@ -29,7 +29,9 @@ class _CancelContentPage extends StatefulWidget {
 }
 
 class _CancelContentState extends State<_CancelContentPage>
-    with TickerProviderStateMixin<_CancelContentPage> {
+    with
+        TickerProviderStateMixin<_CancelContentPage>,
+        AutomaticKeepAliveClientMixin{
   final BuildContext homeContext;
   ScrollController _scrollViewController;
   TabController _tabController;
@@ -99,4 +101,7 @@ class _CancelContentState extends State<_CancelContentPage>
               controller: _tabController,
             )));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

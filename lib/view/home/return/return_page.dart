@@ -53,15 +53,23 @@ class _ReturnContentState extends State<_ReturnContentPage>
   @override
   void dispose() {
     super.dispose();
-    mProvider.shopsNew = List();
-    mProvider.shopsCancel = List();
-    mProvider.shopsSuccess = List();
-    mProvider.pageNew = 0;
-    mProvider.pageSuccess = 0;
-    mProvider.pageCancel = 0;
-    mProvider.totalNew = 0;
-    mProvider.totalSuccess = 0;
-    mProvider.totalCancel = 0;
+    switch(status) {
+      case "new":
+        mProvider.shopsNew = List();
+        mProvider.pageNew = 0;
+        mProvider.totalNew = 0;
+        break;
+      case "picked":
+        mProvider.shopsSuccess = List();
+        mProvider.pageSuccess = 0;
+        mProvider.totalSuccess = 0;
+        break;
+      case "fail":
+        mProvider.shopsCancel = List();
+        mProvider.pageCancel = 0;
+        mProvider.totalCancel = 0;
+        break;
+    }
   }
 
   void _loadData() {

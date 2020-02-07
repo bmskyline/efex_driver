@@ -84,7 +84,7 @@ packages:
       name: dartin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1"
+    version: "0.1.5"
   dio:
     dependency: "direct main"
     description:

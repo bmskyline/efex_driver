@@ -28,7 +28,9 @@ class _NewContentPage extends StatefulWidget {
 }
 
 class _NewContentState extends State<_NewContentPage>
-    with TickerProviderStateMixin<_NewContentPage> {
+    with
+        TickerProviderStateMixin<_NewContentPage>,
+        AutomaticKeepAliveClientMixin{
   final BuildContext homeContext;
   ScrollController _scrollViewController;
   TabController _tabController;
@@ -98,4 +100,7 @@ class _NewContentState extends State<_NewContentPage>
               controller: _tabController,
             )));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

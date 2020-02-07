@@ -29,7 +29,9 @@ class _SuccessContentPage extends StatefulWidget {
 }
 
 class _SuccessContentState extends State<_SuccessContentPage>
-    with TickerProviderStateMixin<_SuccessContentPage> {
+    with
+        TickerProviderStateMixin<_SuccessContentPage>,
+        AutomaticKeepAliveClientMixin{
   final BuildContext homeContext;
   ScrollController _scrollViewController;
   TabController _tabController;
@@ -99,4 +101,7 @@ class _SuccessContentState extends State<_SuccessContentPage>
               controller: _tabController,
             )));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

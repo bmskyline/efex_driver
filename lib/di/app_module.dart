@@ -18,32 +18,32 @@ const testScope = DartInScope('test');
 
 final viewModelModule = Module([
   factory<LoginProvider>(({params}) => LoginProvider(get())),
-  lazy<NewProvider>(({params}) => NewProvider(get())),
-  lazy<SuccessProvider>(({params}) => SuccessProvider(get())),
-  lazy<CancelProvider>(({params}) => CancelProvider(get())),
-  lazy<PickupProvider>(({params}) => PickupProvider(get())),
-  lazy<ReturnProvider>(({params}) => ReturnProvider(get())),
+  single<NewProvider>(({params}) => NewProvider(get())),
+  single<SuccessProvider>(({params}) => SuccessProvider(get())),
+  single<CancelProvider>(({params}) => CancelProvider(get())),
+  single<PickupProvider>(({params}) => PickupProvider(get())),
+  single<ReturnProvider>(({params}) => ReturnProvider(get())),
   factory<HomeProvider>(({params}) => HomeProvider()),
   factory<DetailProvider>(({params}) => DetailProvider(get())),
   factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get())),
   factory<OrderListProvider>(({params}) => OrderListProvider(get())),
   factory<ScanProvider>(({params}) => ScanProvider(get())),
 ])
-  ..addOthers(testScope, [
+  ..withScope(testScope, [
     ///other scope
     //factory<HomeProvider>(({params}) => HomeProvider()),
   ]);
 
 final repoModule = Module([
-  lazy<GithubRepo>(({params}) => GithubRepo(get(), get())),
+  single<GithubRepo>(({params}) => GithubRepo(get(), get())),
 ]);
 
 final remoteModule = Module([
-  single<GithubService>(GithubService()),
+  single<GithubService>(({params}) => GithubService()),
 ]);
 
 final localModule = Module([
-  single<SpUtil>(spUtil),
+  single<SpUtil>(({params}) => spUtil),
 ]);
 
 final appModule = [viewModelModule, repoModule, remoteModule, localModule];
