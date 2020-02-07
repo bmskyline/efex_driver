@@ -51,20 +51,12 @@ class _HomePageState extends State<_HomeContentPage>
       return Scaffold(
         body: SafeArea(
           top: false,
-          child: Stack(
+          child: IndexedStack(
+            index: value.currentIndex,
             children: <Widget>[
-              Offstage(
-                offstage: value.currentIndex != 0,
-                child: NewPage(context),
-              ),
-              Offstage(
-                offstage: value.currentIndex != 1,
-                child: SuccessPage(context),
-              ),
-              Offstage(
-                offstage: value.currentIndex != 2,
-                child: CancelPage(context),
-              )
+              NewPage(context),
+              SuccessPage(context),
+              CancelPage(context)
             ],
           ),
         ),

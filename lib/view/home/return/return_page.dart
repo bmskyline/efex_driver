@@ -86,6 +86,52 @@ class _ReturnContentState extends State<_ReturnContentPage>
     mProvider.addSubscription(s);
   }
 
+  void _loadAllData() {
+    mProvider.shopsNew = List();
+    mProvider.pageNew = 0;
+    mProvider.totalNew = 0;
+    mProvider.shopsSuccess = List();
+    mProvider.pageSuccess = 0;
+    mProvider.totalSuccess = 0;
+    mProvider.shopsCancel = List();
+    mProvider.pageCancel = 0;
+    mProvider.totalCancel = 0;
+
+    final a = mProvider
+        .getShops("new")
+        .doOnListen(() {})
+        .doOnDone(() {})
+        .listen((data) {
+      //success
+    }, onError: (e) {
+      //error
+      dispatchFailure(context, e);
+    });
+    final b = mProvider
+        .getShops("picked")
+        .doOnListen(() {})
+        .doOnDone(() {})
+        .listen((data) {
+      //success
+    }, onError: (e) {
+      //error
+      dispatchFailure(context, e);
+    });
+    final c = mProvider
+        .getShops("fail")
+        .doOnListen(() {})
+        .doOnDone(() {})
+        .listen((data) {
+      //success
+    }, onError: (e) {
+      //error
+      dispatchFailure(context, e);
+    });
+    mProvider.addSubscription(a);
+    mProvider.addSubscription(b);
+    mProvider.addSubscription(c);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
@@ -154,10 +200,7 @@ class _ReturnContentState extends State<_ReturnContentPage>
                                                 status,
                                                 2)));
                                     if(res != null && res as String == "refresh") {
-                                      mProvider.shopsNew = List();
-                                      mProvider.pageNew = 0;
-                                      mProvider.totalNew = 0;
-                                      _loadData();
+                                      _loadAllData();
                                     }
                                   }
                                   break;

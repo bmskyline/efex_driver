@@ -97,6 +97,52 @@ class _PickupContentState extends State<_PickupContentPage>
     mProvider.addSubscription(s);
   }
 
+  void _loadAllData() {
+    mProvider.shopsNew = List();
+    mProvider.pageNew = 0;
+    mProvider.totalNew = 0;
+    mProvider.shopsSuccess = List();
+    mProvider.pageSuccess = 0;
+    mProvider.totalSuccess = 0;
+    mProvider.shopsCancel = List();
+    mProvider.pageCancel = 0;
+    mProvider.totalCancel = 0;
+
+    final a = mProvider
+        .getShops("new")
+        .doOnListen(() {})
+        .doOnDone(() {})
+        .listen((data) {
+      //success
+    }, onError: (e) {
+      //error
+      dispatchFailure(context, e);
+    });
+    final b = mProvider
+        .getShops("picked")
+        .doOnListen(() {})
+        .doOnDone(() {})
+        .listen((data) {
+      //success
+    }, onError: (e) {
+      //error
+      dispatchFailure(context, e);
+    });
+    final c = mProvider
+        .getShops("fail")
+        .doOnListen(() {})
+        .doOnDone(() {})
+        .listen((data) {
+      //success
+    }, onError: (e) {
+      //error
+      dispatchFailure(context, e);
+    });
+    mProvider.addSubscription(a);
+    mProvider.addSubscription(b);
+    mProvider.addSubscription(c);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
@@ -161,14 +207,9 @@ class _PickupContentState extends State<_PickupContentPage>
                                               value.shopsNew[index],
                                               status,
                                               1)));
-                                  print("data day" +res.toString());
                                   if (res != null &&
                                       res as String == "refresh") {
-                                    print("vao day ro");
-                                    mProvider.shopsNew = List();
-                                    mProvider.pageNew = 0;
-                                    mProvider.totalNew = 0;
-                                    _loadData();
+                                    _loadAllData();
                                   }
                                 }
                                 break;
