@@ -1,4 +1,5 @@
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
@@ -133,32 +134,35 @@ class _ReturnContentState extends State<_ReturnContentPage>
                           padding: const EdgeInsets.only(
                               left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
                               switch (status) {
                                 case "new":
                                   if (value.shopsNew[index].isActive) {
-                                    Navigator.push(
+                                    final res = await Navigator.push(
                                         homeContext,
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
                                                 value.shopsNew[index],
                                                 status,
                                                 2)));
+                                    if(res != null && res as String == "refresh") {
+                                      mProvider.shopsNew = List();
+                                      mProvider.pageNew = 0;
+                                      mProvider.totalNew = 0;
+                                      _loadData();
+                                    }
                                   }
                                   break;
                                 case "picked":
-                                  if (value.shopsSuccess[index].isActive) {
-                                    Navigator.push(
+                                  Navigator.push(
                                         homeContext,
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
                                                 value.shopsSuccess[index],
                                                 status,
                                                 2)));
-                                  }
                                   break;
                                 case "fail":
-                                  if (value.shopsCancel[index].isActive) {
                                     Navigator.push(
                                         homeContext,
                                         MaterialPageRoute(
@@ -166,7 +170,6 @@ class _ReturnContentState extends State<_ReturnContentPage>
                                                 value.shopsCancel[index],
                                                 status,
                                                 2)));
-                                  }
                                   break;
                               }
                             },
@@ -324,14 +327,29 @@ class _ReturnContentState extends State<_ReturnContentPage>
                                         )
                                       ]),
                                 ),
-                                Switch(
-                                  activeColor: Colors.white,
-                                  value: switchValue,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      switchValue = value;
-                                    });
-                                  },
+                                Visibility(
+                                  visible: status == "new" ? true : false,
+                                  child: Transform.scale(
+                                    scale: 1.5,
+                                    child: Checkbox(
+                                      value: status == "new"
+                                          ? value.shopsNew[index].isActive
+                                          : false,
+                                      onChanged: (val) {
+                                        if (val) {
+                                          if (status == "new") {
+                                            if (!value
+                                                .shopsNew[index].isActive) {
+                                              setState(() {
+                                                value.shopsNew[index]
+                                                    .isActive = true;
+                                              });
+                                            }
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ),
                                 )
                               ],
                             ),

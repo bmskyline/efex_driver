@@ -57,18 +57,22 @@ class _DetailPageState extends State<_DetailContentPage>
           title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
           actions: <Widget>[
             // action button
-            IconButton(
-              icon: Image.asset("assets/barcode.png"),
-              onPressed: () async {
-                final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            OrderListPage(mProvider.response.orders, List())));
-                if(result != null) {
-                  mProvider.response.orders?.removeWhere((e) => (result as List<String>)?.contains(e.trackingNumber));
-                }
-              },
+            Visibility(
+              visible: widget.status == "new" ? true : false,
+              child: IconButton(
+                icon: Image.asset("assets/barcode.png"),
+                onPressed: () async {
+                  final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              OrderListPage(mProvider.response.orders, List())));
+                  if(result != null) {
+                    mProvider.response.orders?.removeWhere((e) => (result as List<String>)?.contains(e.trackingNumber));
+                    Navigator.pop(context, "refresh");
+                  }
+                },
+              ),
             ),
           ],
         ),
@@ -78,6 +82,7 @@ class _DetailPageState extends State<_DetailContentPage>
               return Column(
                 children: <Widget>[
                   Container(
+                    width: double.infinity,
                     padding: EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +96,8 @@ class _DetailPageState extends State<_DetailContentPage>
                                         ?.elementAt(0)
                                         ?.fromName),
                             style:
-                                TextStyle(fontSize: 22, color: Colors.white)),
+                                TextStyle(fontSize: 22, color: Colors.white),
+                        textAlign: TextAlign.left),
                         InkWell(
                           onTap: () => launch("tel://" +
                               (value.response == null
@@ -113,7 +119,8 @@ class _DetailPageState extends State<_DetailContentPage>
                                 fontSize: 18,
                                 color: Colors.blueAccent,
                                 decoration: TextDecoration.underline,
-                              )),
+                              ),
+                              textAlign: TextAlign.left),
                         ),
                         Text(
                             value.response == null
@@ -124,7 +131,8 @@ class _DetailPageState extends State<_DetailContentPage>
                                         ?.elementAt(0)
                                         ?.fromAddress),
                             style:
-                                TextStyle(fontSize: 18, color: Colors.white60)),
+                                TextStyle(fontSize: 18, color: Colors.white60),
+                            textAlign: TextAlign.left),
                       ],
                     ),
                   ),
@@ -152,10 +160,11 @@ class _DetailPageState extends State<_DetailContentPage>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => OrderDetailPage(
-                                              value.response.orders[index])),
+                                              value.response.orders[index], widget.status)),
                                     );
                                     if(result != null) {
                                       value.response.orders?.removeWhere((e) => e.trackingNumber == result);
+                                      Navigator.pop(context, "refresh");
                                     }
                                   },
                                   child: Column(

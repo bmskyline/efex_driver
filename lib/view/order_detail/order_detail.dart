@@ -12,18 +12,20 @@ import 'package:provider/provider.dart';
 
 class OrderDetailPage extends PageProvideNode<OrderDetailProvider> {
   final Order order;
-  OrderDetailPage(this.order);
+  final String status;
+  OrderDetailPage(this.order, this.status);
 
   @override
   Widget buildContent(BuildContext context) {
-    return _OrderDetailContentPage(mProvider, order);
+    return _OrderDetailContentPage(mProvider, order, status);
   }
 }
 
 class _OrderDetailContentPage extends StatefulWidget {
   final OrderDetailProvider provider;
   final Order order;
-  _OrderDetailContentPage(this.provider, this.order);
+  final String status;
+  _OrderDetailContentPage(this.provider, this.order, this.status);
 
   @override
   State<StatefulWidget> createState() {
@@ -119,61 +121,70 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         ),
                       );
                     }),
-                Container(
-                  color: Colors.white,
-                  margin: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 8),
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: TextField(
-                    maxLines: 4,
-                    onChanged: (value) => print(value),
-                    decoration: InputDecoration(
-                        hintText: "Ghi chú!", fillColor: Colors.white),
+                Visibility(
+                  visible: widget.status == "new" ? true : false,
+                  child: Container(
+                    color: Colors.white,
+                    margin: const EdgeInsets.only(
+                        left: 16, right: 16, top: 8, bottom: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextField(
+                      maxLines: 4,
+                      onChanged: (value) => print(value),
+                      decoration: InputDecoration(
+                          hintText: "Ghi chú!", fillColor: Colors.white),
+                    ),
                   ),
                 ),
-                Container(
-                    height: 200,
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(
-                        left: 16, right: 16, top: 8, bottom: 16),
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () {
-                        getImage();
-                      },
-                      child: Consumer<OrderDetailProvider>(
-                        builder: (context, value, child) {
-                          return value.image == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.image,
-                                      color: Colors.grey,
-                                      size: 30.0,
-                                    ),
-                                    Text("Hình ảnh")
-                                  ],
-                                )
-                              : Image.file(value.image);
+                Visibility(
+                  visible: widget.status == "new" ? true : false,
+                  child: Container(
+                      height: 200,
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(
+                          left: 16, right: 16, top: 8, bottom: 16),
+                      color: Colors.white,
+                      child: InkWell(
+                        onTap: () {
+                          getImage();
                         },
+                        child: Consumer<OrderDetailProvider>(
+                          builder: (context, value, child) {
+                            return value.image == null
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.image,
+                                        color: Colors.grey,
+                                        size: 30.0,
+                                      ),
+                                      Text("Hình ảnh")
+                                    ],
+                                  )
+                                : Image.file(value.image);
+                          },
+                        ),
+                      )),
+                ),
+                Visibility(
+                  visible: widget.status == "new" ? true : false,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    margin: const EdgeInsets.only(right: 16.0),
+                    child: CupertinoButton(
+                      onPressed: () => showDialog<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DialogPage(order.trackingNumber);
+                          }),
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(32.0),
+                      child: Text(
+                        "Hủy Đơn Hàng",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
                       ),
-                    )),
-                Container(
-                  alignment: Alignment.centerRight,
-                  margin: const EdgeInsets.only(right: 16.0),
-                  child: CupertinoButton(
-                    onPressed: () => showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return DialogPage(order.trackingNumber);
-                        }),
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(32.0),
-                    child: Text(
-                      "Hủy Đơn Hàng",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -183,7 +194,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                   child: Consumer<OrderDetailProvider>(
                       builder: (context, value, child) {
                     return Visibility(
-                      visible: value.image == null ? false : true,
+                      visible: (value.image != null && widget.status == "new") ? true : false,
                       child: CupertinoButton(
                         onPressed: () {
                           mProvider

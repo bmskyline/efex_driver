@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
+import 'package:driver_app/data/model/order_model.dart';
+import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/model/status.dart';
@@ -83,8 +85,32 @@ class PickupProvider extends BaseProvider {
         .doOnDone(() => loading = false);
   }
 
-  Observable updateStatus(Shop shop) {
-    List<Status> list = List();
-    return _repo.updateStatusList(null, statusToJson(list)).doOnData((r) {});
-  }
+  Observable turnOnShop(List<Status> list) =>
+      _repo.updateStatusList(null, statusToJson(list)).doOnData((r) {
+
+      }).doOnError((e, stacktrace) {
+      if (e is DioError) {
+        //response = null;
+      }
+    })
+        .doOnListen(() => loading = true)
+        .doOnDone(() => loading = false);
+
+
+  Observable getShopDetail(Shop shop, String status, int type) => _repo
+        .getShopDetail(shop, getDate(), limit, 0, status, type)
+        .doOnData((r) {
+    })
+        .doOnError((e, stacktrace) {
+      if (e is DioError) {
+        //response = null;
+      }
+    })
+        .doOnListen(() => loading = true)
+        .doOnDone(() => loading = false);
+
+  void logout() => _repo.removeToken();
+
 }
+
+

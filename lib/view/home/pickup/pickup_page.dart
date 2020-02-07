@@ -1,5 +1,8 @@
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/login_response.dart';
+import 'package:driver_app/data/model/shop_detail_response.dart';
+import 'package:driver_app/data/model/shop_response.dart';
+import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
@@ -70,6 +73,15 @@ class _PickupContentState extends State<_PickupContentPage>
         .doOnDone(() {})
         .listen((data) {
       //success
+      ShopResponse response = ShopResponse.fromJson(data);
+      if(!response.result) {
+        if(response.msg == "user not authorized") {
+          mProvider.logout();
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/login', (Route<dynamic> route) => false);
+
+        }
+      }
     }, onError: (e) {
       //error
       dispatchFailure(context, e);
@@ -130,41 +142,45 @@ class _PickupContentState extends State<_PickupContentPage>
                         margin: EdgeInsets.all(0.5),
                         color: secondColorHome,
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
                             switch (status) {
                               case "new":
                                 if (value.shopsNew[index].isActive) {
-                                  Navigator.push(
+                                  final res = await Navigator.push(
                                       homeContext,
                                       MaterialPageRoute(
                                           builder: (context) => DetailPage(
                                               value.shopsNew[index],
                                               status,
                                               1)));
+                                  print("data day" +res.toString());
+                                  if (res != null &&
+                                      res as String == "refresh") {
+                                    print("vao day ro");
+                                    mProvider.shopsNew = List();
+                                    mProvider.pageNew = 0;
+                                    mProvider.totalNew = 0;
+                                    _loadData();
+                                  }
                                 }
                                 break;
                               case "picked":
-                                if (value.shopsSuccess[index].isActive) {
-                                  Navigator.push(
-                                      homeContext,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailPage(
-                                              value.shopsSuccess[index],
-                                              status,
-                                              1)));
-                                }
+                                Navigator.push(
+                                    homeContext,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailPage(
+                                            value.shopsSuccess[index],
+                                            status,
+                                            1)));
                                 break;
                               case "fail":
-                                if (value.shopsCancel[index].isActive) {
-                                  Navigator.push(
-                                      homeContext,
-                                      MaterialPageRoute(
-                                          builder: (context) => DetailPage(
-                                              value.shopsCancel[index],
-                                              status,
-                                              1)));
-                                }
-                                break;
+                                Navigator.push(
+                                    homeContext,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailPage(
+                                            value.shopsCancel[index],
+                                            status,
+                                            1)));
                             }
                           },
                           child: Padding(
@@ -186,15 +202,17 @@ class _PickupContentState extends State<_PickupContentPage>
                                                   ")"
                                               : (status == "picked"
                                                   ? value.shopsSuccess[index]
-                                                      .fromName + " (" +
-                                              value.shopsSuccess[index]
-                                                  .totalOrders +
-                                              ")"
+                                                          .fromName +
+                                                      " (" +
+                                                      value.shopsSuccess[index]
+                                                          .totalOrders +
+                                                      ")"
                                                   : value.shopsCancel[index]
-                                                      .fromName + " (" +
-                                              value.shopsCancel[index]
-                                                  .totalOrders +
-                                              ")"),
+                                                          .fromName +
+                                                      " (" +
+                                                      value.shopsCancel[index]
+                                                          .totalOrders +
+                                                      ")"),
                                           style: TextStyle(
                                               fontSize: 20,
                                               color: Colors.white),
@@ -324,57 +342,51 @@ class _PickupContentState extends State<_PickupContentPage>
                                         )
                                       ]),
                                 ),
-                                Transform.scale(
-                                  scale: 1.5,
-                                  child: Checkbox(
-                                    value: status == "new"
-                                        ? value.shopsNew[index].isActive
-                                        : (status == "picked"
-                                            ? value.shopsSuccess[index].isActive
-                                            : value
-                                                .shopsCancel[index].isActive),
-                                    onChanged: (val) {
-                                      if (val) {
-                                        switch (status) {
-                                          case "new":
-                                            if(!value.shopsNew[index].isActive) {
-                                              mProvider.updateStatus(value.shopsNew[index]).doOnData((r){
-                                                LoginResponse res = LoginResponse.fromJson(r);
-                                                if(res.result) {
-                                                  setState(() {
-                                                    value.shopsNew[index].isActive = true;
+                                Visibility(
+                                  visible: status == "new" ? true : false,
+                                  child: Transform.scale(
+                                    scale: 1.5,
+                                    child: Checkbox(
+                                      value: status == "new"
+                                          ? value.shopsNew[index].isActive
+                                          : false,
+                                      onChanged: (val) {
+                                        if (val) {
+                                          if (status == "new") {
+                                            if (!value
+                                                .shopsNew[index].isActive) {
+                                              final s = mProvider
+                                                  .getShopDetail(value.shopsNew[index], status, 1)
+                                                  .doOnListen(() {})
+                                                  .doOnDone(() {})
+                                                  .listen((data) {
+                                                //success
+                                                ShopDetailResponse response = ShopDetailResponse.fromJson(data);
+                                                List<Status> list = List();
+                                                if(response.result) {
+                                                  response.data.orders.forEach((e) {
+                                                    list.add(Status(e.trackingNumber, "picking", "picking"));
                                                   });
                                                 }
+                                                final h = mProvider.turnOnShop(list).listen((r){
+                                                  LoginResponse res = LoginResponse.fromJson(r);
+                                                  if(res.result) {
+                                                    setState(() {
+                                                      value.shopsNew[index].isActive = true;
+                                                    });
+                                                  }
+                                                });
+                                                mProvider.addSubscription(h);
+                                              }, onError: (e) {
+                                                //error
+                                                dispatchFailure(context, e);
                                               });
+                                              mProvider.addSubscription(s);
                                             }
-                                            break;
-                                          case "picked":
-                                            if(!value.shopsSuccess[index].isActive) {
-                                              mProvider.updateStatus(value.shopsSuccess[index]).doOnData((r){
-                                                LoginResponse res = LoginResponse.fromJson(r);
-                                                if(res.result) {
-                                                  setState(() {
-                                                    value.shopsSuccess[index].isActive = true;
-                                                  });
-                                                }
-                                              });
-                                            }
-                                            break;
-                                          case "fail":
-                                            if(!value.shopsCancel[index].isActive) {
-                                              mProvider.updateStatus(value.shopsCancel[index]).doOnData((r){
-                                                LoginResponse res = LoginResponse.fromJson(r);
-                                                if(res.result) {
-                                                  setState(() {
-                                                    value.shopsCancel[index].isActive = true;
-                                                  });
-                                                }
-                                              });
-                                            }
-                                            break;
+                                          }
                                         }
-                                      }
-                                    },
+                                      },
+                                    ),
                                   ),
                                 )
                               ],
