@@ -10,7 +10,7 @@ class OrderDetailProvider extends BaseProvider {
   File _image;
   String _selectedText = "picking_fail";
   OrderDetailProvider(this._repo);
-  String _reason;
+  String reason;
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -23,12 +23,6 @@ class OrderDetailProvider extends BaseProvider {
   set image(File value) {
     _image = value;
     notifyListeners();
-  }
-
-  String get reason => _reason;
-
-  set reason(String value) {
-    _reason = value;
   }
 
   String get selectedText => _selectedText;

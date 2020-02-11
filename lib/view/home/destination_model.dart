@@ -5,5 +5,5 @@ class Destination {
   final int index;
   final String title;
   final IconData icon;
-  final MaterialColor color;
+  final Color color;
 }

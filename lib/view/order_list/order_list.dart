@@ -3,6 +3,7 @@ import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/toast_utils.dart';
+import 'package:driver_app/view/order_detail/order_detail.dart';
 import 'package:driver_app/view/order_list/order_list_provider.dart';
 import 'package:driver_app/view/scan/scan_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,7 +73,7 @@ class _OrderListState extends State<_OrderListContentPage>
                         MaterialPageRoute(
                             builder: (context) =>
                                 ScanPage(widget.orders, result)));
-                    if(res != null) {
+                    if (res != null) {
                       this.result = (res as List<String>);
                     }
                   },
@@ -95,20 +96,35 @@ class _OrderListState extends State<_OrderListContentPage>
                     itemCount: result == null ? 0 : result.length,
                     itemBuilder: (BuildContext context, int index) {
                       return SizedBox(
-                        child: Card(
-                          elevation: 0,
-                          margin: EdgeInsets.all(0),
-                          color: secondColorHome,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OrderDetailPage(
+                                      getOrder(widget.orders, result[index]),
+                                      "picked")),
+                            );
+                          },
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
-                            child: InkWell(
-                              onTap: () {},
-                              child: Text(
-                                result[index],
-                                style: TextStyle(
-                                    fontSize: 22, color: Colors.white),
-                              ),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    (index + 1).toString() +
+                                        '. ' +
+                                        result[index],
+                                    style: TextStyle(
+                                        fontSize: 22, color: Colors.white),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.navigate_next,
+                                  color: Colors.white,
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -160,10 +176,12 @@ class _OrderListState extends State<_OrderListContentPage>
                   child: Consumer<OrderListProvider>(
                       builder: (context, value, child) {
                     return Visibility(
-                      visible: (value.image != null && result.isNotEmpty) ? true : false,
+                      visible: (value.image != null && result.isNotEmpty)
+                          ? true
+                          : false,
                       child: CupertinoButton(
-                        onPressed: ()  {
-                        mProvider.updateOrders(result).listen((r) {
+                        onPressed: () {
+                          mProvider.updateOrders(result).listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
@@ -197,5 +215,14 @@ class _OrderListState extends State<_OrderListContentPage>
         visible: value.loading,
       );
     });
+  }
+
+  Order getOrder(List<Order> orders, String result) {
+    for (var o in orders) {
+      if (o.trackingNumber == result) {
+        return o;
+      }
+    }
+    return null;
   }
 }

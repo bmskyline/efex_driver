@@ -35,8 +35,8 @@ dependencies:
   image_picker: ^0.6.3+1
   path_provider: ^1.5.1
   qr_mobile_vision: ^0.3.1
-  audioplayers: ^0.14.0
   pull_to_refresh: ^1.5.7
+  vibration: ^1.2.4
 
 dev_dependencies:
   flutter_test:
@@ -60,9 +60,6 @@ flutter:
   - assets/logo_hor.png
   - assets/bg.png
   - assets/barcode.png
-  - assets/shop.json
-  - assets/shop_detail.json
-  - assets/effect.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

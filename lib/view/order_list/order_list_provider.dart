@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/data/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -26,13 +24,13 @@ class OrderListProvider extends BaseProvider {
 
   Observable updateOrders(List<String> list) {
     String result = "[";
-    for(int i=0; i<list.length; i++) {
-      if(i == list.length -1) {
+    for (int i = 0; i < list.length; i++) {
+      if (i == list.length - 1) {
         result +=
-        "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
+            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
       } else {
         result +=
-        "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"},";
+            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"},";
       }
     }
     result += "]";

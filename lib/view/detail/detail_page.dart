@@ -5,7 +5,6 @@ import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_provider.dart';
 import 'package:driver_app/view/order_detail/order_detail.dart';
 import 'package:driver_app/view/order_list/order_list.dart';
-import 'package:driver_app/view/scan/scan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,10 +64,11 @@ class _DetailPageState extends State<_DetailContentPage>
                   final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              OrderListPage(mProvider.response.orders, List())));
-                  if(result != null) {
-                    mProvider.response.orders?.removeWhere((e) => (result as List<String>)?.contains(e.trackingNumber));
+                          builder: (context) => OrderListPage(
+                              mProvider.response.orders, List())));
+                  if (result != null) {
+                    mProvider.response.orders?.removeWhere((e) =>
+                        (result as List<String>)?.contains(e.trackingNumber));
                     Navigator.pop(context, "refresh");
                   }
                 },
@@ -90,14 +90,17 @@ class _DetailPageState extends State<_DetailContentPage>
                         Text(
                             value.response == null
                                 ? ""
-                                : (value.response?.orders?.isEmpty == true
+                                : (value.response.orders?.isEmpty == true
                                     ? ""
-                                    : value.response?.orders
-                                        ?.elementAt(0)
-                                        ?.fromName),
-                            style:
-                                TextStyle(fontSize: 22, color: Colors.white),
-                        textAlign: TextAlign.left),
+                                    : value.response.orders
+                                            .elementAt(0)
+                                            .fromName +
+                                        " (" +
+                                        value.response.orders?.length
+                                            .toString() +
+                                        ")"),
+                            style: TextStyle(fontSize: 22, color: Colors.white),
+                            textAlign: TextAlign.left),
                         InkWell(
                           onTap: () => launch("tel://" +
                               (value.response == null
@@ -160,57 +163,91 @@ class _DetailPageState extends State<_DetailContentPage>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => OrderDetailPage(
-                                              value.response.orders[index], widget.status)),
+                                              value.response.orders[index],
+                                              widget.status)),
                                     );
-                                    if(result != null) {
-                                      value.response.orders?.removeWhere((e) => e.trackingNumber == result);
-                                      Navigator.pop(context, "refresh");
+                                    if (result != null) {
+                                      value.response.orders?.removeWhere(
+                                          (e) => e.trackingNumber == result);
+                                      if (value.response.orders.isEmpty) {
+                                        Navigator.pop(context, "refresh");
+                                      }
                                     }
                                   },
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  child: Row(
                                     children: <Widget>[
-                                      Text(
-                                        value.response.orders[index]
-                                            .trackingNumber,
-                                        style: TextStyle(
-                                            fontSize: 20, color: Colors.white),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              value.response.orders[index]
+                                                  .trackingNumber,
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: 'Tổng sản phẩm: ',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white60),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: value
+                                                        .response
+                                                        .orders[index]
+                                                        .products
+                                                        .length
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: 'Tổng trọng lượng: ',
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white60),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                    text: value.response
+                                                            .orders[index]
+                                                            .weightOfProduct()
+                                                            .toString() +
+                                                        'g',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Text(
+                                              "Ghi chú: " +
+                                                  value.response.orders[index]
+                                                      .note,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white60),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Text(
-                                        "Tổng sản phẩm: " +
-                                            value.response.orders[index]
-                                                .products.length
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white60),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                      Text(
-                                        "Tổng trọng lượng: " +
-                                            value.response.orders[index]
-                                                .weightOfProduct()
-                                                .toString() +
-                                            "g",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white60),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                      Text(
-                                        "Ghi chú: " +
-                                            value.response.orders[index].note,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white60),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
+                                      Icon(
+                                        Icons.navigate_next,
+                                        color: Colors.white,
+                                      )
                                     ],
                                   ),
                                 ),

@@ -1,13 +1,11 @@
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/order_model.dart';
-import 'package:driver_app/data/repository.dart';
 
 class ScanProvider extends BaseProvider {
-  final GithubRepo _repo;
   bool _loading = false;
   Set<String> _list = Set();
+  Set<String> _alreadyScan = Set();
 
-  ScanProvider(this._repo);
+  ScanProvider();
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -20,6 +18,12 @@ class ScanProvider extends BaseProvider {
   set list(String value) {
     _list.add(value);
     notifyListeners();
+  }
+
+  Set<String> getListScan() => _alreadyScan;
+
+  set alreadyScan(String value) {
+    _alreadyScan.add(value);
   }
 
   addList(List<String> l) {

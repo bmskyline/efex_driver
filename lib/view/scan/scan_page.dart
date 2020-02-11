@@ -1,15 +1,13 @@
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
-import 'package:driver_app/view/home/home_page.dart';
-import 'package:driver_app/view/order_list/order_list.dart';
+import 'package:driver_app/utils/toast_utils.dart';
 import 'package:driver_app/view/scan/scan_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
+import 'package:vibration/vibration.dart';
 
 class ScanPage extends PageProvideNode<ScanProvider> {
   final List<Order> orders;
@@ -38,22 +36,18 @@ class _ScanContentPage extends StatefulWidget {
 class _ScanPageState extends State<_ScanContentPage>
     with TickerProviderStateMixin<_ScanContentPage> {
   ScanProvider mProvider;
-  AudioCache player;
 
   @override
   void initState() {
     super.initState();
-    player = AudioCache();
-    player.load('effect.mp3');
     mProvider = widget.provider;
   }
 
   @override
   void dispose() {
-    player.clear('effect.mp3');
-    player = null;
     super.dispose();
   }
+
   @override
   Widget build(BuildContext mainContext) {
     return Scaffold(
@@ -68,17 +62,23 @@ class _ScanPageState extends State<_ScanContentPage>
             SizedBox(
               height: 200.0,
               child: QrCamera(
-                qrCodeCallback: (code) {
+                qrCodeCallback: (code) async {
                   bool hasInList = false;
-                  for (Order o in widget.orders) {
-                    if (o.trackingNumber == code) {
-                      mProvider.list = o.trackingNumber;
-                      hasInList = true;
-                      break;
+                  if (!mProvider.getListScan().contains(code)) {
+                    mProvider.getListScan().add(code);
+                    for (Order o in widget.orders) {
+                      if (o.trackingNumber == code) {
+                        mProvider.list = o.trackingNumber;
+                        hasInList = true;
+                        break;
+                      }
                     }
-                  }
-                  if(!hasInList) {
-                    player.play('effect.mp3');
+                    if (!hasInList) {
+                      if (await Vibration.hasVibrator()) {
+                        Vibration.vibrate();
+                      }
+                      Toast.show("Đơn hàng " + code + " không tồn tại ");
+                    }
                   }
                 },
               ),
@@ -91,7 +91,9 @@ class _ScanPageState extends State<_ScanContentPage>
                     itemCount: value.getList().length,
                     itemBuilder: (BuildContext context, int index) {
                       return Text(
-                        value.getList().elementAt(index),
+                        (index + 1).toString() +
+                            '. ' +
+                            value.getList().elementAt(index),
                         style: TextStyle(color: Colors.white, fontSize: 22),
                       );
                     },

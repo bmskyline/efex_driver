@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'package:driver_app/di/app_module.dart';
-import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 Future _get(String url, {Map<String, dynamic> params}) async {
-  var response = await rootBundle
-      .loadString('assets/$url'); //dio.get(url, queryParameters: params);
-  return json.decode(response); //response.data;
+  var response = await dio.get(url, queryParameters: params);
+  return response.data;
 }
 
 Observable post(String url, Map<String, dynamic> params) =>

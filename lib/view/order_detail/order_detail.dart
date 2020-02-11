@@ -73,21 +73,33 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       Padding(
                           padding: const EdgeInsets.only(
                               left: 16.0, right: 16.0, top: 8),
-                          child: Text(order.fromName,
+                          child: Text(order.trackingNumber,
                               style: TextStyle(
                                   fontSize: 22, color: Colors.white))),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 16.0, right: 16.0, bottom: 8),
-                        child: Text(
-                            "Tổng sản phẩm: " +
-                                order.fullCount +
-                                " - Tổng trọng lượng: " +
-                                order.weightOfProduct().toString() +
-                                "g",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.white60)),
-                      ),
+                          padding: const EdgeInsets.only(
+                              left: 16.0, right: 16.0, bottom: 8),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Tổng sản phẩm: ',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.white60),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: order.products.length.toString(),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                                TextSpan(text: ' - Tổng trọng lượng: '),
+                                TextSpan(
+                                  text:
+                                      order.weightOfProduct().toString() + 'g',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          )),
                     ],
                   ),
                 ),
@@ -172,16 +184,15 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                   child: Container(
                     alignment: Alignment.centerRight,
                     margin: const EdgeInsets.only(right: 16.0),
-                    child: CupertinoButton(
+                    child: FlatButton(
                       onPressed: () => showDialog<void>(
                           context: context,
                           builder: (BuildContext context) {
                             return DialogPage(order.trackingNumber);
                           }),
                       color: Colors.red,
-                      borderRadius: BorderRadius.circular(32.0),
                       child: Text(
-                        "Hủy Đơn Hàng",
+                        "Hủy",
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white),
                       ),
@@ -194,8 +205,10 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                   child: Consumer<OrderDetailProvider>(
                       builder: (context, value, child) {
                     return Visibility(
-                      visible: (value.image != null && widget.status == "new") ? true : false,
-                      child: CupertinoButton(
+                      visible: (value.image != null && widget.status == "new")
+                          ? true
+                          : false,
+                      child: FlatButton(
                         onPressed: () {
                           mProvider
                               .updateOrder(order.trackingNumber, "picked", null)
@@ -209,7 +222,6 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                           });
                         },
                         color: Colors.orange,
-                        borderRadius: BorderRadius.circular(0),
                         child: Text(
                           "Xác Nhận Lấy Hàng Thành Công",
                           textAlign: TextAlign.center,

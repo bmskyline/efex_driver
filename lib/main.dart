@@ -1,4 +1,3 @@
-import 'package:driver_app/view/detail/detail_page.dart';
 import 'package:driver_app/view/home/home_page.dart';
 import 'package:driver_app/view/login/login_page.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  Widget defaultHome;
+  final Widget defaultHome;
   MyApp(this.defaultHome);
 
   @override
