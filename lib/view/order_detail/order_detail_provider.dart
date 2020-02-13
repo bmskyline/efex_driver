@@ -8,7 +8,8 @@ class OrderDetailProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
   File _image;
-  String _selectedText = "picking_fail";
+  String _selectedPick = "picking_fail";
+  String _selectedReturn = "return_fail";
   OrderDetailProvider(this._repo);
   String reason;
 
@@ -25,10 +26,18 @@ class OrderDetailProvider extends BaseProvider {
     notifyListeners();
   }
 
-  String get selectedText => _selectedText;
 
-  set selectedText(String value) {
-    _selectedText = value;
+  String get selectedPick => _selectedPick;
+
+  set selectedPick(String value) {
+    _selectedPick = value;
+    notifyListeners();
+  }
+
+  String get selectedReturn => _selectedReturn;
+
+  set selectedReturn(String value) {
+    _selectedReturn = value;
     notifyListeners();
   }
 

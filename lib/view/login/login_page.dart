@@ -136,6 +136,12 @@ class _LoginContentState extends State<_LoginContentPage>
                                     keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.next,
                                     decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: primaryColor),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: primaryColor),
+                                      ),
                                       contentPadding: EdgeInsets.only(
                                           left: 10.0, right: 10.0),
                                       hintText: '0999999999',
@@ -154,6 +160,12 @@ class _LoginContentState extends State<_LoginContentPage>
                                     obscureText: true,
                                     keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
+                                      enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: primaryColor),
+                                      ),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: primaryColor),
+                                      ),
                                       contentPadding: EdgeInsets.only(
                                           left: 10.0, right: 10.0),
                                       hintText: 'Password',

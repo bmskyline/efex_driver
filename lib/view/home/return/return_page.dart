@@ -68,7 +68,7 @@ class _ReturnContentState extends State<_ReturnContentPage>
                 SliverAppBar(
                   centerTitle: true,
                   backgroundColor: primaryColorHome,
-                  title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
+                  title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
                   pinned: true,
                   floating: true,
                   forceElevated: innerBoxIsScrolled,

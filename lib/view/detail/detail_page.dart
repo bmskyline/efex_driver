@@ -53,7 +53,7 @@ class _DetailPageState extends State<_DetailContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
           actions: <Widget>[
             // action button
             Visibility(
@@ -65,7 +65,7 @@ class _DetailPageState extends State<_DetailContentPage>
                       context,
                       MaterialPageRoute(
                           builder: (context) => OrderListPage(
-                              mProvider.response.orders, List())));
+                              mProvider.response.orders, List(), widget.type)));
                   if (result != null) {
                     mProvider.response.orders?.removeWhere((e) =>
                         (result as List<String>)?.contains(e.trackingNumber));
@@ -119,7 +119,7 @@ class _DetailPageState extends State<_DetailContentPage>
                                           ?.elementAt(0)
                                           ?.fromPhone),
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                                 color: Colors.blueAccent,
                                 decoration: TextDecoration.underline,
                               ),
@@ -134,7 +134,7 @@ class _DetailPageState extends State<_DetailContentPage>
                                         ?.elementAt(0)
                                         ?.fromAddress),
                             style:
-                                TextStyle(fontSize: 18, color: Colors.white60),
+                                TextStyle(fontSize: 20, color: Colors.white60),
                             textAlign: TextAlign.left),
                       ],
                     ),
@@ -164,7 +164,7 @@ class _DetailPageState extends State<_DetailContentPage>
                                       MaterialPageRoute(
                                           builder: (context) => OrderDetailPage(
                                               value.response.orders[index],
-                                              widget.status)),
+                                              widget.status, widget.type)),
                                     );
                                     if (result != null) {
                                       value.response.orders?.removeWhere(
@@ -190,56 +190,65 @@ class _DetailPageState extends State<_DetailContentPage>
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                             ),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: 'Tổng sản phẩm: ',
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  text: 'Tổng sản phẩm: ',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white60),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: value
+                                                          .response
+                                                          .orders[index]
+                                                          .products
+                                                          .length
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  text: 'Tổng trọng lượng: ',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white60),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                      text: value.response
+                                                              .orders[index]
+                                                              .weightOfProduct()
+                                                              .toString() +
+                                                          'g',
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: Text(
+                                                "Ghi chú: " +
+                                                    value.response.orders[index]
+                                                        .note,
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     color: Colors.white60),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: value
-                                                        .response
-                                                        .orders[index]
-                                                        .products
-                                                        .length
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
                                               ),
-                                            ),
-                                            RichText(
-                                              text: TextSpan(
-                                                text: 'Tổng trọng lượng: ',
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white60),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: value.response
-                                                            .orders[index]
-                                                            .weightOfProduct()
-                                                            .toString() +
-                                                        'g',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Text(
-                                              "Ghi chú: " +
-                                                  value.response.orders[index]
-                                                      .note,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white60),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
                                             ),
                                           ],
                                         ),

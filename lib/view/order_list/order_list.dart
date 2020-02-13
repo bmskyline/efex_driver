@@ -15,11 +15,12 @@ import 'package:provider/provider.dart';
 class OrderListPage extends PageProvideNode<OrderListProvider> {
   final List<Order> orders;
   final List<String> result;
-  OrderListPage(this.orders, this.result);
+  final int type;
+  OrderListPage(this.orders, this.result, this.type);
 
   @override
   Widget buildContent(BuildContext context) {
-    return _OrderListContentPage(mProvider, orders, result);
+    return _OrderListContentPage(mProvider, orders, result, type);
   }
 }
 
@@ -27,7 +28,8 @@ class _OrderListContentPage extends StatefulWidget {
   final OrderListProvider provider;
   final List<Order> orders;
   final List<String> result;
-  _OrderListContentPage(this.provider, this.orders, this.result);
+  final int type;
+  _OrderListContentPage(this.provider, this.orders, this.result, this.type);
 
   @override
   State<StatefulWidget> createState() {
@@ -59,7 +61,7 @@ class _OrderListState extends State<_OrderListContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
@@ -103,7 +105,7 @@ class _OrderListState extends State<_OrderListContentPage>
                               MaterialPageRoute(
                                   builder: (context) => OrderDetailPage(
                                       getOrder(widget.orders, result[index]),
-                                      "picked")),
+                                      "picked", widget.type)),
                             );
                           },
                           child: Padding(

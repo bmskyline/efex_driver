@@ -67,7 +67,7 @@ class _PickupContentState extends State<_PickupContentPage>
                 SliverAppBar(
                   centerTitle: true,
                   backgroundColor: primaryColorHome,
-                  title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
+                  title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 30),
                   pinned: true,
                   floating: true,
                   forceElevated: innerBoxIsScrolled,

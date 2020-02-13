@@ -55,7 +55,7 @@ class _ScanPageState extends State<_ScanContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
         ),
         body: Column(
           children: <Widget>[

@@ -13,11 +13,12 @@ import 'package:provider/provider.dart';
 class OrderDetailPage extends PageProvideNode<OrderDetailProvider> {
   final Order order;
   final String status;
-  OrderDetailPage(this.order, this.status);
+  final int type;
+  OrderDetailPage(this.order, this.status, this.type);
 
   @override
   Widget buildContent(BuildContext context) {
-    return _OrderDetailContentPage(mProvider, order, status);
+    return _OrderDetailContentPage(mProvider, order, status, type);
   }
 }
 
@@ -25,7 +26,8 @@ class _OrderDetailContentPage extends StatefulWidget {
   final OrderDetailProvider provider;
   final Order order;
   final String status;
-  _OrderDetailContentPage(this.provider, this.order, this.status);
+  final int type;
+  _OrderDetailContentPage(this.provider, this.order, this.status, this.type);
 
   @override
   State<StatefulWidget> createState() {
@@ -57,7 +59,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.cover),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
@@ -188,7 +190,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       onPressed: () => showDialog<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return DialogPage(order.trackingNumber);
+                            return DialogPage(order.trackingNumber, widget.type);
                           }),
                       color: Colors.red,
                       child: Text(
@@ -250,20 +252,22 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
 
 class DialogPage extends PageProvideNode<OrderDetailProvider> {
   final String number;
+  final int type;
 
-  DialogPage(this.number);
+  DialogPage(this.number, this.type);
 
   @override
   Widget buildContent(BuildContext context) {
-    return DialogContent(mProvider, number);
+    return DialogContent(mProvider, number, type);
   }
 }
 
 class DialogContent extends StatefulWidget {
   final OrderDetailProvider provider;
   final String number;
+  final int type;
 
-  DialogContent(this.provider, this.number);
+  DialogContent(this.provider, this.number, this.type);
 
   @override
   State<StatefulWidget> createState() => _DialogContentState();
@@ -271,9 +275,11 @@ class DialogContent extends StatefulWidget {
 
 class _DialogContentState extends State<DialogContent> {
   OrderDetailProvider mProvider;
-  static const Map<String, String> items = {
+  static const Map<String, String> itemsPick = {
     "picking_fail": "Không lấy được hàng sau 3 lần",
     "picking_fail_by_shop": "Shop từ chối giao hàng",
+  };
+  static const Map<String, String> itemsReturn = {
     "return_fail": "Không trả được hàng sau 3 lần",
     "return_fail_by_shop": "Shop từ chối nhận hàng",
   };
@@ -298,8 +304,8 @@ class _DialogContentState extends State<DialogContent> {
               DropdownButton<String>(
                 isExpanded: true,
                 hint: Text("Status"),
-                value: value.selectedText,
-                items: items
+                value: widget.type == 1 ? value.selectedPick: value.selectedReturn,
+                items: (widget.type == 1 ? itemsPick : itemsReturn)
                     .map((key, value) {
                       return MapEntry(
                           key,
@@ -311,7 +317,7 @@ class _DialogContentState extends State<DialogContent> {
                     .values
                     .toList(),
                 onChanged: (String val) {
-                  value.selectedText = val;
+                  widget.type == 1 ? value.selectedPick = val : value.selectedReturn = val;
                 },
               ),
               Container(
@@ -334,7 +340,7 @@ class _DialogContentState extends State<DialogContent> {
           onPressed: () {
             mProvider
                 .updateOrder(
-                    widget.number, mProvider.selectedText, mProvider.reason)
+                    widget.number, widget.type == 1 ? mProvider.selectedPick : mProvider.selectedReturn, mProvider.reason)
                 .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
               if (res.result) {
