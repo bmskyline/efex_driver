@@ -1,10 +1,10 @@
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/utils/const.dart';
-import 'package:driver_app/view/home/cancel/cancel_page.dart';
-import 'package:driver_app/view/home/new/new_page.dart';
+import 'package:driver_app/view/home/page/cancel_page.dart';
+import 'package:driver_app/view/home/page/new_page.dart';
 import 'package:driver_app/view/home/pickup/pickup_provider.dart';
-import 'package:driver_app/view/home/success/success_page.dart';
+import 'package:driver_app/view/home/page/success_page.dart';
 import 'package:flutter/material.dart';
 
 class PickupPage extends PageProvideNode<PickupProvider> {

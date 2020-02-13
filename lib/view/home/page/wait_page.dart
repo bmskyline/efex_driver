@@ -4,42 +4,41 @@ import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/utils/const.dart';
-import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
-import 'package:driver_app/view/home/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class NewPage extends PageProvideNode<HomeProvider> {
+import '../home_provider.dart';
+
+class WaitPage extends PageProvideNode<HomeProvider> {
   final BuildContext homeContext;
   final int type;
-  NewPage(this.homeContext, this.type);
+  WaitPage(this.homeContext, this.type);
 
   @override
   Widget buildContent(BuildContext context) {
-    return _NewContentPage(homeContext, mProvider, type);
+    return _WaitContentPage(homeContext, mProvider, type);
   }
 }
 
-class _NewContentPage extends StatefulWidget {
+class _WaitContentPage extends StatefulWidget {
   final BuildContext homeContext;
   final HomeProvider provider;
   final int type;
-  _NewContentPage(this.homeContext, this.provider, this.type);
+  _WaitContentPage(this.homeContext, this.provider, this.type);
 
   @override
   State<StatefulWidget> createState() {
-    return _NewContentState(homeContext);
+    return _WaitContentState(homeContext);
   }
 }
 
-class _NewContentState extends State<_NewContentPage>
+class _WaitContentState extends State<_WaitContentPage>
     with
-        TickerProviderStateMixin<_NewContentPage>,
+        TickerProviderStateMixin<_WaitContentPage>,
         AutomaticKeepAliveClientMixin {
   final BuildContext homeContext;
-  _NewContentState(this.homeContext);
+  _WaitContentState(this.homeContext);
 
   HomeProvider mProvider;
 
@@ -48,19 +47,19 @@ class _NewContentState extends State<_NewContentPage>
     print("do may tao khoi tao bao nhieu lan");
     super.initState();
     mProvider = widget.provider;
-    Future.microtask(() => _loadData("new", widget.type));
+    Future.microtask(() => _loadData("wait", widget.type));
   }
 
   @override
   void dispose() {
     if (widget.type == 1) {
-      mProvider.shopsNew.clear();
-      mProvider.totalNew = 0;
-      mProvider.pageNew = 0;
+      mProvider.shopsWait.clear();
+      mProvider.totalWait = 0;
+      mProvider.pageWait = 0;
     } else {
-      mProvider.shopsNewReturn.clear();
-      mProvider.totalNewReturn = 0;
-      mProvider.pageNewReturn = 0;
+      mProvider.shopsWaitReturn.clear();
+      mProvider.totalWaitReturn = 0;
+      mProvider.pageWaitReturn = 0;
     }
     super.dispose();
   }
@@ -94,24 +93,24 @@ class _NewContentState extends State<_NewContentPage>
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
             if (widget.type == 1) {
-              if (!mProvider.loadingNew &&
-                  mProvider.pageNew * mProvider.limit < mProvider.totalNew &&
+              if (!mProvider.loadingWait &&
+                  mProvider.pageWait * mProvider.limit < mProvider.totalWait &&
                   scrollInfo.metrics.pixels ==
                       scrollInfo.metrics.maxScrollExtent) {
-                _loadData("new", 1);
+                _loadData("wait", 1);
               }
             } else {
-              if (!mProvider.loadingNewReturn &&
-                  mProvider.pageNewReturn * mProvider.limit <
-                      mProvider.totalNewReturn &&
+              if (!mProvider.loadingWaitReturn &&
+                  mProvider.pageWaitReturn * mProvider.limit <
+                      mProvider.totalWaitReturn &&
                   scrollInfo.metrics.pixels ==
                       scrollInfo.metrics.maxScrollExtent) {
-                _loadData("new", 2);
+                _loadData("wait", 2);
               }
             }
           },
           child:
-              Stack(alignment: AlignmentDirectional.center, children: <Widget>[
+          Stack(alignment: AlignmentDirectional.center, children: <Widget>[
             MediaQuery.removePadding(
               context: context,
               removeTop: true,
@@ -119,10 +118,10 @@ class _NewContentState extends State<_NewContentPage>
                 color: primaryColorHome,
                 child: ListView.builder(
                   itemCount: widget.type == 1
-                      ? (value.shopsNew == null ? 0 : value.shopsNew.length)
-                      : (value.shopsNewReturn == null
-                          ? 0
-                          : value.shopsNewReturn.length),
+                      ? (value.shopsWait == null ? 0 : value.shopsWait.length)
+                      : (value.shopsWaitReturn == null
+                      ? 0
+                      : value.shopsWaitReturn.length),
                   itemBuilder: (BuildContext context, int index) {
                     return SizedBox(
                       child: Card(
@@ -135,19 +134,23 @@ class _NewContentState extends State<_NewContentPage>
                             onTap: () async {
                               switch (widget.type) {
                                 case 1:
-                                  if (value.shopsNew[index].isActive) {
+                                  if (value.shopsWait[index].isActive) {
                                     final res = await Navigator.push(
                                         homeContext,
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
-                                                value.shopsNew[index],
-                                                "new",
+                                                value.shopsWait[index],
+                                                "wait",
                                                 1)));
                                     if (res == null) {
                                       mProvider.shopsNew.clear();
                                       mProvider.totalNew = 0;
                                       mProvider.pageNew = 0;
                                       _loadData("new", 1);
+                                      mProvider.shopsWait.clear();
+                                      mProvider.totalWait = 0;
+                                      mProvider.pageWait = 0;
+                                      _loadData("wait", 1);
                                       mProvider.shopsSuccess.clear();
                                       mProvider.totalSuccess = 0;
                                       mProvider.pageSuccess = 0;
@@ -161,6 +164,10 @@ class _NewContentState extends State<_NewContentPage>
                                       mProvider.totalNew = 0;
                                       mProvider.pageNew = 0;
                                       _loadData("new", 1);
+                                      mProvider.shopsWait.clear();
+                                      mProvider.totalWait = 0;
+                                      mProvider.pageWait = 0;
+                                      _loadData("wait", 1);
                                       mProvider.shopsSuccess.clear();
                                       mProvider.totalSuccess = 0;
                                       mProvider.pageSuccess = 0;
@@ -173,19 +180,23 @@ class _NewContentState extends State<_NewContentPage>
                                   }
                                   break;
                                 case 2:
-                                  if (value.shopsNewReturn[index].isActive) {
+                                  if (value.shopsWaitReturn[index].isActive) {
                                     final res = await Navigator.push(
                                         homeContext,
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
-                                                value.shopsNewReturn[index],
-                                                "new",
+                                                value.shopsWaitReturn[index],
+                                                "wait",
                                                 2)));
                                     if (res == null) {
                                       mProvider.shopsNewReturn.clear();
                                       mProvider.totalNewReturn = 0;
                                       mProvider.pageNewReturn = 0;
                                       _loadData("new", 2);
+                                      mProvider.shopsWaitReturn.clear();
+                                      mProvider.totalWaitReturn = 0;
+                                      mProvider.pageWaitReturn = 0;
+                                      _loadData("wait", 2);
                                       mProvider.shopsSuccessReturn.clear();
                                       mProvider.totalSuccessReturn = 0;
                                       mProvider.pageSuccessReturn = 0;
@@ -199,6 +210,10 @@ class _NewContentState extends State<_NewContentPage>
                                       mProvider.totalNewReturn = 0;
                                       mProvider.pageNewReturn = 0;
                                       _loadData("new", 2);
+                                      mProvider.shopsWaitReturn.clear();
+                                      mProvider.totalWaitReturn = 0;
+                                      mProvider.pageWaitReturn = 0;
+                                      _loadData("wait", 2);
                                       mProvider.shopsSuccessReturn.clear();
                                       mProvider.totalSuccessReturn = 0;
                                       mProvider.pageSuccessReturn = 0;
@@ -218,37 +233,37 @@ class _NewContentState extends State<_NewContentPage>
                                 Container(
                                   padding: const EdgeInsets.all(8.0),
                                   margin: const EdgeInsets.only(right: 8.0),
-                                  decoration: new BoxDecoration(
+                                  decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.blueAccent,
                                   ),
-                                  child: new Text((index + 1).toString(),
-                                      style: new TextStyle(
+                                  child: Text((index + 1).toString(),
+                                      style: TextStyle(
                                           color: Colors.white,
                                           fontSize:
-                                              16.0)), // You can add a Icon instead of text also, like below.
+                                          16.0)), // You can add a Icon instead of text also, like below.
                                 ),
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 4.0),
                                     child: Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             widget.type == 1
-                                                ? value.shopsNew[index]
-                                                        .fromName +
-                                                    " (" +
-                                                    value.shopsNew[index]
-                                                        .totalOrders +
-                                                    ")"
-                                                : value.shopsNewReturn[index]
-                                                        .fromName +
-                                                    " (" +
-                                                    value.shopsNewReturn[index]
-                                                        .totalOrders +
-                                                    ")",
+                                                ? value.shopsWait[index]
+                                                .fromName +
+                                                " (" +
+                                                value.shopsWait[index]
+                                                    .totalOrders +
+                                                ")"
+                                                : value.shopsWaitReturn[index]
+                                                .fromName +
+                                                " (" +
+                                                value.shopsWaitReturn[index]
+                                                    .totalOrders +
+                                                ")",
                                             style: TextStyle(
                                                 fontSize: 20,
                                                 color: Colors.white),
@@ -264,11 +279,11 @@ class _NewContentState extends State<_NewContentPage>
                                             Expanded(
                                               child: Text(
                                                 widget.type == 1
-                                                    ? value.shopsNew[index]
-                                                        .fromAddress
+                                                    ? value.shopsWait[index]
+                                                    .fromAddress
                                                     : value
-                                                        .shopsNewReturn[index]
-                                                        .fromAddress,
+                                                    .shopsWaitReturn[index]
+                                                    .fromAddress,
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.white60),
@@ -287,19 +302,19 @@ class _NewContentState extends State<_NewContentPage>
                                               InkWell(
                                                 onTap: () => launch("tel://" +
                                                     (widget.type == 1
-                                                        ? value.shopsNew[index]
-                                                            ?.fromPhone
+                                                        ? value.shopsWait[index]
+                                                        ?.fromPhone
                                                         : value
-                                                            .shopsNewReturn[
-                                                                index]
-                                                            ?.fromPhone)),
+                                                        .shopsWaitReturn[
+                                                    index]
+                                                        ?.fromPhone)),
                                                 child: Text(
                                                   widget.type == 1
-                                                      ? value.shopsNew[index]
-                                                          .fromPhone
+                                                      ? value.shopsWait[index]
+                                                      .fromPhone
                                                       : value
-                                                          .shopsNewReturn[index]
-                                                          .fromPhone,
+                                                      .shopsWaitReturn[index]
+                                                      .fromPhone,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.blueAccent,
@@ -318,24 +333,24 @@ class _NewContentState extends State<_NewContentPage>
                                               SizedBox(width: 16),
                                               Text(
                                                 widget.type == 1
-                                                    ? value.shopsNew[index]
-                                                            .totalOrders
-                                                            .toString() +
-                                                        " đơn hàng - nặng " +
-                                                        value.shopsNew[index]
-                                                            .totalWeight +
-                                                        "g"
+                                                    ? value.shopsWait[index]
+                                                    .totalOrders
+                                                    .toString() +
+                                                    " đơn hàng - nặng " +
+                                                    value.shopsWait[index]
+                                                        .totalWeight +
+                                                    "g"
                                                     : value
-                                                            .shopsNewReturn[
-                                                                index]
-                                                            .totalOrders
-                                                            .toString() +
-                                                        " đơn hàng - nặng " +
-                                                        value
-                                                            .shopsNewReturn[
-                                                                index]
-                                                            .totalWeight +
-                                                        "g",
+                                                    .shopsWaitReturn[
+                                                index]
+                                                    .totalOrders
+                                                    .toString() +
+                                                    " đơn hàng - nặng " +
+                                                    value
+                                                        .shopsWaitReturn[
+                                                    index]
+                                                        .totalWeight +
+                                                    "g",
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.white60),
@@ -351,11 +366,11 @@ class _NewContentState extends State<_NewContentPage>
                                               SizedBox(width: 16),
                                               Text(
                                                 widget.type == 1
-                                                    ? value.shopsNew[index]
-                                                        .fullCount
+                                                    ? value.shopsWait[index]
+                                                    .fullCount
                                                     : value
-                                                        .shopsNewReturn[index]
-                                                        .fullCount,
+                                                    .shopsWaitReturn[index]
+                                                    .fullCount,
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.white60),
@@ -375,19 +390,19 @@ class _NewContentState extends State<_NewContentPage>
                                           if (this.mounted) {
                                             if (widget.type == 1) {
                                               if (!value
-                                                  .shopsNew[index].isActive) {
+                                                  .shopsWait[index].isActive) {
                                                 final s = mProvider
                                                     .getShopDetail(
-                                                        value.shopsNew[index],
-                                                        "new",
-                                                        1)
+                                                    value.shopsWait[index],
+                                                    "wait",
+                                                    1)
                                                     .doOnListen(() {})
                                                     .doOnDone(() {})
                                                     .listen((data) {
                                                   //success
                                                   ShopDetailResponse response =
-                                                      ShopDetailResponse
-                                                          .fromJson(data);
+                                                  ShopDetailResponse
+                                                      .fromJson(data);
                                                   List<Status> list = List();
                                                   if (response.result) {
                                                     response.data.orders
@@ -402,11 +417,11 @@ class _NewContentState extends State<_NewContentPage>
                                                       .turnOnShop(list, 1)
                                                       .listen((r) {
                                                     LoginResponse res =
-                                                        LoginResponse.fromJson(
-                                                            r);
+                                                    LoginResponse.fromJson(
+                                                        r);
                                                     if (res.result) {
                                                       setState(() {
-                                                        value.shopsNew[index]
+                                                        value.shopsWait[index]
                                                             .isActive = true;
                                                       });
                                                     }
@@ -419,21 +434,21 @@ class _NewContentState extends State<_NewContentPage>
                                                 mProvider.addSubscription(s);
                                               }
                                             } else {
-                                              if (!value.shopsNewReturn[index]
+                                              if (!value.shopsWaitReturn[index]
                                                   .isActive) {
                                                 final s = mProvider
                                                     .getShopDetail(
-                                                        value.shopsNewReturn[
-                                                            index],
-                                                        "new",
-                                                        2)
+                                                    value.shopsWaitReturn[
+                                                    index],
+                                                    "wait",
+                                                    2)
                                                     .doOnListen(() {})
                                                     .doOnDone(() {})
                                                     .listen((data) {
                                                   //success
                                                   ShopDetailResponse response =
-                                                      ShopDetailResponse
-                                                          .fromJson(data);
+                                                  ShopDetailResponse
+                                                      .fromJson(data);
                                                   List<Status> list = List();
                                                   if (response.result) {
                                                     response.data.orders
@@ -448,13 +463,13 @@ class _NewContentState extends State<_NewContentPage>
                                                       .turnOnShop(list, 2)
                                                       .listen((r) {
                                                     LoginResponse res =
-                                                        LoginResponse.fromJson(
-                                                            r);
+                                                    LoginResponse.fromJson(
+                                                        r);
                                                     if (res.result) {
                                                       setState(() {
                                                         value
-                                                            .shopsNewReturn[
-                                                                index]
+                                                            .shopsWaitReturn[
+                                                        index]
                                                             .isActive = true;
                                                       });
                                                     }
@@ -471,35 +486,35 @@ class _NewContentState extends State<_NewContentPage>
                                         },
                                         child: Switch(
                                           inactiveThumbColor: (widget.type == 1
-                                                  ? value
-                                                      .shopsNew[index].isActive
-                                                  : value.shopsNewReturn[index]
-                                                      .isActive)
+                                              ? value
+                                              .shopsWait[index].isActive
+                                              : value.shopsWaitReturn[index]
+                                              .isActive)
                                               ? Colors.blueAccent
                                               : Colors.grey.shade400,
                                           inactiveTrackColor: (widget.type == 1
-                                                  ? value
-                                                      .shopsNew[index].isActive
-                                                  : value.shopsNewReturn[index]
-                                                      .isActive)
+                                              ? value
+                                              .shopsWait[index].isActive
+                                              : value.shopsWaitReturn[index]
+                                              .isActive)
                                               ? Colors.blueAccent
-                                                  .withAlpha(0x80)
+                                              .withAlpha(0x80)
                                               : Colors.white30,
                                           value: widget.type == 1
-                                              ? value.shopsNew[index].isActive
-                                              : value.shopsNewReturn[index]
-                                                  .isActive,
+                                              ? value.shopsWait[index].isActive
+                                              : value.shopsWaitReturn[index]
+                                              .isActive,
                                         ),
                                       ),
                                     ),
                                     Visibility(
                                       visible: widget.type == 1
-                                          ? value.shopsNew[index].isActive
+                                          ? value.shopsWait[index].isActive
                                           : value
-                                              .shopsNewReturn[index].isActive,
+                                          .shopsWaitReturn[index].isActive,
                                       child: Container(
                                           margin:
-                                              const EdgeInsets.only(top: 60),
+                                          const EdgeInsets.only(top: 60),
                                           child: Icon(
                                             Icons.navigate_next,
                                             color: Colors.white,
@@ -520,7 +535,7 @@ class _NewContentState extends State<_NewContentPage>
             Visibility(
               child: const CircularProgressIndicator(),
               visible:
-                  widget.type == 1 ? value.loadingNew : value.loadingNewReturn,
+              widget.type == 1 ? value.loadingWait : value.loadingWaitReturn,
             )
           ]),
         ),
