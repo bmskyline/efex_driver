@@ -150,66 +150,91 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                     ),
                   ),
                 ),
-                Visibility(
-                  visible: widget.status == "new" ? true : false,
-                  child: Container(
-                      height: 200,
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(
-                          left: 16, right: 16, top: 8, bottom: 16),
-                      color: Colors.white,
-                      child: InkWell(
-                        onTap: () {
-                          getImage();
+                Container(
+                    height: 200,
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(
+                        left: 16, right: 16, top: 8, bottom: 16),
+                    color: Colors.white,
+                    child: (widget.status == "fail" || widget.status == "picked")
+                        ? Image.network(src) : InkWell(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: Consumer<OrderDetailProvider>(
+                        builder: (context, value, child) {
+                          return value.image == null
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.image,
+                                      color: Colors.grey,
+                                      size: 30.0,
+                                    ),
+                                    Text("Hình ảnh")
+                                  ],
+                                )
+                              : Image.file(value.image);
                         },
-                        child: Consumer<OrderDetailProvider>(
-                          builder: (context, value, child) {
-                            return value.image == null
-                                ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.image,
-                                        color: Colors.grey,
-                                        size: 30.0,
-                                      ),
-                                      Text("Hình ảnh")
-                                    ],
-                                  )
-                                : Image.file(value.image);
-                          },
+                      ),
+                    )),
+                Row(children: <Widget>[
+                  Visibility(
+                    visible: (order.currentStatus == "picking"
+                        || order.currentStatus == "picking1"
+                        || order.currentStatus == "picking2"
+                        || order.currentStatus == "returning"
+                        || order.currentStatus == "returning1"
+                        || order.currentStatus == "returning2") ? true : false,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      margin: const EdgeInsets.only(right: 16.0),
+                      child: FlatButton(
+                        onPressed: () => showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogPage(order.trackingNumber, widget.type);
+                            }),
+                        color: Colors.red,
+                        child: Text(
+                          "Chờ",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
                         ),
-                      )),
-                ),
-                Visibility(
-                  visible: widget.status == "new" ? true : false,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    margin: const EdgeInsets.only(right: 16.0),
-                    child: FlatButton(
-                      onPressed: () => showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DialogPage(order.trackingNumber, widget.type);
-                          }),
-                      color: Colors.red,
-                      child: Text(
-                        "Hủy",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                ),
+                  Visibility(
+                    visible: (widget.status == "fail" || widget.status == "picked") ? true : false,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      margin: const EdgeInsets.only(right: 16.0),
+                      child: FlatButton(
+                        onPressed: () => showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DialogPage(order.trackingNumber, widget.type);
+                            }),
+                        color: Colors.red,
+                        child: Text(
+                          "Hủy",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],),
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
                   child: Consumer<OrderDetailProvider>(
                       builder: (context, value, child) {
                     return Visibility(
-                      visible: (value.image != null && widget.status == "new")
-                          ? true
-                          : false,
+                      visible: (value.image == null || widget.status == "picked" || widget.status == "fail")
+                          ? false
+                          : true,
                       child: FlatButton(
                         onPressed: () {
                           mProvider

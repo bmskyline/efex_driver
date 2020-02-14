@@ -46,7 +46,6 @@ class _WaitContentState extends State<_WaitContentPage>
 
   @override
   void initState() {
-    print("do may tao khoi tao bao nhieu lan");
     super.initState();
     mProvider = widget.provider;
     Future.microtask(() => _loadData("wait", widget.type));
@@ -99,7 +98,7 @@ class _WaitContentState extends State<_WaitContentPage>
                   mProvider.pageWait * mProvider.limit < mProvider.totalWait &&
                   scrollInfo.metrics.pixels ==
                       scrollInfo.metrics.maxScrollExtent) {
-                _loadData("wait", 1);
+                _loadData("wait_picking", 1);
               }
             } else {
               if (!mProvider.loadingWaitReturn &&
@@ -107,7 +106,7 @@ class _WaitContentState extends State<_WaitContentPage>
                       mProvider.totalWaitReturn &&
                   scrollInfo.metrics.pixels ==
                       scrollInfo.metrics.maxScrollExtent) {
-                _loadData("wait", 2);
+                _loadData("wait_return", 2);
               }
             }
           },
@@ -142,7 +141,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
                                                 value.shopsWait[index],
-                                                "wait",
+                                                "wait_picking",
                                                 1)));
                                     if (res == null) {
                                       mProvider.shopsNew.clear();
@@ -152,7 +151,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                       mProvider.shopsWait.clear();
                                       mProvider.totalWait = 0;
                                       mProvider.pageWait = 0;
-                                      _loadData("wait", 1);
+                                      _loadData("wait_picking", 1);
                                       mProvider.shopsSuccess.clear();
                                       mProvider.totalSuccess = 0;
                                       mProvider.pageSuccess = 0;
@@ -169,7 +168,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                       mProvider.shopsWait.clear();
                                       mProvider.totalWait = 0;
                                       mProvider.pageWait = 0;
-                                      _loadData("wait", 1);
+                                      _loadData("wait_picking", 1);
                                       mProvider.shopsSuccess.clear();
                                       mProvider.totalSuccess = 0;
                                       mProvider.pageSuccess = 0;
@@ -188,7 +187,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
                                                 value.shopsWaitReturn[index],
-                                                "wait",
+                                                "wait_return",
                                                 2)));
                                     if (res == null) {
                                       mProvider.shopsNewReturn.clear();
@@ -198,7 +197,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                       mProvider.shopsWaitReturn.clear();
                                       mProvider.totalWaitReturn = 0;
                                       mProvider.pageWaitReturn = 0;
-                                      _loadData("wait", 2);
+                                      _loadData("wait_return", 2);
                                       mProvider.shopsSuccessReturn.clear();
                                       mProvider.totalSuccessReturn = 0;
                                       mProvider.pageSuccessReturn = 0;
@@ -215,7 +214,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                       mProvider.shopsWaitReturn.clear();
                                       mProvider.totalWaitReturn = 0;
                                       mProvider.pageWaitReturn = 0;
-                                      _loadData("wait", 2);
+                                      _loadData("wait_return", 2);
                                       mProvider.shopsSuccessReturn.clear();
                                       mProvider.totalSuccessReturn = 0;
                                       mProvider.pageSuccessReturn = 0;
@@ -396,7 +395,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                                 final s = mProvider
                                                     .getShopDetail(
                                                     value.shopsWait[index],
-                                                    "wait",
+                                                    "wait_picking",
                                                     1)
                                                     .doOnListen(() {})
                                                     .doOnDone(() {})
@@ -442,7 +441,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                                     .getShopDetail(
                                                     value.shopsWaitReturn[
                                                     index],
-                                                    "wait",
+                                                    "wait_return",
                                                     2)
                                                     .doOnListen(() {})
                                                     .doOnDone(() {})
