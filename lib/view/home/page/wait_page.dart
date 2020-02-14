@@ -4,9 +4,11 @@ import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/utils/const.dart';
+import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../home_provider.dart';
 

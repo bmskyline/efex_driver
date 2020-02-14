@@ -13,12 +13,16 @@ class HomeProvider extends BaseProvider {
   int _currentIndex = 0;
   bool _loadingNew = false;
   bool _loadingNewReturn = false;
+  bool _loadingWait = false;
+  bool _loadingWaitReturn = false;
   bool _loadingSuccess = false;
   bool _loadingSuccessReturn = false;
   bool _loadingCancel = false;
   bool _loadingCancelReturn = false;
   List<Shop> shopsNew = List();
   List<Shop> shopsNewReturn = List();
+  List<Shop> shopsWait = List();
+  List<Shop> shopsWaitReturn = List();
   List<Shop> shopsSuccess = List();
   List<Shop> shopsSuccessReturn = List();
   List<Shop> shopsCancel = List();
@@ -27,6 +31,10 @@ class HomeProvider extends BaseProvider {
   int pageNewReturn = 0;
   int totalNew = 0;
   int totalNewReturn = 0;
+  int pageWait = 0;
+  int pageWaitReturn = 0;
+  int totalWait = 0;
+  int totalWaitReturn = 0;
   int pageSuccess = 0;
   int pageSuccessReturn = 0;
   int totalSuccess = 0;
@@ -49,6 +57,21 @@ class HomeProvider extends BaseProvider {
 
   set loadingNew(bool value) {
     _loadingNew = value;
+    notifyListeners();
+  }
+
+
+  bool get loadingWait => _loadingWait;
+
+  set loadingWait(bool value) {
+    _loadingWait = value;
+    notifyListeners();
+  }
+
+  bool get loadingWaitReturn => _loadingWaitReturn;
+
+  set loadingWaitReturn(bool value) {
+    _loadingWaitReturn = value;
     notifyListeners();
   }
 
