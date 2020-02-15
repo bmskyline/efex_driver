@@ -150,7 +150,7 @@ class _NewContentState extends State<_NewContentPage>
                                       mProvider.shopsWait.clear();
                                       mProvider.totalWait = 0;
                                       mProvider.pageWait = 0;
-                                      _loadData("wait", 1);
+                                      _loadData("wait_picking", 1);
                                       mProvider.shopsSuccess.clear();
                                       mProvider.totalSuccess = 0;
                                       mProvider.pageSuccess = 0;
@@ -167,7 +167,7 @@ class _NewContentState extends State<_NewContentPage>
                                       mProvider.shopsWait.clear();
                                       mProvider.totalWait = 0;
                                       mProvider.pageWait = 0;
-                                      _loadData("wait", 1);
+                                      _loadData("wait_picking", 1);
                                       mProvider.shopsSuccess.clear();
                                       mProvider.totalSuccess = 0;
                                       mProvider.pageSuccess = 0;
@@ -196,7 +196,7 @@ class _NewContentState extends State<_NewContentPage>
                                       mProvider.shopsWaitReturn.clear();
                                       mProvider.totalWaitReturn = 0;
                                       mProvider.pageWaitReturn = 0;
-                                      _loadData("wait", 2);
+                                      _loadData("wait_return", 2);
                                       mProvider.shopsSuccessReturn.clear();
                                       mProvider.totalSuccessReturn = 0;
                                       mProvider.pageSuccessReturn = 0;
@@ -213,7 +213,7 @@ class _NewContentState extends State<_NewContentPage>
                                       mProvider.shopsWaitReturn.clear();
                                       mProvider.totalWaitReturn = 0;
                                       mProvider.pageWaitReturn = 0;
-                                      _loadData("wait", 2);
+                                      _loadData("wait_return", 2);
                                       mProvider.shopsSuccessReturn.clear();
                                       mProvider.totalSuccessReturn = 0;
                                       mProvider.pageSuccessReturn = 0;
@@ -407,10 +407,12 @@ class _NewContentState extends State<_NewContentPage>
                                                   if (response.result) {
                                                     response.data.orders
                                                         .forEach((e) {
-                                                      list.add(Status(
-                                                          e.trackingNumber,
-                                                          "picking",
-                                                          "picking"));
+                                                      if (e.currentStatus ==
+                                                          "new")
+                                                        list.add(Status(
+                                                            e.trackingNumber,
+                                                            "picking",
+                                                            "picking"));
                                                     });
                                                   }
                                                   final h = mProvider
@@ -453,10 +455,12 @@ class _NewContentState extends State<_NewContentPage>
                                                   if (response.result) {
                                                     response.data.orders
                                                         .forEach((e) {
-                                                      list.add(Status(
-                                                          e.trackingNumber,
-                                                          "picking",
-                                                          "picking"));
+                                                      if (e.currentStatus ==
+                                                          "new")
+                                                        list.add(Status(
+                                                            e.trackingNumber,
+                                                            "picking",
+                                                            "picking"));
                                                     });
                                                   }
                                                   final h = mProvider

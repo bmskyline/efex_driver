@@ -3,6 +3,7 @@ import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/view/home/page/cancel_page.dart';
 import 'package:driver_app/view/home/page/new_page.dart';
+import 'package:driver_app/view/home/page/wait_page.dart';
 import 'package:driver_app/view/home/return/return_provider.dart';
 import 'package:driver_app/view/home/page/success_page.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _ReturnContentState extends State<_ReturnContentPage>
   void initState() {
     super.initState();
     _scrollViewController = ScrollController();
-    _tabController = TabController(vsync: this, length: 3);
+    _tabController = TabController(vsync: this, length: 4);
     mProvider = widget.provider;
   }
 
@@ -68,7 +69,7 @@ class _ReturnContentState extends State<_ReturnContentPage>
                 SliverAppBar(
                   centerTitle: true,
                   backgroundColor: primaryColorHome,
-                  title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
+                  title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
                   pinned: true,
                   floating: true,
                   forceElevated: innerBoxIsScrolled,
@@ -88,9 +89,11 @@ class _ReturnContentState extends State<_ReturnContentPage>
                     ),
                   ],
                   bottom: TabBar(
+                    labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
                     indicatorColor: indicatorHome,
                     tabs: [
                       Tab(text: "Mới"),
+                      Tab(text: "Chờ"),
                       Tab(text: "Thành công"),
                       Tab(text: "Hủy")
                     ],
@@ -102,6 +105,7 @@ class _ReturnContentState extends State<_ReturnContentPage>
             body: TabBarView(
               children: <Widget>[
                 NewPage(homeContext, 2),
+                WaitPage(homeContext, 2),
                 SuccessPage(homeContext, 2),
                 CancelPage(homeContext, 2)
               ],

@@ -16,10 +16,4 @@ class ShopDetailResponse {
     msg: json["msg"] == null ? null : json["msg"],
     data: json["data"] == null ? null : ShopDetailData.fromJson(json["data"]),
   );
-
-  Map<String, dynamic> toJson() => {
-    "result": result == null ? null : result,
-    "msg": msg == null ? null : msg,
-    "data": data == null ? null : data.toJson(),
-  };
 }

@@ -61,7 +61,7 @@ class _OrderListState extends State<_OrderListContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
@@ -187,7 +187,7 @@ class _OrderListState extends State<_OrderListContentPage>
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              Navigator.pop(context, result);
+                              Navigator.pop(context, [true, result]);
                             } else
                               Toast.show("Vui lòng thử lại!");
                           });

@@ -53,11 +53,11 @@ class _DetailPageState extends State<_DetailContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
           actions: <Widget>[
             // action button
             Visibility(
-              visible: widget.status == "new" ? true : false,
+              visible: (widget.status == "fail" || widget.status == "picked")? false : true,
               child: IconButton(
                 icon: Image.asset("assets/barcode.png"),
                 onPressed: () async {
@@ -67,9 +67,13 @@ class _DetailPageState extends State<_DetailContentPage>
                           builder: (context) => OrderListPage(
                               mProvider.response.orders, List(), widget.type)));
                   if (result != null) {
-                    mProvider.response.orders?.removeWhere((e) =>
-                        (result as List<String>)?.contains(e.trackingNumber));
-                    Navigator.pop(context, "refresh");
+                    if ((result as List)[0] == true) {
+                      mProvider.response.orders?.removeWhere((e) =>
+                          (result as List)[1]?.contains(e.trackingNumber));
+                      if (mProvider.response.orders.isEmpty) {
+                        Navigator.pop(context, "refresh");
+                      }
+                    }
                   }
                 },
               ),
@@ -167,10 +171,14 @@ class _DetailPageState extends State<_DetailContentPage>
                                               widget.status, widget.type)),
                                     );
                                     if (result != null) {
-                                      value.response.orders?.removeWhere(
-                                          (e) => e.trackingNumber == result);
-                                      if (value.response.orders.isEmpty) {
-                                        Navigator.pop(context, "refresh");
+                                      if ((result as List)[0] ==
+                                          true) {
+                                        value.response.orders?.removeWhere(
+                                                (e) =>
+                                            e.trackingNumber == (result as List)[1]);
+                                        if (value.response.orders.isEmpty) {
+                                          Navigator.pop(context, "refresh");
+                                        }
                                       }
                                     }
                                   },

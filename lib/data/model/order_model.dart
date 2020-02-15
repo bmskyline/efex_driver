@@ -12,6 +12,8 @@ class Order {
   List<Product> products;
   String fullCount;
   String currentStatus;
+  String reason;
+  String img;
   DateTime dispatchAt;
 
   Order({
@@ -26,6 +28,8 @@ class Order {
     this.products,
     this.fullCount,
     this.currentStatus,
+    this.reason,
+    this.img,
     this.dispatchAt,
   });
 
@@ -40,24 +44,11 @@ class Order {
     note: json["note"] == null ? "" : json["note"],
     products: json["products"] == null ? List() : List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
     currentStatus: json["current_status"] == null ? null : json["current_status"],
+    reason: json["reason"] == null ? null : json["reason"],
+    img: json["imgurl"] == null ? null : json["imgurl"],
     dispatchAt: json["dispatch_at"] == null ? null : DateTime.parse(json["dispatch_at"]),
     fullCount: json["full_count"] == null ? null : json["full_count"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "trackingnumber": trackingNumber == null ? null : trackingNumber,
-    "from_address": fromAddress == null ? null : fromAddress,
-    "from_phone": fromPhone == null ? null : fromPhone,
-    "from_name": fromName == null ? null : fromName,
-    "to_address": toAddress == null ? null : toAddress,
-    "to_phone": toPhone == null ? null : toPhone,
-    "to_name": toName == null ? null : toName,
-    "note": note == null ? null : note,
-    "products": products == null ? null : List<dynamic>.from(products.map((x) => x.toJson())),
-    "current_status": currentStatus == null ? null : currentStatus,
-    "dispatch_at": dispatchAt == null ? null : dispatchAt.toIso8601String(),
-    "full_count": fullCount == null ? null : fullCount,
-  };
 
   int weightOfProduct() {
     int total = 0;

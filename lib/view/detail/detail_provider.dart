@@ -38,9 +38,11 @@ class DetailProvider extends BaseProvider {
         ShopDetailResponse response = ShopDetailResponse.fromJson(r);
         if(response.result) {
           _response = response.data;
-          for(Order o in _response.orders) {
-            if(o.currentStatus == "new") {
-              updateStatus(o.trackingNumber, "picking", "picking");
+          if(status == "new") {
+            for (Order o in _response.orders) {
+              if (o.currentStatus == "new") {
+                updateStatus(o.trackingNumber, "picking", "picking");
+              }
             }
           }
         }

@@ -4,11 +4,14 @@ import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/toast_utils.dart';
 import 'package:driver_app/view/order_detail/order_detail_provider.dart';
+import 'package:driver_app/view/order_detail/wait_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import 'cancel_dialog.dart';
 
 class OrderDetailPage extends PageProvideNode<OrderDetailProvider> {
   final Order order;
@@ -59,7 +62,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
+          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
@@ -135,19 +138,22 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         ),
                       );
                     }),
-                Visibility(
-                  visible: widget.status == "new" ? true : false,
-                  child: Container(
-                    color: Colors.white,
-                    margin: const EdgeInsets.only(
-                        left: 16, right: 16, top: 8, bottom: 8),
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: TextField(
-                      maxLines: 4,
-                      onChanged: (value) => print(value),
-                      decoration: InputDecoration(
-                          hintText: "Ghi chú!", fillColor: Colors.white),
-                    ),
+                Container(
+                  color: Colors.white,
+                  margin: const EdgeInsets.only(
+                      left: 16, right: 16, top: 8, bottom: 8),
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: (widget.status == "fail" || widget.status == "picked") ?
+                      Container(
+                        padding: EdgeInsets.only(bottom: 8, top: 8),
+                        width: double.infinity,
+                        child: Text("Ghi chú: "+ order.reason ?? ""),
+                      ) :
+                  TextField(
+                    maxLines: 4,
+                    onChanged: (value) => print(value),
+                    decoration: InputDecoration(
+                        hintText: "Ghi chú!", fillColor: Colors.white),
                   ),
                 ),
                 Container(
@@ -157,7 +163,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         left: 16, right: 16, top: 8, bottom: 16),
                     color: Colors.white,
                     child: (widget.status == "fail" || widget.status == "picked")
-                        ? Image.network(src) : InkWell(
+                        ? (order.img != null ? Image.network(order.img) : Text("")) : InkWell(
                       onTap: () {
                         getImage();
                       },
@@ -180,47 +186,54 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       ),
                     )),
                 Row(children: <Widget>[
-                  Visibility(
-                    visible: (order.currentStatus == "picking"
-                        || order.currentStatus == "picking1"
-                        || order.currentStatus == "picking2"
-                        || order.currentStatus == "returning"
-                        || order.currentStatus == "returning1"
-                        || order.currentStatus == "returning2") ? true : false,
+                  Expanded(
                     child: Container(
                       alignment: Alignment.centerLeft,
-                      margin: const EdgeInsets.only(right: 16.0),
-                      child: FlatButton(
-                        onPressed: () => showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogPage(order.trackingNumber, widget.type);
-                            }),
-                        color: Colors.red,
-                        child: Text(
-                          "Chờ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
+                      margin: const EdgeInsets.only(left: 16.0),
+                      child: Visibility(
+                        visible: ((order.currentStatus == "picking"
+                            || order.currentStatus == "picking1"
+                            || order.currentStatus == "picking2"
+                            || order.currentStatus == "returning"
+                            || order.currentStatus == "returning1"
+                            || order.currentStatus == "returning2")
+                                && (widget.status != "fail"
+                                    && widget.status != "picked")) ? true : false,
+                        child: FlatButton(
+                          onPressed: () => showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return WaitDialogPage(order.trackingNumber, order.currentStatus);
+                              }),
+                          color: Colors.red,
+                          child: Text(
+                            "Chờ",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Visibility(
-                    visible: (widget.status == "fail" || widget.status == "picked") ? true : false,
+                  Expanded(
                     child: Container(
+                      width: double.infinity,
                       alignment: Alignment.centerRight,
                       margin: const EdgeInsets.only(right: 16.0),
-                      child: FlatButton(
-                        onPressed: () => showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DialogPage(order.trackingNumber, widget.type);
-                            }),
-                        color: Colors.red,
-                        child: Text(
-                          "Hủy",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
+                      child: Visibility(
+                        visible: (widget.status == "fail" || widget.status == "picked") ? false : true,
+                        child: FlatButton(
+                          onPressed: () => showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return DialogPage(order.trackingNumber, widget.type);
+                              }),
+                          color: Colors.red,
+                          child: Text(
+                            "Hủy",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
@@ -243,7 +256,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              Navigator.pop(context, order.trackingNumber);
+                              Navigator.pop(context, [true, order.trackingNumber]);
                             } else
                               Toast.show("Vui lòng thử lại!");
                           });
@@ -272,118 +285,5 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
         visible: value.loading,
       );
     });
-  }
-}
-
-class DialogPage extends PageProvideNode<OrderDetailProvider> {
-  final String number;
-  final int type;
-
-  DialogPage(this.number, this.type);
-
-  @override
-  Widget buildContent(BuildContext context) {
-    return DialogContent(mProvider, number, type);
-  }
-}
-
-class DialogContent extends StatefulWidget {
-  final OrderDetailProvider provider;
-  final String number;
-  final int type;
-
-  DialogContent(this.provider, this.number, this.type);
-
-  @override
-  State<StatefulWidget> createState() => _DialogContentState();
-}
-
-class _DialogContentState extends State<DialogContent> {
-  OrderDetailProvider mProvider;
-  static const Map<String, String> itemsPick = {
-    "picking_fail": "Không lấy được hàng sau 3 lần",
-    "picking_fail_by_shop": "Shop từ chối giao hàng",
-  };
-  static const Map<String, String> itemsReturn = {
-    "return_fail": "Không trả được hàng sau 3 lần",
-    "return_fail_by_shop": "Shop từ chối nhận hàng",
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    mProvider = widget.provider;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("Status Update"),
-      contentPadding: const EdgeInsets.all(8),
-      content: Consumer<OrderDetailProvider>(
-        builder: (context, value, child) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              DropdownButton<String>(
-                isExpanded: true,
-                hint: Text("Status"),
-                value: widget.type == 1 ? value.selectedPick: value.selectedReturn,
-                items: (widget.type == 1 ? itemsPick : itemsReturn)
-                    .map((key, value) {
-                      return MapEntry(
-                          key,
-                          DropdownMenuItem<String>(
-                            value: key,
-                            child: Text(value),
-                          ));
-                    })
-                    .values
-                    .toList(),
-                onChanged: (String val) {
-                  widget.type == 1 ? value.selectedPick = val : value.selectedReturn = val;
-                },
-              ),
-              Container(
-                width: double.infinity,
-                color: Colors.white,
-                child: TextField(
-                  maxLines: 4,
-                  onChanged: (value) => mProvider.reason = value,
-                  decoration: InputDecoration(
-                      hintText: "Ghi chú!", fillColor: Colors.white),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-      actions: <Widget>[
-        FlatButton(
-          child: Text("Xác nhận"),
-          onPressed: () {
-            mProvider
-                .updateOrder(
-                    widget.number, widget.type == 1 ? mProvider.selectedPick : mProvider.selectedReturn, mProvider.reason)
-                .listen((r) {
-              LoginResponse res = LoginResponse.fromJson(r);
-              if (res.result) {
-                Navigator.pop(context);
-                Toast.show("Hủy đơn hàng thành công!");
-                Navigator.pop(context, widget.number);
-              } else
-                Toast.show("Hủy đơn hàng thất bại!");
-            });
-          },
-        ),
-        FlatButton(
-          child: Text("Hủy"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
   }
 }

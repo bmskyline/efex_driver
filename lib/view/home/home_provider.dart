@@ -119,6 +119,12 @@ class HomeProvider extends BaseProvider {
         else
           page = pageNewReturn;
         break;
+      case "wait_picking":
+        page = pageNew;
+        break;
+      case "wait_return":
+          page = pageNewReturn;
+        break;
       case "picked":
         if (type == 1)
           page = pageSuccess;
@@ -146,6 +152,16 @@ class HomeProvider extends BaseProvider {
               totalNewReturn = response.data.total;
               shopsNewReturn.addAll(response.data.shops);
             }
+            break;
+          case "wait_picking":
+              pageWait++;
+              totalWait = response.data.total;
+              shopsWait.addAll(response.data.shops);
+            break;
+          case "wait_return":
+            pageWaitReturn++;
+            totalWaitReturn = response.data.total;
+            shopsWaitReturn.addAll(response.data.shops);
             break;
           case "picked":
             if (type == 1) {
@@ -183,6 +199,12 @@ class HomeProvider extends BaseProvider {
           else
             loadingNewReturn = true;
           break;
+        case "wait_picking":
+          loadingWait = true;
+          break;
+        case "wait_return":
+          loadingWaitReturn = true;
+          break;
         case "picked":
           if (type == 1)
             loadingSuccess = true;
@@ -203,6 +225,12 @@ class HomeProvider extends BaseProvider {
             loadingNew = false;
           else
             loadingNewReturn = false;
+          break;
+        case "wait_picking":
+          loadingWait = false;
+          break;
+        case "wait_return":
+          loadingWaitReturn = false;
           break;
         case "picked":
           if (type == 1)
