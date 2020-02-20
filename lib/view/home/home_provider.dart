@@ -120,10 +120,10 @@ class HomeProvider extends BaseProvider {
           page = pageNewReturn;
         break;
       case "wait_picking":
-        page = pageNew;
+        page = pageWait;
         break;
       case "wait_return":
-          page = pageNewReturn;
+          page = pageWaitReturn;
         break;
       case "picked":
         if (type == 1)

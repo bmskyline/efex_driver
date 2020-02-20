@@ -44,6 +44,7 @@ class _OrderListState extends State<_OrderListContentPage>
   _OrderListState(this.result);
 
   Future getImage() async {
+    FocusScope.of(context).unfocus(focusPrevious: true);
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     mProvider.image = image;
   }
@@ -139,10 +140,10 @@ class _OrderListState extends State<_OrderListContentPage>
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: TextField(
                     maxLines: 4,
-                    onChanged: (value) => print(value),
+                    onChanged: (val) => mProvider.reason = val,
                     decoration: InputDecoration(
                         hintText: "Ghi chú!", fillColor: Colors.white),
-                  ),
+                  )
                 ),
                 Container(
                     height: 200,
@@ -183,7 +184,7 @@ class _OrderListState extends State<_OrderListContentPage>
                           : false,
                       child: CupertinoButton(
                         onPressed: () {
-                          mProvider.updateOrders(result).listen((r) {
+                          mProvider.updateOrders(result, value.reason).listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");

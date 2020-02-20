@@ -8,6 +8,7 @@ class OrderListProvider extends BaseProvider {
   bool _loading = false;
   File _image;
   OrderListProvider(this._repo);
+  String reason;
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -22,15 +23,15 @@ class OrderListProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable updateOrders(List<String> list) {
+  Observable updateOrders(List<String> list, String reason) {
     String result = "[";
     for (int i = 0; i < list.length; i++) {
       if (i == list.length - 1) {
         result +=
-            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"}";
+            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$reason\"}";
       } else {
         result +=
-            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"picked\"},";
+            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$reason\"},";
       }
     }
     result += "]";

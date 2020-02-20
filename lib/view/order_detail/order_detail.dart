@@ -43,8 +43,11 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
   OrderDetailProvider mProvider;
   Order order;
   _OrderDetailState(this.order);
+  final formKey = GlobalKey<FormState>();
+  String reason;
 
   Future getImage() async {
+    FocusScope.of(context).unfocus(focusPrevious: true);
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     mProvider.image = image;
   }
@@ -151,10 +154,10 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       ) :
                   TextField(
                     maxLines: 4,
-                    onChanged: (value) => print(value),
+                    onChanged: (val) => mProvider.reason = val ,
                     decoration: InputDecoration(
                         hintText: "Ghi chú!", fillColor: Colors.white),
-                  ),
+                  )
                 ),
                 Container(
                     height: 200,
@@ -251,12 +254,12 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       child: FlatButton(
                         onPressed: () {
                           mProvider
-                              .updateOrder(order.trackingNumber, "picked", null)
+                              .updateOrder(order.trackingNumber, "picked", value.reason)
                               .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              Navigator.pop(context, [true, order.trackingNumber]);
+                              Navigator.pop(context, ["picked", order.trackingNumber]);
                             } else
                               Toast.show("Vui lòng thử lại!");
                           });

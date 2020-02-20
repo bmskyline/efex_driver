@@ -53,11 +53,14 @@ class _DetailPageState extends State<_DetailContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
+          title: Image.asset('assets/logo_hor.png',
+              fit: BoxFit.fitHeight, height: 32),
           actions: <Widget>[
             // action button
             Visibility(
-              visible: (widget.status == "fail" || widget.status == "picked")? false : true,
+              visible: (widget.status == "fail" || widget.status == "picked")
+                  ? false
+                  : true,
               child: IconButton(
                 icon: Image.asset("assets/barcode.png"),
                 onPressed: () async {
@@ -71,7 +74,7 @@ class _DetailPageState extends State<_DetailContentPage>
                       mProvider.response.orders?.removeWhere((e) =>
                           (result as List)[1]?.contains(e.trackingNumber));
                       if (mProvider.response.orders.isEmpty) {
-                        Navigator.pop(context, "refresh");
+                        Navigator.pop(context);
                       }
                     }
                   }
@@ -168,17 +171,32 @@ class _DetailPageState extends State<_DetailContentPage>
                                       MaterialPageRoute(
                                           builder: (context) => OrderDetailPage(
                                               value.response.orders[index],
-                                              widget.status, widget.type)),
+                                              widget.status,
+                                              widget.type)),
                                     );
                                     if (result != null) {
-                                      if ((result as List)[0] ==
-                                          true) {
-                                        value.response.orders?.removeWhere(
-                                                (e) =>
-                                            e.trackingNumber == (result as List)[1]);
-                                        if (value.response.orders.isEmpty) {
-                                          Navigator.pop(context, "refresh");
-                                        }
+                                      //huy = fail, wait = updatestatus, xac nhan = picked
+                                      switch ((result as List)[0]) {
+                                        case "fail":
+                                        case "picked":
+                                        case "picking1":
+                                        case "returning1":
+                                          value.response.orders?.removeWhere(
+                                              (e) =>
+                                                  e.trackingNumber ==
+                                                  (result as List)[1]);
+                                          if (value.response.orders.isEmpty) {
+                                            Navigator.pop(context);
+                                          }
+                                          break;
+                                        default:
+                                          value.response.orders?.forEach((e) {
+                                            if (e.trackingNumber ==
+                                                (result as List)[1]) {
+                                              e.currentStatus =
+                                                  (result as List)[0];
+                                            }
+                                          });
                                       }
                                     }
                                   },
@@ -199,7 +217,8 @@ class _DetailPageState extends State<_DetailContentPage>
                                               maxLines: 1,
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 8.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
                                               child: RichText(
                                                 text: TextSpan(
                                                   text: 'Tổng sản phẩm: ',
@@ -223,7 +242,8 @@ class _DetailPageState extends State<_DetailContentPage>
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 8.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
                                               child: RichText(
                                                 text: TextSpan(
                                                   text: 'Tổng trọng lượng: ',
@@ -246,7 +266,8 @@ class _DetailPageState extends State<_DetailContentPage>
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 8.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0),
                                               child: Text(
                                                 "Ghi chú: " +
                                                     value.response.orders[index]

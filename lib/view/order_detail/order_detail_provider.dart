@@ -11,6 +11,7 @@ class OrderDetailProvider extends BaseProvider {
   String _selectedPick = "picking_fail";
   String _selectedReturn = "return_fail";
   OrderDetailProvider(this._repo);
+  String cancelReason;
   String reason;
 
   bool get loading => _loading;

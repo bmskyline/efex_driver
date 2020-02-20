@@ -80,7 +80,7 @@ class _DialogContentState extends State<DialogContent> {
                 color: Colors.white,
                 child: TextField(
                   maxLines: 4,
-                  onChanged: (value) => mProvider.reason = value,
+                  onChanged: (value) => mProvider.cancelReason = value,
                   decoration: InputDecoration(
                       hintText: "Ghi chú!", fillColor: Colors.white),
                 ),
@@ -101,13 +101,13 @@ class _DialogContentState extends State<DialogContent> {
           onPressed: () {
             mProvider
                 .updateOrder(
-                widget.number, widget.type == 1 ? mProvider.selectedPick : mProvider.selectedReturn, mProvider.reason)
+                widget.number, widget.type == 1 ? mProvider.selectedPick : mProvider.selectedReturn, mProvider.cancelReason)
                 .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
               if (res.result) {
                 Navigator.pop(context);
                 Toast.show("Hủy đơn hàng thành công!");
-                Navigator.pop(context, [true, widget.number]);
+                Navigator.pop(context, ["fail", widget.number]);
               } else
                 Toast.show("Hủy đơn hàng thất bại!");
             });

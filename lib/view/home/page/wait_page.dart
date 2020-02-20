@@ -1,8 +1,5 @@
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/login_response.dart';
-import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_response.dart';
-import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
@@ -48,7 +45,8 @@ class _WaitContentState extends State<_WaitContentPage>
   void initState() {
     super.initState();
     mProvider = widget.provider;
-    Future.microtask(() => _loadData(widget.type == 1 ? "wait_picking" : "wait_return", widget.type));
+    Future.microtask(() => _loadData(
+        widget.type == 1 ? "wait_picking" : "wait_return", widget.type));
   }
 
   @override
@@ -111,7 +109,7 @@ class _WaitContentState extends State<_WaitContentPage>
             }
           },
           child:
-          Stack(alignment: AlignmentDirectional.center, children: <Widget>[
+              Stack(alignment: AlignmentDirectional.center, children: <Widget>[
             MediaQuery.removePadding(
               context: context,
               removeTop: true,
@@ -121,8 +119,8 @@ class _WaitContentState extends State<_WaitContentPage>
                   itemCount: widget.type == 1
                       ? (value.shopsWait == null ? 0 : value.shopsWait.length)
                       : (value.shopsWaitReturn == null
-                      ? 0
-                      : value.shopsWaitReturn.length),
+                          ? 0
+                          : value.shopsWaitReturn.length),
                   itemBuilder: (BuildContext context, int index) {
                     return SizedBox(
                       child: Card(
@@ -225,7 +223,7 @@ class _WaitContentState extends State<_WaitContentPage>
                                           style: new TextStyle(
                                               color: Colors.white,
                                               fontSize:
-                                              16.0)), // You can add a Icon instead of text also, like below.
+                                                  16.0)), // You can add a Icon instead of text also, like below.
                                     ),
                                   ),
                                   Expanded(
@@ -233,22 +231,24 @@ class _WaitContentState extends State<_WaitContentPage>
                                       padding: const EdgeInsets.only(top: 4.0),
                                       child: Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
                                               widget.type == 1
                                                   ? value.shopsWait[index]
-                                                  .fromName +
-                                                  " (" +
-                                                  value.shopsWait[index]
-                                                      .totalOrders +
-                                                  ")"
+                                                          .fromName +
+                                                      " (" +
+                                                      value.shopsWait[index]
+                                                          .totalOrders +
+                                                      ")"
                                                   : value.shopsWaitReturn[index]
-                                                  .fromName +
-                                                  " (" +
-                                                  value.shopsWaitReturn[index]
-                                                      .totalOrders +
-                                                  ")",
+                                                          .fromName +
+                                                      " (" +
+                                                      value
+                                                          .shopsWaitReturn[
+                                                              index]
+                                                          .totalOrders +
+                                                      ")",
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   color: Colors.white),
@@ -265,14 +265,16 @@ class _WaitContentState extends State<_WaitContentPage>
                                                 child: Text(
                                                   widget.type == 1
                                                       ? value.shopsWait[index]
-                                                      .fromAddress
+                                                          .fromAddress
                                                       : value
-                                                      .shopsWaitReturn[index]
-                                                      .fromAddress,
+                                                          .shopsWaitReturn[
+                                                              index]
+                                                          .fromAddress,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.white60),
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 2,
                                                 ),
                                               ),
@@ -287,24 +289,28 @@ class _WaitContentState extends State<_WaitContentPage>
                                                 InkWell(
                                                   onTap: () => launch("tel://" +
                                                       (widget.type == 1
-                                                          ? value.shopsWait[index]
-                                                          ?.fromPhone
+                                                          ? value
+                                                              .shopsWait[index]
+                                                              ?.fromPhone
                                                           : value
-                                                          .shopsWaitReturn[
-                                                      index]
-                                                          ?.fromPhone)),
+                                                              .shopsWaitReturn[
+                                                                  index]
+                                                              ?.fromPhone)),
                                                   child: Text(
                                                     widget.type == 1
                                                         ? value.shopsWait[index]
-                                                        .fromPhone
+                                                            .fromPhone
                                                         : value
-                                                        .shopsWaitReturn[index]
-                                                        .fromPhone,
+                                                            .shopsWaitReturn[
+                                                                index]
+                                                            .fromPhone,
                                                     style: TextStyle(
                                                         fontSize: 16,
-                                                        color: Colors.blueAccent,
-                                                        decoration: TextDecoration
-                                                            .underline),
+                                                        color:
+                                                            Colors.blueAccent,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .underline),
                                                   ),
                                                 )
                                               ],
@@ -319,23 +325,23 @@ class _WaitContentState extends State<_WaitContentPage>
                                                 Text(
                                                   widget.type == 1
                                                       ? value.shopsWait[index]
-                                                      .totalOrders
-                                                      .toString() +
-                                                      " đơn hàng - nặng " +
-                                                      value.shopsWait[index]
-                                                          .totalWeight +
-                                                      "g"
+                                                              .totalOrders
+                                                              .toString() +
+                                                          " đơn hàng - nặng " +
+                                                          value.shopsWait[index]
+                                                              .totalWeight +
+                                                          "g"
                                                       : value
-                                                      .shopsWaitReturn[
-                                                  index]
-                                                      .totalOrders
-                                                      .toString() +
-                                                      " đơn hàng - nặng " +
-                                                      value
-                                                          .shopsWaitReturn[
-                                                      index]
-                                                          .totalWeight +
-                                                      "g",
+                                                              .shopsWaitReturn[
+                                                                  index]
+                                                              .totalOrders
+                                                              .toString() +
+                                                          " đơn hàng - nặng " +
+                                                          value
+                                                              .shopsWaitReturn[
+                                                                  index]
+                                                              .totalWeight +
+                                                          "g",
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.white60),
@@ -352,10 +358,11 @@ class _WaitContentState extends State<_WaitContentPage>
                                                 Text(
                                                   widget.type == 1
                                                       ? value.shopsWait[index]
-                                                      .fullCount
+                                                          .fullCount
                                                       : value
-                                                      .shopsWaitReturn[index]
-                                                      .fullCount,
+                                                          .shopsWaitReturn[
+                                                              index]
+                                                          .fullCount,
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.white60),
@@ -367,10 +374,8 @@ class _WaitContentState extends State<_WaitContentPage>
                                   ),
                                   Container(
                                       margin: EdgeInsets.only(left: 8),
-                                      child: Icon(
-                                          Icons.navigate_next,
-                                          color: Colors.white)
-                                  )
+                                      child: Icon(Icons.navigate_next,
+                                          color: Colors.white))
                                 ],
                               ),
                             ),
@@ -384,8 +389,9 @@ class _WaitContentState extends State<_WaitContentPage>
             ),
             Visibility(
               child: const CircularProgressIndicator(),
-              visible:
-              widget.type == 1 ? value.loadingWait : value.loadingWaitReturn,
+              visible: widget.type == 1
+                  ? value.loadingWait
+                  : value.loadingWaitReturn,
             )
           ]),
         ),

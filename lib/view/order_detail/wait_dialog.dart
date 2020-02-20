@@ -93,10 +93,7 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
               if (res.result) {
                 Navigator.pop(context);
                 Toast.show("Thành công!");
-                if(widget.status == "picking")
-                  Navigator.pop(context, [true, widget.number]);
-                else
-                  Navigator.pop(context, [false, widget.number]);
+                Navigator.pop(context, [updateStatus, widget.number]);
               } else
                 Toast.show("Thất bại!");
             });
