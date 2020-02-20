@@ -43,8 +43,6 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
   OrderDetailProvider mProvider;
   Order order;
   _OrderDetailState(this.order);
-  final formKey = GlobalKey<FormState>();
-  String reason;
 
   Future getImage() async {
     FocusScope.of(context).unfocus(focusPrevious: true);
@@ -166,7 +164,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         left: 16, right: 16, top: 8, bottom: 16),
                     color: Colors.white,
                     child: (widget.status == "fail" || widget.status == "picked")
-                        ? (order.img != null ? Image.network(order.img) : Text("")) : InkWell(
+                        ? (order.img.isNotEmpty ? Image.network(order.img) : Text("")) : InkWell(
                       onTap: () {
                         getImage();
                       },
