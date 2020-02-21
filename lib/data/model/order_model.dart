@@ -46,8 +46,8 @@ class Order {
     currentStatus: json["current_status"] == null ? null : json["current_status"],
     reason: json["reason"] == null ? "" : json["reason"],
     img: json["imgurl"] == null ? "" : json["imgurl"],
-    dispatchAt: json["dispatch_at"] == null ? "" : DateTime.parse(json["dispatch_at"]),
-    fullCount: json["full_count"] == null ? "" : json["full_count"],
+    dispatchAt: json["dispatch_at"] == null ? null : DateTime.parse(json["dispatch_at"]),
+    fullCount: json["full_count"] == null ? "0" : json["full_count"],
   );
 
   int weightOfProduct() {
