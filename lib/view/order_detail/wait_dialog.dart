@@ -9,12 +9,13 @@ import 'order_detail_provider.dart';
 class WaitDialogPage extends PageProvideNode<OrderDetailProvider> {
   final String number;
   final String status;
+  final String name;
 
-  WaitDialogPage(this.number, this.status);
+  WaitDialogPage(this.number, this.status, this.name);
 
   @override
   Widget buildContent(BuildContext context) {
-    return WaitDialogContent(mProvider, number, status);
+    return WaitDialogContent(mProvider, number, status, name);
   }
 }
 
@@ -22,8 +23,9 @@ class WaitDialogContent extends StatefulWidget {
   final OrderDetailProvider provider;
   final String number;
   final String status;
+  final String name;
 
-  WaitDialogContent(this.provider, this.number, this.status);
+  WaitDialogContent(this.provider, this.number, this.status, this.name);
 
   @override
   State<StatefulWidget> createState() => _WaitDialogContentState();
@@ -33,6 +35,7 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
   OrderDetailProvider mProvider;
   String text;
   String updateStatus;
+  String reason;
 
   @override
   void initState() {
@@ -42,26 +45,32 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
       case "picking":
         text = "Lấy hàng lần 1 không thành công";
         updateStatus = "picking1";
+        reason = "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã đến shop ${widget.name} lấy hàng lần 1 không thành công";
         break;
       case "picking1":
         text = "Lấy hàng lần 2 không thành công";
         updateStatus = "picking2";
+        reason = "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã đến shop ${widget.name} lấy hàng lần 2 không thành công";
         break;
       case "picking2":
         text = "Lấy hàng lần 3 không thành công";
         updateStatus = "picking3";
+        reason = "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã đến shop ${widget.name} lấy hàng lần 3 không thành công";
         break;
       case "returning":
         text = "Trả hàng lần 1 không thành công";
         updateStatus = "returning1";
+        reason = "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã đến shop ${widget.name} trả hàng lần 1 không thành công";
         break;
       case "returning1":
         text = "Trả hàng lần 2 không thành công";
         updateStatus = "returning2";
+        reason = "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã đến shop ${widget.name} trả hàng lần 2 không thành công";
         break;
       case "returning2":
         text = "Trả hàng lần 3 không thành công";
         updateStatus = "returning3";
+        reason = "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã đến shop ${widget.name} trả hàng lần 3 không thành công";
         break;
     }
   }
@@ -77,7 +86,7 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
             color: Colors.white,
             child: TextField(
               maxLines: 4,
-              onChanged: (value) => mProvider.cancelReason = value,
+              onChanged: (value) => mProvider.waitReason = value,
               decoration: InputDecoration(
                   hintText: "Ghi chú!", fillColor: Colors.white),
             ),
@@ -96,7 +105,7 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
           onPressed: () {
             mProvider
                 .updateOrder(
-                widget.number, updateStatus, text)
+                widget.number, updateStatus, (mProvider.waitReason.isNotEmpty ? mProvider.waitReason : reason))
                 .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
               if (res.result) {

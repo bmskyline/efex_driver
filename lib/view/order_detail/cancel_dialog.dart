@@ -10,12 +10,13 @@ class DialogPage extends PageProvideNode<OrderDetailProvider> {
   final String number;
   final int type;
   final String status;
+  final String name;
 
-  DialogPage(this.number, this.type, this.status);
+  DialogPage(this.number, this.type, this.status, this.name);
 
   @override
   Widget buildContent(BuildContext context) {
-    return DialogContent(mProvider, number, type, status);
+    return DialogContent(mProvider, number, type, status, name);
   }
 }
 
@@ -24,8 +25,9 @@ class DialogContent extends StatefulWidget {
   final String number;
   final int type;
   final String status;
+  final String name;
 
-  DialogContent(this.provider, this.number, this.type, this.status);
+  DialogContent(this.provider, this.number, this.type, this.status, this.name);
 
   @override
   State<StatefulWidget> createState() => _DialogContentState();
@@ -123,7 +125,7 @@ class _DialogContentState extends State<DialogContent> {
           onPressed: () {
             mProvider
                 .updateOrder(
-                widget.number, mProvider.selected, mProvider.cancelReason)
+                widget.number, mProvider.selected, (mProvider.cancelReason.isNotEmpty ? mProvider.cancelReason : "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã hủy đơn hàng ${widget.number} vì ${items[mProvider.selected]} tại shop ${widget.name}"))
                 .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
               if (res.result) {

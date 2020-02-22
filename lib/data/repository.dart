@@ -68,7 +68,7 @@ class GithubRepo {
       "Trackingnumber": number,
       "Status": status,
       "Reason": reason,
-      "Img": UploadFileInfo(image, "image")
+      "Img": image == null ? null : UploadFileInfo(image, "image")
     });
     return _remote.updateStatus(formData);
   }
@@ -76,13 +76,14 @@ class GithubRepo {
   Observable updateStatusList(File image, String list) {
     FormData formData = FormData.from({
       "Trackings": list,
-      "Img": UploadFileInfo(image, "image")
+      "Img": image == null ? null : UploadFileInfo(image, "image")
     });
     return _remote.updateStatusList(formData);
   }
 
   void saveToken(String token) {
     _spUtil.putString("TOKEN", token);
+    _spUtil.putString("USER", "Sela");
   }
 
   void removeToken() {

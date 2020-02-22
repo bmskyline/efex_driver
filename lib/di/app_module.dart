@@ -19,7 +19,7 @@ final viewModelModule = Module([
   single<ReturnProvider>(({params}) => ReturnProvider(get())),
   single<HomeProvider>(({params}) => HomeProvider(get())),
   factory<DetailProvider>(({params}) => DetailProvider(get())),
-  factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get())),
+  factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get(), get())),
   factory<OrderListProvider>(({params}) => OrderListProvider(get())),
   factory<ScanProvider>(({params}) => ScanProvider()),
 ])

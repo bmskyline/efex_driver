@@ -143,20 +143,20 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Trạng thái : "+ statusMapping[order.currentStatus ?? ""],
+                  child: Text("Trạng thái: "+ statusMapping[order.currentStatus ?? ""],
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Thời gian : "+ (order.dispatchAt != null ? DateFormat('dd-MM-yyyy').format(order.dispatchAt) : ""),
+                  child: Text("Thời gian: "+ (order.dispatchAt != null ? DateFormat('dd-MM-yyyy').format(order.dispatchAt) : ""),
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
                 (widget.status == "fail" || widget.status == "picked") ?
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Ghi chú : " + (order.reason ?? ""),
+                  child: Text("Ghi chú: " + (order.reason ?? ""),
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ) : Container(
                   color: Colors.white,
@@ -217,7 +217,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                           onPressed: () => showDialog<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return WaitDialogPage(order.trackingNumber, order.currentStatus);
+                                return WaitDialogPage(order.trackingNumber, order.currentStatus, order.fromName);
                               }),
                           color: Colors.red,
                           child: Text(
@@ -240,7 +240,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                           onPressed: () => showDialog<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogPage(order.trackingNumber, widget.type, widget.status);
+                                return DialogPage(order.trackingNumber, widget.type, widget.status, order.fromName);
                               }),
                           color: Colors.red,
                           child: Text(
@@ -265,7 +265,8 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       child: FlatButton(
                         onPressed: () {
                           mProvider
-                              .updateOrder(order.trackingNumber, "picked", value.reason)
+                              .updateOrder(order.trackingNumber, "picked", (value.reason.isNotEmpty ? value.reason : (widget.type == 1 ? "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã lấy thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}" :
+                          "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã trả thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}")))
                               .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
