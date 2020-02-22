@@ -68,7 +68,7 @@ class GithubRepo {
       "Trackingnumber": number,
       "Status": status,
       "Reason": reason,
-      "Img": image
+      "Img": UploadFileInfo(image, "image")
     });
     return _remote.updateStatus(formData);
   }
@@ -76,7 +76,7 @@ class GithubRepo {
   Observable updateStatusList(File image, String list) {
     FormData formData = FormData.from({
       "Trackings": list,
-      "Img": image
+      "Img": UploadFileInfo(image, "image")
     });
     return _remote.updateStatusList(formData);
   }

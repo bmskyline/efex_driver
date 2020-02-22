@@ -110,7 +110,7 @@ class HomeProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable getShops(String status, int type) {
+  Observable getShops(String status, int type, bool isRefresh) {
     int page = 0;
     switch (status) {
       case "new":
@@ -154,9 +154,9 @@ class HomeProvider extends BaseProvider {
             }
             break;
           case "wait_picking":
-              pageWait++;
-              totalWait = response.data.total;
-              shopsWait.addAll(response.data.shops);
+            pageWait++;
+            totalWait = response.data.total;
+            shopsWait.addAll(response.data.shops);
             break;
           case "wait_return":
             pageWaitReturn++;
@@ -194,28 +194,36 @@ class HomeProvider extends BaseProvider {
     }).doOnListen(() {
       switch (status) {
         case "new":
-          if (type == 1)
-            loadingNew = true;
-          else
-            loadingNewReturn = true;
+          if(!isRefresh) {
+            if (type == 1)
+              loadingNew = true;
+            else
+              loadingNewReturn = true;
+          }
           break;
         case "wait_picking":
-          loadingWait = true;
+          if(!isRefresh)
+            loadingWait = true;
           break;
         case "wait_return":
-          loadingWaitReturn = true;
+          if(!isRefresh)
+            loadingWaitReturn = true;
           break;
         case "picked":
-          if (type == 1)
-            loadingSuccess = true;
-          else
-            loadingSuccessReturn = true;
+          if(!isRefresh) {
+            if (type == 1)
+              loadingSuccess = true;
+            else
+              loadingSuccessReturn = true;
+          }
           break;
         case "fail":
-          if (type == 1)
-            loadingCancel = true;
-          else
-            loadingCancelReturn = true;
+          if(!isRefresh) {
+            if (type == 1)
+              loadingCancel = true;
+            else
+              loadingCancelReturn = true;
+          }
           break;
       }
     }).doOnDone(() {
@@ -261,7 +269,7 @@ class HomeProvider extends BaseProvider {
           () => type == 1 ? loadingNew = false : loadingNewReturn = false);
 
   Observable getShopDetail(Shop shop, String status, int type) => _repo
-      .getShopDetail(shop, getDate(), limit, 0, status, type)
+      .getShopDetail(shop, getDate(), 1, 0, status, type)
       .doOnData((r) {})
       .doOnError((e, stacktrace) {
         if (e is DioError) {

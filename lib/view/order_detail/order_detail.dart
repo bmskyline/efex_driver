@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'cancel_dialog.dart';
@@ -140,17 +141,29 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       );
                     }),
                 Container(
+                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  width: double.infinity,
+                  child: Text("Trạng thái : "+ statusMapping[order.currentStatus ?? ""],
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  width: double.infinity,
+                  child: Text("Thời gian : "+ (order.dispatchAt != null ? DateFormat('dd-MM-yyyy').format(order.dispatchAt) : ""),
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                ),
+                (widget.status == "fail" || widget.status == "picked") ?
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  width: double.infinity,
+                  child: Text("Ghi chú : " + (order.reason ?? ""),
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                ) : Container(
                   color: Colors.white,
                   margin: const EdgeInsets.only(
                       left: 16, right: 16, top: 8, bottom: 8),
                   padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: (widget.status == "fail" || widget.status == "picked") ?
-                      Container(
-                        padding: EdgeInsets.only(bottom: 8, top: 8),
-                        width: double.infinity,
-                        child: Text("Ghi chú: "+ order.reason ?? ""),
-                      ) :
-                  TextField(
+                  child: TextField(
                     maxLines: 4,
                     onChanged: (val) => mProvider.reason = val ,
                     decoration: InputDecoration(
@@ -227,7 +240,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                           onPressed: () => showDialog<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogPage(order.trackingNumber, widget.type);
+                                return DialogPage(order.trackingNumber, widget.type, widget.status);
                               }),
                           color: Colors.red,
                           child: Text(

@@ -69,10 +69,19 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Status Update"),
+      title: Text(text),
       content: Consumer<OrderDetailProvider>(
         builder: (context, value, child) {
-          return Text(text);
+          return Container(
+            width: double.infinity,
+            color: Colors.white,
+            child: TextField(
+              maxLines: 4,
+              onChanged: (value) => mProvider.cancelReason = value,
+              decoration: InputDecoration(
+                  hintText: "Ghi chú!", fillColor: Colors.white),
+            ),
+          );
         },
       ),
       actions: <Widget>[

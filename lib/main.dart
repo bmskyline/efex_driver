@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Demo',
+      title: 'Efex Driver',
       home: defaultHome,
       initialRoute: "/",
       routes: {

@@ -9,12 +9,13 @@ import 'order_detail_provider.dart';
 class DialogPage extends PageProvideNode<OrderDetailProvider> {
   final String number;
   final int type;
+  final String status;
 
-  DialogPage(this.number, this.type);
+  DialogPage(this.number, this.type, this.status);
 
   @override
   Widget buildContent(BuildContext context) {
-    return DialogContent(mProvider, number, type);
+    return DialogContent(mProvider, number, type, status);
   }
 }
 
@@ -22,8 +23,9 @@ class DialogContent extends StatefulWidget {
   final OrderDetailProvider provider;
   final String number;
   final int type;
+  final String status;
 
-  DialogContent(this.provider, this.number, this.type);
+  DialogContent(this.provider, this.number, this.type, this.status);
 
   @override
   State<StatefulWidget> createState() => _DialogContentState();
@@ -31,25 +33,46 @@ class DialogContent extends StatefulWidget {
 
 class _DialogContentState extends State<DialogContent> {
   OrderDetailProvider mProvider;
-  static const Map<String, String> itemsPick = {
-    "picking_fail": "Không lấy được hàng sau 3 lần",
-    "picking_fail_by_shop": "Shop từ chối giao hàng",
-  };
-  static const Map<String, String> itemsReturn = {
-    "return_fail": "Không trả được hàng sau 3 lần",
-    "return_fail_by_shop": "Shop từ chối nhận hàng",
-  };
+  Map<String, String> items = {};
 
   @override
   void initState() {
     super.initState();
     mProvider = widget.provider;
+    switch(widget.type) {
+      case 1:
+        if(widget.status == "picking3"){
+          items.addAll({
+            "picking_fail_by_shop": "Shop từ chối giao hàng",
+            "picking_fail": "Không lấy được hàng sau 3 lần",
+          });
+        } else {
+          items.addAll({
+            "picking_fail_by_shop": "Shop từ chối giao hàng",
+          });
+        }
+        mProvider.selected = "picking_fail_by_shop";
+        break;
+      case 2:
+        if(widget.status == "returning3"){
+          items.addAll({
+            "return_fail_by_shop": "Shop từ chối nhận hàng",
+            "return_fail": "Không trả được hàng sau 3 lần",
+          });
+        } else {
+          items.addAll({
+            "return_fail_by_shop": "Shop từ chối nhận hàng",
+          });
+        }
+        mProvider.selected = "return_fail_by_shop";
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Status Update"),
+      title: Text("Hủy đơn hàng"),
       content: Consumer<OrderDetailProvider>(
         builder: (context, value, child) {
           return Column(
@@ -59,9 +82,8 @@ class _DialogContentState extends State<DialogContent> {
               DropdownButton<String>(
                 isExpanded: true,
                 hint: Text("Status"),
-                value: widget.type == 1 ? value.selectedPick: value.selectedReturn,
-                items: (widget.type == 1 ? itemsPick : itemsReturn)
-                    .map((key, value) {
+                value: value.selected,
+                items: items.map((key, value) {
                   return MapEntry(
                       key,
                       DropdownMenuItem<String>(
@@ -72,7 +94,7 @@ class _DialogContentState extends State<DialogContent> {
                     .values
                     .toList(),
                 onChanged: (String val) {
-                  widget.type == 1 ? value.selectedPick = val : value.selectedReturn = val;
+                  value.selected = val;
                 },
               ),
               Container(
@@ -101,7 +123,7 @@ class _DialogContentState extends State<DialogContent> {
           onPressed: () {
             mProvider
                 .updateOrder(
-                widget.number, widget.type == 1 ? mProvider.selectedPick : mProvider.selectedReturn, mProvider.cancelReason)
+                widget.number, mProvider.selected, mProvider.cancelReason)
                 .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
               if (res.result) {

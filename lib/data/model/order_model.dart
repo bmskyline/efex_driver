@@ -44,7 +44,7 @@ class Order {
     note: json["note"] == null ? "" : json["note"],
     products: json["products"] == null ? List() : List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
     currentStatus: json["current_status"] == null ? null : json["current_status"],
-    reason: json["reason"] == null ? "" : json["reason"],
+    reason: json["reason"] == null ? null : json["reason"],
     img: json["imgurl"] == null ? "" : json["imgurl"],
     dispatchAt: json["dispatch_at"] == null ? null : DateTime.parse(json["dispatch_at"]),
     fullCount: json["full_count"] == null ? "0" : json["full_count"],
