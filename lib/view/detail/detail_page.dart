@@ -6,6 +6,7 @@ import 'package:driver_app/view/detail/detail_provider.dart';
 import 'package:driver_app/view/order_detail/order_detail.dart';
 import 'package:driver_app/view/order_list/order_list.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -68,12 +69,12 @@ class _DetailPageState extends State<_DetailContentPage>
                       context,
                       MaterialPageRoute(
                           builder: (context) => OrderListPage(
-                              mProvider.response.orders, List(), widget.type)));
+                              mProvider.orders, List(), widget.type)));
                   if (result != null) {
                     if ((result as List)[0] == true) {
-                      mProvider.response.orders?.removeWhere((e) =>
+                      mProvider.orders?.removeWhere((e) =>
                           (result as List)[1]?.contains(e.trackingNumber));
-                      if (mProvider.response.orders.isEmpty) {
+                      if (mProvider.orders.isEmpty) {
                         Navigator.pop(context);
                       }
                     }
@@ -95,34 +96,34 @@ class _DetailPageState extends State<_DetailContentPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                            value.response == null
+                            value.orders == null
                                 ? ""
-                                : (value.response.orders?.isEmpty == true
+                                : (value.orders?.isEmpty == true
                                     ? ""
-                                    : value.response.orders
+                                    : value.orders
                                             .elementAt(0)
                                             .fromName +
                                         " (" +
-                                        value.response.orders?.length
+                                        value.orders?.length
                                             .toString() +
                                         ")"),
                             style: TextStyle(fontSize: 22, color: Colors.white),
                             textAlign: TextAlign.left),
                         InkWell(
                           onTap: () => launch("tel://" +
-                              (value.response == null
+                              (value.orders == null
                                   ? ""
-                                  : (value.response?.orders?.isEmpty == true
+                                  : (value?.orders?.isEmpty == true
                                       ? ""
-                                      : value.response?.orders
+                                      : value?.orders
                                           ?.elementAt(0)
                                           ?.fromPhone))),
                           child: Text(
-                              value.response == null
+                              value.orders == null
                                   ? ""
-                                  : (value.response?.orders?.isEmpty == true
+                                  : (value?.orders?.isEmpty == true
                                       ? ""
-                                      : value.response?.orders
+                                      : value?.orders
                                           ?.elementAt(0)
                                           ?.fromPhone),
                               style: TextStyle(
@@ -133,11 +134,11 @@ class _DetailPageState extends State<_DetailContentPage>
                               textAlign: TextAlign.left),
                         ),
                         Text(
-                            value.response == null
+                            value.orders == null
                                 ? ""
-                                : (value.response?.orders?.isEmpty == true
+                                : (value?.orders?.isEmpty == true
                                     ? ""
-                                    : value.response?.orders
+                                    : value?.orders
                                         ?.elementAt(0)
                                         ?.fromAddress),
                             style:
@@ -147,152 +148,191 @@ class _DetailPageState extends State<_DetailContentPage>
                     ),
                   ),
                   Flexible(
-                    child: ListView.builder(
-                        itemCount: value.response == null
-                            ? 0
-                            : (value.response?.orders?.isEmpty == true
-                                ? 0
-                                : value.response.orders.length),
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            child: Card(
-                              margin: EdgeInsets.all(0.5),
-                              color: secondColorHome,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16.0,
-                                    right: 16.0,
-                                    top: 8.0,
-                                    bottom: 8.0),
-                                child: InkWell(
-                                  onTap: () async {
-                                    final result = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => OrderDetailPage(
-                                              value.response.orders[index],
-                                              widget.status,
-                                              widget.type)),
-                                    );
-                                    if (result != null) {
-                                      //huy = fail, wait = updatestatus, xac nhan = picked
-                                      switch ((result as List)[0]) {
-                                        case "fail":
-                                        case "picked":
-                                        case "picking1":
-                                        case "returning1":
-                                          value.response.orders?.removeWhere(
-                                              (e) =>
-                                                  e.trackingNumber ==
-                                                  (result as List)[1]);
-                                          if (value.response.orders.isEmpty) {
-                                            Navigator.pop(context);
-                                          }
-                                          break;
-                                        default:
-                                          value.response.orders?.forEach((e) {
-                                            if (e.trackingNumber ==
-                                                (result as List)[1]) {
-                                              e.currentStatus =
-                                                  (result as List)[0];
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        if (!mProvider.loading &&
+                            mProvider.page * mProvider.limit < mProvider.total &&
+                            scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent) {
+                          _loadData(widget._shop, widget.status, widget.type);
+                      }
+                  },
+                      child: ListView.builder(
+                          itemCount: value.orders == null
+                              ? 0
+                              : (value?.orders?.isEmpty == true
+                                  ? 0
+                                  : value.orders.length),
+                          itemBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              child: Card(
+                                margin: EdgeInsets.all(0.5),
+                                color: secondColorHome,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0,
+                                      right: 16.0,
+                                      top: 8.0,
+                                      bottom: 8.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      final result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => OrderDetailPage(
+                                                value.orders[index],
+                                                widget.status,
+                                                widget.type)),
+                                      );
+                                      if (result != null) {
+                                        //huy = fail, wait = updatestatus, xac nhan = picked
+                                        switch ((result as List)[0]) {
+                                          case "fail":
+                                          case "picked":
+                                          case "picking1":
+                                          case "returning1":
+                                            value.orders?.removeWhere(
+                                                (e) =>
+                                                    e.trackingNumber ==
+                                                    (result as List)[1]);
+                                            if (value.orders.isEmpty) {
+                                              Navigator.pop(context);
                                             }
-                                          });
+                                            break;
+                                          default:
+                                            value.orders?.forEach((e) {
+                                              if (e.trackingNumber ==
+                                                  (result as List)[1]) {
+                                                e.currentStatus =
+                                                    (result as List)[0];
+                                              }
+                                            });
+                                        }
                                       }
-                                    }
-                                  },
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              value.response.orders[index]
-                                                  .trackingNumber,
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  text: 'Tổng sản phẩm: ',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.white60),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: value
-                                                          .response
-                                                          .orders[index]
-                                                          .products
-                                                          .length
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  text: 'Tổng trọng lượng: ',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Colors.white60),
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text: value.response
-                                                              .orders[index]
-                                                              .weightOfProduct()
-                                                              .toString() +
-                                                          'g',
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0),
-                                              child: Text(
-                                                "Ghi chú: " +
-                                                    value.response.orders[index]
-                                                        .note,
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                value.orders[index]
+                                                    .trackingNumber,
                                                 style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white60),
+                                                    fontSize: 20,
+                                                    color: Colors.white),
                                                 overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
+                                                maxLines: 1,
                                               ),
-                                            ),
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    text: 'Tổng sản phẩm: ',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white60),
+                                                    children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: value
+
+                                                            .orders[index]
+                                                            .products
+                                                            .length
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    text: 'Tổng trọng lượng: ',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.white60),
+                                                    children: <TextSpan>[
+                                                      TextSpan(
+                                                        text: value
+                                                                .orders[index]
+                                                                .weightOfProduct()
+                                                                .toString() +
+                                                            'g',
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(
+                                                  "Ghi chú: " +
+                                                      (value.orders[index]
+                                                          .note ?? ""),
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white60),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(
+                                                  "Tài xế: " +
+                                                      (value.orders[index]
+                                                          .reason ?? ""),
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white60),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
+                                                child: Text(
+                                                  "Thời gian: " +
+                                                      (value.orders[index]
+                                                          .updatedTime != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(value.orders[index]
+                                                          .updatedTime) : ""),
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      color: Colors.white60),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Icon(
-                                        Icons.navigate_next,
-                                        color: Colors.white,
-                                      )
-                                    ],
+                                        Icon(
+                                          Icons.navigate_next,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          }),
+                    ),
                   )
                 ],
               );

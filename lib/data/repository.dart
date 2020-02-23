@@ -81,9 +81,9 @@ class GithubRepo {
     return _remote.updateStatusList(formData);
   }
 
-  void saveToken(String token) {
+  void saveToken(String token, String name) {
     _spUtil.putString("TOKEN", token);
-    _spUtil.putString("USER", "Sela");
+    _spUtil.putString("USER", name);
   }
 
   void removeToken() {

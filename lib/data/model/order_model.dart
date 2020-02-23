@@ -15,6 +15,7 @@ class Order {
   String reason;
   String img;
   DateTime dispatchAt;
+  DateTime updatedTime;
 
   Order({
     this.trackingNumber,
@@ -31,6 +32,7 @@ class Order {
     this.reason,
     this.img,
     this.dispatchAt,
+    this.updatedTime
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -44,9 +46,10 @@ class Order {
     note: json["note"] == null ? "" : json["note"],
     products: json["products"] == null ? List() : List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
     currentStatus: json["current_status"] == null ? null : json["current_status"],
-    reason: json["reason"] == null ? null : json["reason"],
+    reason: json["reason"] == null ? "" : json["reason"],
     img: json["imgurl"] == null ? "" : json["imgurl"],
     dispatchAt: json["dispatch_at"] == null ? null : DateTime.parse(json["dispatch_at"]),
+    updatedTime: json["updated_time"] == null ? null : DateTime.parse(json["updated_time"]),
     fullCount: json["full_count"] == null ? "0" : json["full_count"],
   );
 

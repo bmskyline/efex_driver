@@ -444,32 +444,10 @@ class _NewContentState extends State<_NewContentPage>
                                                       ShopDetailResponse response =
                                                       ShopDetailResponse
                                                           .fromJson(data);
-                                                      List<Status> list = List();
-                                                      if (response.result) {
-                                                        response.data.orders
-                                                            .forEach((e) {
-                                                          if (e.currentStatus ==
-                                                              "new")
-                                                            list.add(Status(
-                                                                e.trackingNumber,
-                                                                "picking",
-                                                                "Nhân viên giao nhận ABC bắt đầu đi đến shop ${value.shopsNew[index].fromName} lấy hàng"));
-                                                        });
+                                                      if(response.result) {
+                                                        value.shopsNew[index]
+                                                            .isActive = true;
                                                       }
-                                                      final h = mProvider
-                                                          .turnOnShop(list, 1)
-                                                          .listen((r) {
-                                                        LoginResponse res =
-                                                        LoginResponse.fromJson(
-                                                            r);
-                                                        if (res.result) {
-                                                          setState(() {
-                                                            value.shopsNew[index]
-                                                                .isActive = true;
-                                                          });
-                                                        }
-                                                      });
-                                                      mProvider.addSubscription(h);
                                                     }, onError: (e) {
                                                       //error
                                                       dispatchFailure(context, e);
@@ -492,34 +470,14 @@ class _NewContentState extends State<_NewContentPage>
                                                       ShopDetailResponse response =
                                                       ShopDetailResponse
                                                           .fromJson(data);
-                                                      List<Status> list = List();
-                                                      if (response.result) {
-                                                        response.data.orders
-                                                            .forEach((e) {
-                                                          if (e.currentStatus ==
-                                                              "new")
-                                                            list.add(Status(
-                                                                e.trackingNumber,
-                                                                "picking",
-                                                                "Tài xế (ABC) bắt đầu đi đến shop ${value.shopsNew[index].fromName} trả hàng"));
+                                                      if(response.result) {
+                                                        setState(() {
+                                                          value
+                                                              .shopsNewReturn[
+                                                          index]
+                                                              .isActive = true;
                                                         });
                                                       }
-                                                      final h = mProvider
-                                                          .turnOnShop(list, 2)
-                                                          .listen((r) {
-                                                        LoginResponse res =
-                                                        LoginResponse.fromJson(
-                                                            r);
-                                                        if (res.result) {
-                                                          setState(() {
-                                                            value
-                                                                .shopsNewReturn[
-                                                            index]
-                                                                .isActive = true;
-                                                          });
-                                                        }
-                                                      });
-                                                      mProvider.addSubscription(h);
                                                     }, onError: (e) {
                                                       //error
                                                       dispatchFailure(context, e);

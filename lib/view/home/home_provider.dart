@@ -5,11 +5,13 @@ import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/data/repository.dart';
+import 'package:driver_app/utils/shared_preferences_utils.dart';
 import 'package:driver_app/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeProvider extends BaseProvider {
   final GithubRepo _repo;
+  final SpUtil spUtil;
   int _currentIndex = 0;
   bool _loadingNew = false;
   bool _loadingNewReturn = false;
@@ -44,7 +46,7 @@ class HomeProvider extends BaseProvider {
   int totalCancel = 0;
   int totalCancelReturn = 0;
   int limit = 10;
-  HomeProvider(this._repo);
+  HomeProvider(this._repo, this.spUtil);
 
   get currentIndex => _currentIndex;
 
@@ -186,6 +188,7 @@ class HomeProvider extends BaseProvider {
             }
             break;
         }
+        notifyListeners();
       }
     }).doOnError((e, stacktrace) {
       if (e is DioError) {

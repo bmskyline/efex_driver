@@ -47,7 +47,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
 
   Future getImage() async {
     FocusScope.of(context).unfocus(focusPrevious: true);
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 50);
     mProvider.image = image;
   }
 
@@ -149,14 +149,20 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Thời gian: "+ (order.dispatchAt != null ? DateFormat('dd-MM-yyyy').format(order.dispatchAt) : ""),
+                  child: Text("Thời gian: "+ (order.updatedTime != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(order.updatedTime) : ""),
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  width: double.infinity,
+                  child: Text("Ghi chú: " + (order.note ?? ""),
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
                 (widget.status == "fail" || widget.status == "picked") ?
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Ghi chú: " + (order.reason ?? ""),
+                  child: Text("Tài xế: " + (order.reason ?? ""),
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ) : Container(
                   color: Colors.white,
@@ -167,7 +173,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                     maxLines: 4,
                     onChanged: (val) => mProvider.reason = val ,
                     decoration: InputDecoration(
-                        hintText: "Ghi chú!", fillColor: Colors.white),
+                        hintText: "Tài xế: ", fillColor: Colors.white),
                   )
                 ),
                 Container(
@@ -265,7 +271,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       child: FlatButton(
                         onPressed: () {
                           mProvider
-                              .updateOrder(order.trackingNumber, "picked", (value.reason.isNotEmpty ? value.reason : (widget.type == 1 ? "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã lấy thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}" :
+                              .updateOrder(order.trackingNumber, widget.type == 1 ? "picked" : "returned", (value.reason.isNotEmpty ? value.reason : (widget.type == 1 ? "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã lấy thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}" :
                           "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã trả thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}")))
                               .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
@@ -278,7 +284,8 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                         },
                         color: Colors.orange,
                         child: Text(
-                          "Xác Nhận Lấy Hàng Thành Công",
+                          widget.type == 1 ?
+                          "Xác Nhận Lấy Hàng Thành Công" : "Xác Nhận Trả Hàng Thành Công",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
                         ),
@@ -296,7 +303,10 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
   Consumer<OrderDetailProvider> buildProgress() {
     return Consumer<OrderDetailProvider>(builder: (context, value, child) {
       return Visibility(
-        child: const CircularProgressIndicator(),
+        child: Container(
+          width: double.infinity,
+            height: double.infinity,
+            child: const CircularProgressIndicator()),
         visible: value.loading,
       );
     });

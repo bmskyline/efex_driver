@@ -45,7 +45,7 @@ class _OrderListState extends State<_OrderListContentPage>
 
   Future getImage() async {
     FocusScope.of(context).unfocus(focusPrevious: true);
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 50);
     mProvider.image = image;
   }
 
@@ -69,29 +69,54 @@ class _OrderListState extends State<_OrderListContentPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                InkWell(
-                  onTap: () async {
-                    final res = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ScanPage(widget.orders, result)));
-                    if (res != null) {
-                      this.result = (res as List<String>);
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 15.0,
-                          offset: Offset(0.0, 0.75))
-                    ], color: primaryColorHome),
-                    height: 64,
-                    width: double.infinity,
-                    padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                    child: Image.asset("assets/barcode.png"),
-                  ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: InkWell(
+                        onTap: () async {
+                          final res = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ScanPage(widget.orders, result)));
+                          if (res != null) {
+                            this.result = (res as List<String>);
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 15.0,
+                                offset: Offset(0.0, 0.75))
+                          ], color: primaryColorHome),
+                          height: 64,
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                          child: Image.asset("assets/barcode.png"),
+                        ),
+                      ),
+                    ),
+                    /*Expanded(
+                      child: InkWell(
+                        onTap: () async {
+
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 15.0,
+                                offset: Offset(0.0, 0.75))
+                          ], color: primaryColorHome),
+                          height: 64,
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                          child: Text("Thêm"),
+                        ),
+                      ),
+                    ),*/
+                  ],
                 ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),

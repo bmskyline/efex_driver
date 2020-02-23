@@ -11,20 +11,12 @@ import 'package:rxdart/rxdart.dart';
 class DetailProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  ShopDetailData _response;
-  int limit = 100;
+  int limit = 50;
   int page = 0;
+  int total = 0;
+  List<Order> orders = List();
 
   DetailProvider(this._repo);
-
-  ShopDetailData get response {
-    return _response;
-  }
-
-  set response(ShopDetailData response) {
-    _response = response;
-    notifyListeners();
-  }
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -37,14 +29,9 @@ class DetailProvider extends BaseProvider {
       .doOnData((r) {
         ShopDetailResponse response = ShopDetailResponse.fromJson(r);
         if(response.result) {
-          _response = response.data;
-          if(status == "new") {
-            for (Order o in _response.orders) {
-              if (o.currentStatus == "new") {
-                updateStatus(o.trackingNumber, "picking", "picking");
-              }
-            }
-          }
+          page++;
+          total = response.data.total;
+          orders.addAll(response.data.orders);
         }
       })
       .doOnError((e, stacktrace) {
