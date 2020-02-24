@@ -47,7 +47,8 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
 
   Future getImage() async {
     FocusScope.of(context).unfocus(focusPrevious: true);
-    var image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
     mProvider.image = image;
   }
 
@@ -64,7 +65,8 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
+          title: Image.asset('assets/logo_hor.png',
+              fit: BoxFit.fitHeight, height: 32),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
@@ -141,151 +143,190 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                       );
                     }),
                 Container(
-                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  margin:
+                      EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Trạng thái: "+ statusMapping[order.currentStatus ?? ""],
+                  child: Text(
+                      "Trạng thái: " + statusMapping[order.currentStatus ?? ""],
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  margin:
+                      EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
-                  child: Text("Thời gian: "+ (order.updatedTime != null ? DateFormat('dd-MM-yyyy HH:mm:ss').format(order.updatedTime) : ""),
+                  child: Text(
+                      "Thời gian: " +
+                          (order.updatedTime != null
+                              ? DateFormat('dd-MM-yyyy HH:mm:ss')
+                                  .format(order.updatedTime)
+                              : ""),
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
+                  margin:
+                      EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
                   width: double.infinity,
                   child: Text("Ghi chú: " + (order.note ?? ""),
                       style: TextStyle(color: Colors.white, fontSize: 18)),
                 ),
-                (widget.status == "fail" || widget.status == "picked") ?
-                Container(
-                  margin: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
-                  width: double.infinity,
-                  child: Text("Tài xế: " + (order.reason ?? ""),
-                      style: TextStyle(color: Colors.white, fontSize: 18)),
-                ) : Container(
-                  color: Colors.white,
-                  margin: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 8),
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: TextField(
-                    maxLines: 4,
-                    onChanged: (val) => mProvider.reason = val ,
-                    decoration: InputDecoration(
-                        hintText: "Tài xế: ", fillColor: Colors.white),
-                  )
-                ),
+                (widget.status == "fail" || widget.status == "picked")
+                    ? Container(
+                        margin: EdgeInsets.only(
+                            left: 16, right: 16, bottom: 8, top: 8),
+                        width: double.infinity,
+                        child: Text("Tài xế: " + (order.reason ?? ""),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 18)),
+                      )
+                    : Container(
+                        color: Colors.white,
+                        margin: const EdgeInsets.only(
+                            left: 16, right: 16, top: 8, bottom: 8),
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: TextField(
+                          maxLines: 4,
+                          onChanged: (val) => mProvider.reason = val,
+                          decoration: InputDecoration(
+                              hintText: "Tài xế: ", fillColor: Colors.white),
+                        )),
                 Container(
                     height: 200,
                     width: double.infinity,
                     margin: const EdgeInsets.only(
                         left: 16, right: 16, top: 8, bottom: 16),
                     color: Colors.white,
-                    child: (widget.status == "fail" || widget.status == "picked")
-                        ? (order.img.isNotEmpty ? Image.network(order.img) : Text("")) : InkWell(
-                      onTap: () {
-                        getImage();
-                      },
-                      child: Consumer<OrderDetailProvider>(
-                        builder: (context, value, child) {
-                          return value.image == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.image,
-                                      color: Colors.grey,
-                                      size: 30.0,
-                                    ),
-                                    Text("Hình ảnh")
-                                  ],
-                                )
-                              : Image.file(value.image);
-                        },
-                      ),
-                    )),
-                Row(children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      margin: const EdgeInsets.only(left: 16.0),
-                      child: Visibility(
-                        visible: ((order.currentStatus == "picking"
-                            || order.currentStatus == "picking1"
-                            || order.currentStatus == "picking2"
-                            || order.currentStatus == "returning"
-                            || order.currentStatus == "returning1"
-                            || order.currentStatus == "returning2")
-                                && (widget.status != "fail"
-                                    && widget.status != "picked")) ? true : false,
-                        child: FlatButton(
-                          onPressed: () => showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return WaitDialogPage(order.trackingNumber, order.currentStatus, order.fromName);
-                              }),
-                          color: Colors.red,
-                          child: Text(
-                            "Chờ",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                    child:
+                        (widget.status == "fail" || widget.status == "picked")
+                            ? (order.img.isNotEmpty
+                                ? Image.network(order.img)
+                                : Text(""))
+                            : InkWell(
+                                onTap: () {
+                                  getImage();
+                                },
+                                child: Consumer<OrderDetailProvider>(
+                                  builder: (context, value, child) {
+                                    return value.image == null
+                                        ? Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.image,
+                                                color: Colors.grey,
+                                                size: 30.0,
+                                              ),
+                                              Text("Hình ảnh")
+                                            ],
+                                          )
+                                        : Image.file(value.image);
+                                  },
+                                ),
+                              )),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(left: 16.0),
+                        child: Visibility(
+                          visible: ((order.currentStatus == "picking" ||
+                                      order.currentStatus == "picking1" ||
+                                      order.currentStatus == "picking2" ||
+                                      order.currentStatus == "returning" ||
+                                      order.currentStatus == "returning1" ||
+                                      order.currentStatus == "returning2") &&
+                                  (widget.status != "fail" &&
+                                      widget.status != "picked"))
+                              ? true
+                              : false,
+                          child: FlatButton(
+                            onPressed: () => showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return WaitDialogPage(order.trackingNumber,
+                                      order.currentStatus, order.fromName);
+                                }),
+                            color: Colors.red,
+                            child: Text(
+                              "Chờ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.centerRight,
-                      margin: const EdgeInsets.only(right: 16.0),
-                      child: Visibility(
-                        visible: (widget.status == "fail" || widget.status == "picked") ? false : true,
-                        child: FlatButton(
-                          onPressed: () => showDialog<void>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return DialogPage(order.trackingNumber, widget.type, order.currentStatus, order.fromName);
-                              }),
-                          color: Colors.red,
-                          child: Text(
-                            "Hủy",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white),
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.only(right: 16.0),
+                        child: Visibility(
+                          visible: (widget.status == "fail" ||
+                                  widget.status == "picked")
+                              ? false
+                              : true,
+                          child: FlatButton(
+                            onPressed: () => showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DialogPage(
+                                      order.trackingNumber,
+                                      widget.type,
+                                      order.currentStatus,
+                                      order.fromName);
+                                }),
+                            color: Colors.red,
+                            child: Text(
+                              "Hủy",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],),
+                  ],
+                ),
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(left: 16, right: 16, top: 32, bottom: 32),
+                  margin: const EdgeInsets.only(
+                      left: 16, right: 16, top: 32, bottom: 32),
                   child: Consumer<OrderDetailProvider>(
                       builder: (context, value, child) {
                     return Visibility(
-                      visible: (value.image == null || widget.status == "picked" || widget.status == "fail")
+                      visible: (value.image == null ||
+                              widget.status == "picked" ||
+                              widget.status == "fail")
                           ? false
                           : true,
                       child: FlatButton(
                         onPressed: () {
                           mProvider
-                              .updateOrder(order.trackingNumber, widget.type == 1 ? "picked" : "returned", (value.reason.isNotEmpty ? value.reason : (widget.type == 1 ? "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã lấy thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}" :
-                          "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã trả thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}")))
+                              .updateOrder(
+                                  order.trackingNumber,
+                                  widget.type == 1 ? "picked" : "returned",
+                                  (value.reason.isNotEmpty
+                                      ? value.reason
+                                      : (widget.type == 1
+                                          ? "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã lấy thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}"
+                                          : "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã trả thành công đơn hàng ${order.trackingNumber} tại shop ${order.fromName}")))
                               .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              Navigator.pop(context, ["picked", order.trackingNumber]);
+                              Navigator.pop(
+                                  context, ["picked", order.trackingNumber]);
                             } else
                               Toast.show("Vui lòng thử lại!");
                           });
                         },
                         color: Colors.orange,
                         child: Text(
-                          widget.type == 1 ?
-                          "Xác Nhận Lấy Hàng Thành Công" : "Xác Nhận Trả Hàng Thành Công",
+                          widget.type == 1
+                              ? "Xác Nhận Lấy Hàng Thành Công"
+                              : "Xác Nhận Trả Hàng Thành Công",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
                         ),
@@ -304,7 +345,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
     return Consumer<OrderDetailProvider>(builder: (context, value, child) {
       return Visibility(
         child: Container(
-          width: double.infinity,
+            width: double.infinity,
             height: double.infinity,
             child: Center(
               child: const CircularProgressIndicator(),
