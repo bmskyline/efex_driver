@@ -41,9 +41,10 @@ class _WaitContentState extends State<_WaitContentPage>
   _WaitContentState(this.homeContext);
 
   HomeProvider mProvider;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
-  void _onLoading() async{
+  void _onLoading() async {
     if (widget.type == 1) {
       mProvider.shopsWait.clear();
       mProvider.totalWait = 0;
@@ -83,10 +84,8 @@ class _WaitContentState extends State<_WaitContentPage>
         .getShops(status, type, _refreshController.isRefresh)
         .doOnListen(() {})
         .doOnDone(() {
-      if(_refreshController.isRefresh)
-        _refreshController.refreshCompleted();
-    })
-        .listen((data) {
+      if (_refreshController.isRefresh) _refreshController.refreshCompleted();
+    }).listen((data) {
       ShopResponse response = ShopResponse.fromJson(data);
       if (!response.result) {
         if (response.msg == "user not authorized") {
@@ -151,257 +150,7 @@ class _WaitContentState extends State<_WaitContentPage>
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 left: 16.0, right: 8.0, top: 8.0, bottom: 8.0),
-                            child: InkWell(
-                              onTap: () async {
-                                switch (widget.type) {
-                                  case 1:
-                                    final res = await Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsWait[index],
-                                                "wait_picking",
-                                                1)));
-                                    if (res == null) {
-                                      mProvider.shopsWait.clear();
-                                      mProvider.totalWait = 0;
-                                      mProvider.pageWait = 0;
-                                      _loadData("wait_picking", 1);
-                                      mProvider.shopsSuccess.clear();
-                                      mProvider.totalSuccess = 0;
-                                      mProvider.pageSuccess = 0;
-                                      _loadData("picked", 1);
-                                      mProvider.shopsCancel.clear();
-                                      mProvider.totalCancel = 0;
-                                      mProvider.pageCancel = 0;
-                                      _loadData("fail", 1);
-                                    } else {
-                                      mProvider.shopsWait.clear();
-                                      mProvider.totalWait = 0;
-                                      mProvider.pageWait = 0;
-                                      _loadData("wait_picking", 1);
-                                      mProvider.shopsSuccess.clear();
-                                      mProvider.totalSuccess = 0;
-                                      mProvider.pageSuccess = 0;
-                                      _loadData("picked", 1);
-                                      mProvider.shopsCancel.clear();
-                                      mProvider.totalCancel = 0;
-                                      mProvider.pageCancel = 0;
-                                      _loadData("fail", 1);
-                                    }
-                                    break;
-                                  case 2:
-                                    final res = await Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsWaitReturn[index],
-                                                "wait_return",
-                                                2)));
-                                    if (res == null) {
-                                      mProvider.shopsWaitReturn.clear();
-                                      mProvider.totalWaitReturn = 0;
-                                      mProvider.pageWaitReturn = 0;
-                                      _loadData("wait_return", 2);
-                                      mProvider.shopsSuccessReturn.clear();
-                                      mProvider.totalSuccessReturn = 0;
-                                      mProvider.pageSuccessReturn = 0;
-                                      _loadData("picked", 2);
-                                      mProvider.shopsCancelReturn.clear();
-                                      mProvider.totalCancelReturn = 0;
-                                      mProvider.pageCancelReturn = 0;
-                                      _loadData("fail", 2);
-                                    } else {
-                                      mProvider.shopsWaitReturn.clear();
-                                      mProvider.totalWaitReturn = 0;
-                                      mProvider.pageWaitReturn = 0;
-                                      _loadData("wait_return", 2);
-                                      mProvider.shopsSuccessReturn.clear();
-                                      mProvider.totalSuccessReturn = 0;
-                                      mProvider.pageSuccessReturn = 0;
-                                      _loadData("picked", 2);
-                                      mProvider.shopsCancelReturn.clear();
-                                      mProvider.totalCancelReturn = 0;
-                                      mProvider.pageCancelReturn = 0;
-                                      _loadData("fail", 2);
-                                    }
-                                    break;
-                                }
-                              },
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.topCenter,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        margin: const EdgeInsets.only(right: 8.0),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.blueAccent,
-                                        ),
-                                        child: Text((index + 1).toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    16.0)), // You can add a Icon instead of text also, like below.
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 4.0),
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                widget.type == 1
-                                                    ? value.shopsWait[index]
-                                                            .fromName +
-                                                        " (" +
-                                                        value.shopsWait[index]
-                                                            .totalOrders +
-                                                        ")"
-                                                    : value.shopsWaitReturn[index]
-                                                            .fromName +
-                                                        " (" +
-                                                        value
-                                                            .shopsWaitReturn[
-                                                                index]
-                                                            .totalOrders +
-                                                        ")",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(children: <Widget>[
-                                                Icon(Icons.location_on,
-                                                    size: 18,
-                                                    color: Colors.white60),
-                                                SizedBox(width: 16),
-                                                Expanded(
-                                                  child: Text(
-                                                    widget.type == 1
-                                                        ? value.shopsWait[index]
-                                                            .fromAddress
-                                                        : value
-                                                            .shopsWaitReturn[
-                                                                index]
-                                                            .fromAddress,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                  ),
-                                                ),
-                                              ]),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.phone,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  InkWell(
-                                                    onTap: () => launch("tel://" +
-                                                        (widget.type == 1
-                                                            ? value
-                                                                .shopsWait[index]
-                                                                ?.fromPhone
-                                                            : value
-                                                                .shopsWaitReturn[
-                                                                    index]
-                                                                ?.fromPhone)),
-                                                    child: Text(
-                                                      widget.type == 1
-                                                          ? value.shopsWait[index]
-                                                              .fromPhone
-                                                          : value
-                                                              .shopsWaitReturn[
-                                                                  index]
-                                                              .fromPhone,
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          color:
-                                                              Colors.blueAccent,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.border_color,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  Text(
-                                                    widget.type == 1
-                                                        ? value.shopsWait[index]
-                                                                .totalOrders
-                                                                .toString() +
-                                                            " đơn hàng - nặng " +
-                                                            value.shopsWait[index]
-                                                                .totalWeight +
-                                                            "g"
-                                                        : value
-                                                                .shopsWaitReturn[
-                                                                    index]
-                                                                .totalOrders
-                                                                .toString() +
-                                                            " đơn hàng - nặng " +
-                                                            value
-                                                                .shopsWaitReturn[
-                                                                    index]
-                                                                .totalWeight +
-                                                            "g",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.access_time,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  Text(
-                                                    widget.type == 1
-                                                        ? value.shopsWait[index]
-                                                            .fullCount
-                                                        : value
-                                                            .shopsWaitReturn[
-                                                                index]
-                                                            .fullCount,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                  )
-                                                ],
-                                              )
-                                            ]),
-                                      ),
-                                    ),
-                                    Container(
-                                        margin: EdgeInsets.only(left: 8),
-                                        child: Icon(Icons.navigate_next,
-                                            color: Colors.white))
-                                  ],
-                                ),
-                              ),
-                            ),
+                            child: listItem(index, value),
                           ),
                         ),
                       );
@@ -424,4 +173,207 @@ class _WaitContentState extends State<_WaitContentPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget listItem(int index, HomeProvider value) {
+    return InkWell(
+      onTap: () async {
+        switch (widget.type) {
+          case 1:
+            final res = await Navigator.push(
+                homeContext,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetailPage(value.shopsWait[index], "wait_picking", 1)));
+            if (res == null) {
+              mProvider.shopsWait.clear();
+              mProvider.totalWait = 0;
+              mProvider.pageWait = 0;
+              _loadData("wait_picking", 1);
+              mProvider.shopsSuccess.clear();
+              mProvider.totalSuccess = 0;
+              mProvider.pageSuccess = 0;
+              _loadData("picked", 1);
+              mProvider.shopsCancel.clear();
+              mProvider.totalCancel = 0;
+              mProvider.pageCancel = 0;
+              _loadData("fail", 1);
+            } else {
+              mProvider.shopsWait.clear();
+              mProvider.totalWait = 0;
+              mProvider.pageWait = 0;
+              _loadData("wait_picking", 1);
+              mProvider.shopsSuccess.clear();
+              mProvider.totalSuccess = 0;
+              mProvider.pageSuccess = 0;
+              _loadData("picked", 1);
+              mProvider.shopsCancel.clear();
+              mProvider.totalCancel = 0;
+              mProvider.pageCancel = 0;
+              _loadData("fail", 1);
+            }
+            break;
+          case 2:
+            final res = await Navigator.push(
+                homeContext,
+                MaterialPageRoute(
+                    builder: (context) => DetailPage(
+                        value.shopsWaitReturn[index], "wait_return", 2)));
+            if (res == null) {
+              mProvider.shopsWaitReturn.clear();
+              mProvider.totalWaitReturn = 0;
+              mProvider.pageWaitReturn = 0;
+              _loadData("wait_return", 2);
+              mProvider.shopsSuccessReturn.clear();
+              mProvider.totalSuccessReturn = 0;
+              mProvider.pageSuccessReturn = 0;
+              _loadData("picked", 2);
+              mProvider.shopsCancelReturn.clear();
+              mProvider.totalCancelReturn = 0;
+              mProvider.pageCancelReturn = 0;
+              _loadData("fail", 2);
+            } else {
+              mProvider.shopsWaitReturn.clear();
+              mProvider.totalWaitReturn = 0;
+              mProvider.pageWaitReturn = 0;
+              _loadData("wait_return", 2);
+              mProvider.shopsSuccessReturn.clear();
+              mProvider.totalSuccessReturn = 0;
+              mProvider.pageSuccessReturn = 0;
+              _loadData("picked", 2);
+              mProvider.shopsCancelReturn.clear();
+              mProvider.totalCancelReturn = 0;
+              mProvider.pageCancelReturn = 0;
+              _loadData("fail", 2);
+            }
+            break;
+        }
+      },
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topCenter,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.only(right: 8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blueAccent,
+                ),
+                child: Text((index + 1).toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize:
+                            16.0)), // You can add a Icon instead of text also, like below.
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.type == 1
+                            ? value.shopsWait[index].fromName +
+                                " (" +
+                                value.shopsWait[index].totalOrders +
+                                ")"
+                            : value.shopsWaitReturn[index].fromName +
+                                " (" +
+                                value.shopsWaitReturn[index].totalOrders +
+                                ")",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      SizedBox(height: 8),
+                      Row(children: <Widget>[
+                        Icon(Icons.location_on,
+                            size: 18, color: Colors.white60),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            widget.type == 1
+                                ? value.shopsWait[index].fromAddress
+                                : value.shopsWaitReturn[index].fromAddress,
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.white60),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.phone, size: 18, color: Colors.white60),
+                          SizedBox(width: 16),
+                          InkWell(
+                            onTap: () => launch("tel://" +
+                                (widget.type == 1
+                                    ? value.shopsWait[index]?.fromPhone
+                                    : value.shopsWaitReturn[index]?.fromPhone)),
+                            child: Text(
+                              widget.type == 1
+                                  ? value.shopsWait[index].fromPhone
+                                  : value.shopsWaitReturn[index].fromPhone,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.blueAccent,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.border_color,
+                              size: 18, color: Colors.white60),
+                          SizedBox(width: 16),
+                          Text(
+                            widget.type == 1
+                                ? value.shopsWait[index].totalOrders
+                                        .toString() +
+                                    " đơn hàng - nặng " +
+                                    value.shopsWait[index].totalWeight +
+                                    "g"
+                                : value.shopsWaitReturn[index].totalOrders
+                                        .toString() +
+                                    " đơn hàng - nặng " +
+                                    value.shopsWaitReturn[index].totalWeight +
+                                    "g",
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.white60),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.access_time,
+                              size: 18, color: Colors.white60),
+                          SizedBox(width: 16),
+                          Text(
+                            widget.type == 1
+                                ? value.shopsWait[index].fullCount
+                                : value.shopsWaitReturn[index].fullCount,
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.white60),
+                          )
+                        ],
+                      )
+                    ]),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 8),
+                child: Icon(Icons.navigate_next, color: Colors.white))
+          ],
+        ),
+      ),
+    );
+  }
 }

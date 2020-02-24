@@ -40,9 +40,10 @@ class _SuccessContentState extends State<_SuccessContentPage>
   _SuccessContentState(this.homeContext);
 
   HomeProvider mProvider;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
-  void _onLoading() async{
+  void _onLoading() async {
     if (widget.type == 1) {
       mProvider.shopsSuccess.clear();
       mProvider.totalSuccess = 0;
@@ -81,10 +82,8 @@ class _SuccessContentState extends State<_SuccessContentPage>
         .getShops("picked", widget.type, _refreshController.isRefresh)
         .doOnListen(() {})
         .doOnDone(() {
-      if(_refreshController.isRefresh)
-        _refreshController.refreshCompleted();
-    })
-        .listen((data) {
+      if (_refreshController.isRefresh) _refreshController.refreshCompleted();
+    }).listen((data) {
       //success
     }, onError: (e) {
       //error
@@ -168,182 +167,7 @@ class _SuccessContentState extends State<_SuccessContentPage>
                                     break;
                                 }
                               },
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.topCenter,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        margin: const EdgeInsets.only(right: 8.0),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.blueAccent,
-                                        ),
-                                        child: Text((index + 1).toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    16.0)), // You can add a Icon instead of text also, like below.
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 4.0),
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                widget.type == 1
-                                                    ? value.shopsSuccess[index]
-                                                            .fromName +
-                                                        " (" +
-                                                        value.shopsSuccess[index]
-                                                            .totalOrders +
-                                                        ")"
-                                                    : value
-                                                            .shopsSuccessReturn[
-                                                                index]
-                                                            .fromName +
-                                                        " (" +
-                                                        value
-                                                            .shopsSuccessReturn[
-                                                                index]
-                                                            .totalOrders +
-                                                        ")",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(children: <Widget>[
-                                                Icon(Icons.location_on,
-                                                    size: 18,
-                                                    color: Colors.white60),
-                                                SizedBox(width: 16),
-                                                Expanded(
-                                                  child: Text(
-                                                    widget.type == 1
-                                                        ? value.shopsSuccess[index]
-                                                            .fromAddress
-                                                        : value
-                                                            .shopsSuccessReturn[
-                                                                index]
-                                                            .fromAddress,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                    overflow: TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                  ),
-                                                ),
-                                              ]),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.phone,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  InkWell(
-                                                    onTap: () => launch("tel://" +
-                                                        (widget.type == 1
-                                                            ? value
-                                                                .shopsSuccess[index]
-                                                                ?.fromPhone
-                                                            : value
-                                                                .shopsSuccessReturn[
-                                                                    index]
-                                                                ?.fromPhone)),
-                                                    child: Text(
-                                                      widget.type == 1
-                                                          ? value
-                                                              .shopsSuccess[index]
-                                                              .fromPhone
-                                                          : value
-                                                              .shopsSuccessReturn[
-                                                                  index]
-                                                              .fromPhone,
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Colors.blueAccent,
-                                                          decoration: TextDecoration
-                                                              .underline),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.border_color,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  Text(
-                                                    widget.type == 1
-                                                        ? value.shopsSuccess[index]
-                                                                .totalOrders
-                                                                .toString() +
-                                                            " đơn hàng - nặng " +
-                                                            value
-                                                                .shopsSuccess[index]
-                                                                .totalWeight +
-                                                            "g"
-                                                        : value
-                                                                .shopsSuccessReturn[
-                                                                    index]
-                                                                .totalOrders
-                                                                .toString() +
-                                                            " đơn hàng - nặng " +
-                                                            value
-                                                                .shopsSuccessReturn[
-                                                                    index]
-                                                                .totalWeight +
-                                                            "g",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.access_time,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  Text(
-                                                    widget.type == 1
-                                                        ? value.shopsSuccess[index]
-                                                            .fullCount
-                                                        : value
-                                                            .shopsSuccessReturn[
-                                                                index]
-                                                            .fullCount,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                  )
-                                                ],
-                                              )
-                                            ]),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 8),
-                                        child: Icon(
-                                            Icons.navigate_next,
-                                            color: Colors.white)
-                                    )
-                                  ],
-                                ),
-                              ),
+                              child: listItem(index, value),
                             ),
                           ),
                         ),
@@ -367,4 +191,130 @@ class _SuccessContentState extends State<_SuccessContentPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget listItem(int index, HomeProvider value) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.topCenter,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.only(right: 8.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.blueAccent,
+              ),
+              child: Text((index + 1).toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize:
+                          16.0)), // You can add a Icon instead of text also, like below.
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.type == 1
+                          ? value.shopsSuccess[index].fromName +
+                              " (" +
+                              value.shopsSuccess[index].totalOrders +
+                              ")"
+                          : value.shopsSuccessReturn[index].fromName +
+                              " (" +
+                              value.shopsSuccessReturn[index].totalOrders +
+                              ")",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                    SizedBox(height: 8),
+                    Row(children: <Widget>[
+                      Icon(Icons.location_on, size: 18, color: Colors.white60),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          widget.type == 1
+                              ? value.shopsSuccess[index].fromAddress
+                              : value.shopsSuccessReturn[index].fromAddress,
+                          style: TextStyle(fontSize: 16, color: Colors.white60),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                    ]),
+                    SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.phone, size: 18, color: Colors.white60),
+                        SizedBox(width: 16),
+                        InkWell(
+                          onTap: () => launch("tel://" +
+                              (widget.type == 1
+                                  ? value.shopsSuccess[index]?.fromPhone
+                                  : value
+                                      .shopsSuccessReturn[index]?.fromPhone)),
+                          child: Text(
+                            widget.type == 1
+                                ? value.shopsSuccess[index].fromPhone
+                                : value.shopsSuccessReturn[index].fromPhone,
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blueAccent,
+                                decoration: TextDecoration.underline),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.border_color,
+                            size: 18, color: Colors.white60),
+                        SizedBox(width: 16),
+                        Text(
+                          widget.type == 1
+                              ? value.shopsSuccess[index].totalOrders
+                                      .toString() +
+                                  " đơn hàng - nặng " +
+                                  value.shopsSuccess[index].totalWeight +
+                                  "g"
+                              : value.shopsSuccessReturn[index].totalOrders
+                                      .toString() +
+                                  " đơn hàng - nặng " +
+                                  value.shopsSuccessReturn[index].totalWeight +
+                                  "g",
+                          style: TextStyle(fontSize: 16, color: Colors.white60),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.access_time,
+                            size: 18, color: Colors.white60),
+                        SizedBox(width: 16),
+                        Text(
+                          widget.type == 1
+                              ? value.shopsSuccess[index].fullCount
+                              : value.shopsSuccessReturn[index].fullCount,
+                          style: TextStyle(fontSize: 16, color: Colors.white60),
+                        )
+                      ],
+                    )
+                  ]),
+            ),
+          ),
+          Container(
+              margin: EdgeInsets.only(left: 8),
+              child: Icon(Icons.navigate_next, color: Colors.white))
+        ],
+      ),
+    );
+  }
 }

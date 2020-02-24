@@ -144,221 +144,7 @@ class _CancelContentState extends State<_CancelContentPage>
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
-                            child: InkWell(
-                              onTap: () {
-                                switch (widget.type) {
-                                  case 1:
-                                    //if (value.shopsCancel[index].isActive) {
-                                    Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsCancel[index],
-                                                "fail",
-                                                1)));
-                                    //}
-                                    break;
-                                  case 2:
-                                    //if (value.shopsCancelReturn[index].isActive) {
-                                    Navigator.push(
-                                        homeContext,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailPage(
-                                                value.shopsCancelReturn[index],
-                                                "fail",
-                                                2)));
-                                    // }
-                                    break;
-                                }
-                              },
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.topCenter,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        margin:
-                                            const EdgeInsets.only(right: 8.0),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.blueAccent,
-                                        ),
-                                        child: Text((index + 1).toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize:
-                                                    16.0)), // You can add a Icon instead of text also, like below.
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 4.0),
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                widget.type == 1
-                                                    ? value.shopsCancel[index]
-                                                            .fromName +
-                                                        " (" +
-                                                        value.shopsCancel[index]
-                                                            .totalOrders +
-                                                        ")"
-                                                    : value
-                                                            .shopsCancelReturn[
-                                                                index]
-                                                            .fromName +
-                                                        " (" +
-                                                        value
-                                                            .shopsCancelReturn[
-                                                                index]
-                                                            .totalOrders +
-                                                        ")",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(children: <Widget>[
-                                                Icon(Icons.location_on,
-                                                    size: 18,
-                                                    color: Colors.white60),
-                                                SizedBox(width: 16),
-                                                Expanded(
-                                                  child: Text(
-                                                    widget.type == 1
-                                                        ? value
-                                                            .shopsCancel[index]
-                                                            .fromAddress
-                                                        : value
-                                                            .shopsCancelReturn[
-                                                                index]
-                                                            .fromAddress,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                  ),
-                                                ),
-                                              ]),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.phone,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  InkWell(
-                                                    onTap: () => launch("tel://" +
-                                                        (widget.type == 1
-                                                            ? value
-                                                                .shopsCancel[
-                                                                    index]
-                                                                ?.fromPhone
-                                                            : value
-                                                                .shopsCancelReturn[
-                                                                    index]
-                                                                ?.fromPhone)),
-                                                    child: Text(
-                                                      widget.type == 1
-                                                          ? value
-                                                              .shopsCancel[
-                                                                  index]
-                                                              .fromPhone
-                                                          : value
-                                                              .shopsCancelReturn[
-                                                                  index]
-                                                              .fromPhone,
-                                                      style: TextStyle(
-                                                          fontSize: 16,
-                                                          color:
-                                                              Colors.blueAccent,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.border_color,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  Text(
-                                                    widget.type == 1
-                                                        ? value
-                                                                .shopsCancel[
-                                                                    index]
-                                                                .totalOrders
-                                                                .toString() +
-                                                            " đơn hàng - nặng " +
-                                                            value
-                                                                .shopsCancel[
-                                                                    index]
-                                                                .totalWeight +
-                                                            "g"
-                                                        : value
-                                                                .shopsCancelReturn[
-                                                                    index]
-                                                                .totalOrders
-                                                                .toString() +
-                                                            " đơn hàng - nặng " +
-                                                            value
-                                                                .shopsCancelReturn[
-                                                                    index]
-                                                                .totalWeight +
-                                                            "g",
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: <Widget>[
-                                                  Icon(Icons.access_time,
-                                                      size: 18,
-                                                      color: Colors.white60),
-                                                  SizedBox(width: 16),
-                                                  Text(
-                                                    widget.type == 1
-                                                        ? value
-                                                            .shopsCancel[index]
-                                                            .fullCount
-                                                        : value
-                                                            .shopsCancelReturn[
-                                                                index]
-                                                            .fullCount,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white60),
-                                                  )
-                                                ],
-                                              )
-                                            ]),
-                                      ),
-                                    ),
-                                    Container(
-                                        margin: EdgeInsets.only(left: 8),
-                                        child: Icon(Icons.navigate_next,
-                                            color: Colors.white))
-                                  ],
-                                ),
-                              ),
-                            ),
+                            child: listItem(index, value),
                           ),
                         ),
                       );
@@ -381,4 +167,158 @@ class _CancelContentState extends State<_CancelContentPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget listItem(int index, HomeProvider value) {
+    return InkWell(
+      onTap: () {
+        switch (widget.type) {
+          case 1:
+            //if (value.shopsCancel[index].isActive) {
+            Navigator.push(
+                homeContext,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetailPage(value.shopsCancel[index], "fail", 1)));
+            //}
+            break;
+          case 2:
+            //if (value.shopsCancelReturn[index].isActive) {
+            Navigator.push(
+                homeContext,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetailPage(value.shopsCancelReturn[index], "fail", 2)));
+            // }
+            break;
+        }
+      },
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topCenter,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.only(right: 8.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blueAccent,
+                ),
+                child: Text((index + 1).toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize:
+                            16.0)), // You can add a Icon instead of text also, like below.
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.type == 1
+                            ? value.shopsCancel[index].fromName +
+                                " (" +
+                                value.shopsCancel[index].totalOrders +
+                                ")"
+                            : value.shopsCancelReturn[index].fromName +
+                                " (" +
+                                value.shopsCancelReturn[index].totalOrders +
+                                ")",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      SizedBox(height: 8),
+                      Row(children: <Widget>[
+                        Icon(Icons.location_on,
+                            size: 18, color: Colors.white60),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            widget.type == 1
+                                ? value.shopsCancel[index].fromAddress
+                                : value.shopsCancelReturn[index].fromAddress,
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.white60),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ]),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.phone, size: 18, color: Colors.white60),
+                          SizedBox(width: 16),
+                          InkWell(
+                            onTap: () => launch("tel://" +
+                                (widget.type == 1
+                                    ? value.shopsCancel[index]?.fromPhone
+                                    : value
+                                        .shopsCancelReturn[index]?.fromPhone)),
+                            child: Text(
+                              widget.type == 1
+                                  ? value.shopsCancel[index].fromPhone
+                                  : value.shopsCancelReturn[index].fromPhone,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.blueAccent,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.border_color,
+                              size: 18, color: Colors.white60),
+                          SizedBox(width: 16),
+                          Text(
+                            widget.type == 1
+                                ? value.shopsCancel[index].totalOrders
+                                        .toString() +
+                                    " đơn hàng - nặng " +
+                                    value.shopsCancel[index].totalWeight +
+                                    "g"
+                                : value.shopsCancelReturn[index].totalOrders
+                                        .toString() +
+                                    " đơn hàng - nặng " +
+                                    value.shopsCancelReturn[index].totalWeight +
+                                    "g",
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.white60),
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          Icon(Icons.access_time,
+                              size: 18, color: Colors.white60),
+                          SizedBox(width: 16),
+                          Text(
+                            widget.type == 1
+                                ? value.shopsCancel[index].fullCount
+                                : value.shopsCancelReturn[index].fullCount,
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.white60),
+                          )
+                        ],
+                      )
+                    ]),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 8),
+                child: Icon(Icons.navigate_next, color: Colors.white))
+          ],
+        ),
+      ),
+    );
+  }
 }
