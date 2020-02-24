@@ -1,5 +1,4 @@
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/view/order_detail/order_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -29,8 +29,8 @@ class OrderDetailPage extends PageProvideNode<OrderDetailProvider> {
 class _OrderDetailContentPage extends StatefulWidget {
   final OrderDetailProvider provider;
   final Order order;
-  final String status;
   final int type;
+  final String status;
   _OrderDetailContentPage(this.provider, this.order, this.status, this.type);
 
   @override
@@ -246,7 +246,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                           onPressed: () => showDialog<void>(
                               context: context,
                               builder: (BuildContext context) {
-                                return DialogPage(order.trackingNumber, widget.type, widget.status, order.fromName);
+                                return DialogPage(order.trackingNumber, widget.type, order.currentStatus, order.fromName);
                               }),
                           color: Colors.red,
                           child: Text(
@@ -261,7 +261,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                 ],),
                 Container(
                   width: double.infinity,
-                  margin: const EdgeInsets.only(left: 16, right: 16, top: 32),
+                  margin: const EdgeInsets.only(left: 16, right: 16, top: 32, bottom: 32),
                   child: Consumer<OrderDetailProvider>(
                       builder: (context, value, child) {
                     return Visibility(
@@ -306,7 +306,9 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
         child: Container(
           width: double.infinity,
             height: double.infinity,
-            child: const CircularProgressIndicator()),
+            child: Center(
+              child: const CircularProgressIndicator(),
+            )),
         visible: value.loading,
       );
     });

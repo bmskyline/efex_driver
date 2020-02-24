@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/order_model.dart';
-import 'package:driver_app/data/model/shop_detail_data.dart';
 import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/repository.dart';
@@ -32,6 +31,7 @@ class DetailProvider extends BaseProvider {
           page++;
           total = response.data.total;
           orders.addAll(response.data.orders);
+          notifyListeners();
         }
       })
       .doOnError((e, stacktrace) {

@@ -1,8 +1,6 @@
 import 'package:driver_app/base/base.dart';
-import 'package:driver_app/data/model/login_response.dart';
 import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_response.dart';
-import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/widget_utils.dart';
 import 'package:driver_app/view/detail/detail_page.dart';
