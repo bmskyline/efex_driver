@@ -45,7 +45,8 @@ class _OrderListState extends State<_OrderListContentPage>
 
   Future getImage() async {
     FocusScope.of(context).unfocus(focusPrevious: true);
-    var image = await ImagePicker.pickImage(source: ImageSource.camera, imageQuality: 50);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
     mProvider.image = image;
   }
 
@@ -62,7 +63,8 @@ class _OrderListState extends State<_OrderListContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 32),
+          title: Image.asset('assets/logo_hor.png',
+              fit: BoxFit.fitHeight, height: 32),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
@@ -131,7 +133,8 @@ class _OrderListState extends State<_OrderListContentPage>
                               MaterialPageRoute(
                                   builder: (context) => OrderDetailPage(
                                       getOrder(widget.orders, result[index]),
-                                      "picked", widget.type)),
+                                      "picked",
+                                      widget.type)),
                             );
                           },
                           child: Padding(
@@ -159,17 +162,16 @@ class _OrderListState extends State<_OrderListContentPage>
                       );
                     }),
                 Container(
-                  color: Colors.white,
-                  margin: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 8),
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: TextField(
-                    maxLines: 4,
-                    onChanged: (val) => mProvider.reason = val,
-                    decoration: InputDecoration(
-                        hintText: "Ghi chú!", fillColor: Colors.white),
-                  )
-                ),
+                    color: Colors.white,
+                    margin: const EdgeInsets.only(
+                        left: 16, right: 16, top: 8, bottom: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextField(
+                      maxLines: 4,
+                      onChanged: (val) => mProvider.reason = val,
+                      decoration: InputDecoration(
+                          hintText: "Ghi chú!", fillColor: Colors.white),
+                    )),
                 Container(
                     height: 200,
                     width: double.infinity,
@@ -209,7 +211,9 @@ class _OrderListState extends State<_OrderListContentPage>
                           : false,
                       child: CupertinoButton(
                         onPressed: () {
-                          mProvider.updateOrders(result, value.reason).listen((r) {
+                          mProvider
+                              .updateOrders(result, value.reason)
+                              .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");

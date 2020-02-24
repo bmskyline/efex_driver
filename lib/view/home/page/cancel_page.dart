@@ -40,9 +40,10 @@ class _CancelContentState extends State<_CancelContentPage>
   _CancelContentState(this.homeContext);
 
   HomeProvider mProvider;
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
-  void _onLoading() async{
+  void _onLoading() async {
     if (widget.type == 1) {
       mProvider.shopsCancel.clear();
       mProvider.totalCancel = 0;
@@ -81,10 +82,8 @@ class _CancelContentState extends State<_CancelContentPage>
         .getShops("fail", widget.type, _refreshController.isRefresh)
         .doOnListen(() {})
         .doOnDone(() {
-      if(_refreshController.isRefresh)
-        _refreshController.refreshCompleted();
-    })
-        .listen((data) {
+      if (_refreshController.isRefresh) _refreshController.refreshCompleted();
+    }).listen((data) {
       //success
     }, onError: (e) {
       //error
@@ -174,13 +173,15 @@ class _CancelContentState extends State<_CancelContentPage>
                               },
                               child: IntrinsicHeight(
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: <Widget>[
                                     Container(
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        margin: const EdgeInsets.only(right: 8.0),
+                                        margin:
+                                            const EdgeInsets.only(right: 8.0),
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.blueAccent,
@@ -189,12 +190,13 @@ class _CancelContentState extends State<_CancelContentPage>
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize:
-                                                16.0)), // You can add a Icon instead of text also, like below.
+                                                    16.0)), // You can add a Icon instead of text also, like below.
                                       ),
                                     ),
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(top: 4.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
                                         child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -207,7 +209,9 @@ class _CancelContentState extends State<_CancelContentPage>
                                                         value.shopsCancel[index]
                                                             .totalOrders +
                                                         ")"
-                                                    : value.shopsCancelReturn[index]
+                                                    : value
+                                                            .shopsCancelReturn[
+                                                                index]
                                                             .fromName +
                                                         " (" +
                                                         value
@@ -230,7 +234,8 @@ class _CancelContentState extends State<_CancelContentPage>
                                                 Expanded(
                                                   child: Text(
                                                     widget.type == 1
-                                                        ? value.shopsCancel[index]
+                                                        ? value
+                                                            .shopsCancel[index]
                                                             .fromAddress
                                                         : value
                                                             .shopsCancelReturn[
@@ -239,7 +244,8 @@ class _CancelContentState extends State<_CancelContentPage>
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         color: Colors.white60),
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 2,
                                                   ),
                                                 ),
@@ -255,7 +261,8 @@ class _CancelContentState extends State<_CancelContentPage>
                                                     onTap: () => launch("tel://" +
                                                         (widget.type == 1
                                                             ? value
-                                                                .shopsCancel[index]
+                                                                .shopsCancel[
+                                                                    index]
                                                                 ?.fromPhone
                                                             : value
                                                                 .shopsCancelReturn[
@@ -263,7 +270,9 @@ class _CancelContentState extends State<_CancelContentPage>
                                                                 ?.fromPhone)),
                                                     child: Text(
                                                       widget.type == 1
-                                                          ? value.shopsCancel[index]
+                                                          ? value
+                                                              .shopsCancel[
+                                                                  index]
                                                               .fromPhone
                                                           : value
                                                               .shopsCancelReturn[
@@ -271,9 +280,11 @@ class _CancelContentState extends State<_CancelContentPage>
                                                               .fromPhone,
                                                       style: TextStyle(
                                                           fontSize: 16,
-                                                          color: Colors.blueAccent,
-                                                          decoration: TextDecoration
-                                                              .underline),
+                                                          color:
+                                                              Colors.blueAccent,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline),
                                                     ),
                                                   )
                                                 ],
@@ -287,11 +298,15 @@ class _CancelContentState extends State<_CancelContentPage>
                                                   SizedBox(width: 16),
                                                   Text(
                                                     widget.type == 1
-                                                        ? value.shopsCancel[index]
+                                                        ? value
+                                                                .shopsCancel[
+                                                                    index]
                                                                 .totalOrders
                                                                 .toString() +
                                                             " đơn hàng - nặng " +
-                                                            value.shopsCancel[index]
+                                                            value
+                                                                .shopsCancel[
+                                                                    index]
                                                                 .totalWeight +
                                                             "g"
                                                         : value
@@ -320,7 +335,8 @@ class _CancelContentState extends State<_CancelContentPage>
                                                   SizedBox(width: 16),
                                                   Text(
                                                     widget.type == 1
-                                                        ? value.shopsCancel[index]
+                                                        ? value
+                                                            .shopsCancel[index]
                                                             .fullCount
                                                         : value
                                                             .shopsCancelReturn[
@@ -337,10 +353,8 @@ class _CancelContentState extends State<_CancelContentPage>
                                     ),
                                     Container(
                                         margin: EdgeInsets.only(left: 8),
-                                        child: Icon(
-                                            Icons.navigate_next,
-                                            color: Colors.white)
-                                    )
+                                        child: Icon(Icons.navigate_next,
+                                            color: Colors.white))
                                   ],
                                 ),
                               ),

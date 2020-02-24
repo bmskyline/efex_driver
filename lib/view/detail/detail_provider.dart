@@ -27,7 +27,7 @@ class DetailProvider extends BaseProvider {
       .getShopDetail(shop, getDate(), limit, page, status, type)
       .doOnData((r) {
         ShopDetailResponse response = ShopDetailResponse.fromJson(r);
-        if(response.result) {
+        if (response.result) {
           page++;
           total = response.data.total;
           orders.addAll(response.data.orders);
@@ -42,8 +42,6 @@ class DetailProvider extends BaseProvider {
       .doOnListen(() => loading = true)
       .doOnDone(() => loading = false);
 
-  Observable updateStatus(String number, String status, String reason) => _repo
-      .updateStatus(null, number, status, reason)
-      .doOnData((r) {});
-
+  Observable updateStatus(String number, String status, String reason) =>
+      _repo.updateStatus(null, number, status, reason).doOnData((r) {});
 }

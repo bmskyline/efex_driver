@@ -31,9 +31,7 @@ class GithubRepo {
   }
 
   Observable logout() {
-    Map<String, String> someMap = {
-      "x-token": _spUtil.getString("TOKEN")
-    };
+    Map<String, String> someMap = {"x-token": _spUtil.getString("TOKEN")};
     return _remote.logout(someMap);
   }
 
@@ -49,7 +47,8 @@ class GithubRepo {
     return _remote.getShops(someMap);
   }
 
-  Observable getShopDetail(Shop shop, String date, int limit, int offset, String status, int type) {
+  Observable getShopDetail(
+      Shop shop, String date, int limit, int offset, String status, int type) {
     Map<String, dynamic> someMap = {
       "FromAddress": shop.fromAddress,
       "FromPhone": shop.fromPhone,
@@ -63,7 +62,8 @@ class GithubRepo {
     return _remote.getShopDetail(someMap);
   }
 
-  Observable updateStatus(File image, String number, String status, String reason) {
+  Observable updateStatus(
+      File image, String number, String status, String reason) {
     FormData formData = FormData.from({
       "Trackingnumber": number,
       "Status": status,

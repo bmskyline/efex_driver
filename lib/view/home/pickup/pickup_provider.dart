@@ -15,12 +15,10 @@ class PickupProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable logout() => _repo.logout().doOnData(
-          (r) {
+  Observable logout() => _repo.logout().doOnData((r) {
         LoginResponse res = LoginResponse.fromJson(r);
-        if(res.result) {
+        if (res.result) {
           _repo.removeToken();
         }
-      }
-  );
+      });
 }

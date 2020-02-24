@@ -41,9 +41,9 @@ class _DialogContentState extends State<DialogContent> {
   void initState() {
     super.initState();
     mProvider = widget.provider;
-    switch(widget.type) {
+    switch (widget.type) {
       case 1:
-        if(widget.status == "picking3"){
+        if (widget.status == "picking3") {
           items.addAll({
             "picking_fail_by_shop": "Shop từ chối giao hàng",
             "picking_fail": "Không lấy được hàng sau 3 lần",
@@ -56,7 +56,7 @@ class _DialogContentState extends State<DialogContent> {
         mProvider.selected = "picking_fail_by_shop";
         break;
       case 2:
-        if(widget.status == "returning3"){
+        if (widget.status == "returning3") {
           items.addAll({
             "return_fail_by_shop": "Shop từ chối nhận hàng",
             "return_fail": "Không trả được hàng sau 3 lần",
@@ -85,14 +85,15 @@ class _DialogContentState extends State<DialogContent> {
                 isExpanded: true,
                 hint: Text("Status"),
                 value: value.selected,
-                items: items.map((key, value) {
-                  return MapEntry(
-                      key,
-                      DropdownMenuItem<String>(
-                        value: key,
-                        child: Text(value),
-                      ));
-                })
+                items: items
+                    .map((key, value) {
+                      return MapEntry(
+                          key,
+                          DropdownMenuItem<String>(
+                            value: key,
+                            child: Text(value),
+                          ));
+                    })
                     .values
                     .toList(),
                 onChanged: (String val) {
@@ -123,9 +124,12 @@ class _DialogContentState extends State<DialogContent> {
         FlatButton(
           child: Text("Xác nhận"),
           onPressed: () {
-            mProvider
-                .updateOrder(
-                widget.number, mProvider.selected, (mProvider.cancelReason.isNotEmpty ? mProvider.cancelReason : "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã hủy đơn hàng ${widget.number} vì ${items[mProvider.selected]} tại shop ${widget.name}"))
+            mProvider.updateOrder(
+                    widget.number,
+                    mProvider.selected,
+                    (mProvider.cancelReason.isNotEmpty
+                        ? mProvider.cancelReason
+                        : "Nhân viên giao nhận ${mProvider.spUtil.getString("USER")} đã hủy đơn hàng ${widget.number} vì ${items[mProvider.selected]} tại shop ${widget.name}"))
                 .listen((r) {
               LoginResponse res = LoginResponse.fromJson(r);
               if (res.result) {

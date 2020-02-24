@@ -39,7 +39,8 @@ class LoginProvider extends BaseProvider {
       .doOnData((r) {
         LoginResponse res = LoginResponse.fromJson(r);
         if (res.result) {
-          _repo.saveToken(res.data.token, res.data.user.firstName + " " + res.data.user.lastName);
+          _repo.saveToken(res.data.token,
+              res.data.user.firstName + " " + res.data.user.lastName);
         }
       })
       .doOnError((e, stacktrace) {
