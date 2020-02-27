@@ -35,6 +35,4 @@ class Shop {
         "full_count": fullCount == null ? null : fullCount,
         "is_active": isActive == null ? null : isActive,
       };
-
-
 }

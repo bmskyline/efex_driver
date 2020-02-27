@@ -44,7 +44,9 @@ class _OrderListState extends State<_OrderListContentPage>
   _OrderListState(this.result);
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    FocusScope.of(context).unfocus(focusPrevious: true);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
     mProvider.image = image;
   }
 
@@ -61,36 +63,62 @@ class _OrderListState extends State<_OrderListContentPage>
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: primaryColorHome,
-          title: Image.asset('assets/logo_hor.png', fit: BoxFit.fitHeight, height: 24),
+          title: Image.asset('assets/logo_hor.png',
+              fit: BoxFit.fitHeight, height: 32),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                InkWell(
-                  onTap: () async {
-                    final res = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ScanPage(widget.orders, result)));
-                    if (res != null) {
-                      this.result = (res as List<String>);
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 15.0,
-                          offset: Offset(0.0, 0.75))
-                    ], color: primaryColorHome),
-                    height: 64,
-                    width: double.infinity,
-                    padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                    child: Image.asset("assets/barcode.png"),
-                  ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: InkWell(
+                        onTap: () async {
+                          final res = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ScanPage(widget.orders, result)));
+                          if (res != null) {
+                            this.result = (res as List<String>);
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 15.0,
+                                offset: Offset(0.0, 0.75))
+                          ], color: primaryColorHome),
+                          height: 64,
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                          child: Image.asset("assets/barcode.png"),
+                        ),
+                      ),
+                    ),
+                    /*Expanded(
+                      child: InkWell(
+                        onTap: () async {
+
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                            BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 15.0,
+                                offset: Offset(0.0, 0.75))
+                          ], color: primaryColorHome),
+                          height: 64,
+                          width: double.infinity,
+                          padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                          child: Text("Thêm"),
+                        ),
+                      ),
+                    ),*/
+                  ],
                 ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -105,7 +133,8 @@ class _OrderListState extends State<_OrderListContentPage>
                               MaterialPageRoute(
                                   builder: (context) => OrderDetailPage(
                                       getOrder(widget.orders, result[index]),
-                                      "picked", widget.type)),
+                                      "picked",
+                                      widget.type)),
                             );
                           },
                           child: Padding(
@@ -133,17 +162,16 @@ class _OrderListState extends State<_OrderListContentPage>
                       );
                     }),
                 Container(
-                  color: Colors.white,
-                  margin: const EdgeInsets.only(
-                      left: 16, right: 16, top: 8, bottom: 8),
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: TextField(
-                    maxLines: 4,
-                    onChanged: (value) => print(value),
-                    decoration: InputDecoration(
-                        hintText: "Ghi chú!", fillColor: Colors.white),
-                  ),
-                ),
+                    color: Colors.white,
+                    margin: const EdgeInsets.only(
+                        left: 16, right: 16, top: 8, bottom: 8),
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: TextField(
+                      maxLines: 4,
+                      onChanged: (val) => mProvider.reason = val,
+                      decoration: InputDecoration(
+                          hintText: "Ghi chú!", fillColor: Colors.white),
+                    )),
                 Container(
                     height: 200,
                     width: double.infinity,
@@ -183,11 +211,13 @@ class _OrderListState extends State<_OrderListContentPage>
                           : false,
                       child: CupertinoButton(
                         onPressed: () {
-                          mProvider.updateOrders(result).listen((r) {
+                          mProvider
+                              .updateOrders(result, value.reason, widget.type, widget.orders[0].fromName)
+                              .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {
                               Toast.show("Xác nhận thành công!");
-                              Navigator.pop(context, result);
+                              Navigator.pop(context, [true, result]);
                             } else
                               Toast.show("Vui lòng thử lại!");
                           });

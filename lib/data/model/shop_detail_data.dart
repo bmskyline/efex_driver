@@ -21,13 +21,4 @@ class ShopDetailData {
         offset: json["offset"] == null ? null : json["offset"],
         limit: json["limit"] == null ? null : json["limit"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "tracking": orders == null
-            ? null
-            : List<dynamic>.from(orders.map((x) => x.toJson())),
-        "total": total == null ? null : total,
-        "offset": offset == null ? null : offset,
-        "limit": limit == null ? null : limit,
-      };
 }

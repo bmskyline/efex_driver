@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/model/order_model.dart';
-import 'package:driver_app/data/model/shop_detail_data.dart';
 import 'package:driver_app/data/model/shop_detail_response.dart';
 import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/repository.dart';
@@ -11,20 +10,12 @@ import 'package:rxdart/rxdart.dart';
 class DetailProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  ShopDetailData _response;
-  int limit = 100;
+  int limit = 50;
   int page = 0;
+  int total = 0;
+  List<Order> orders = List();
 
   DetailProvider(this._repo);
-
-  ShopDetailData get response {
-    return _response;
-  }
-
-  set response(ShopDetailData response) {
-    _response = response;
-    notifyListeners();
-  }
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -36,13 +27,11 @@ class DetailProvider extends BaseProvider {
       .getShopDetail(shop, getDate(), limit, page, status, type)
       .doOnData((r) {
         ShopDetailResponse response = ShopDetailResponse.fromJson(r);
-        if(response.result) {
-          _response = response.data;
-          for(Order o in _response.orders) {
-            if(o.currentStatus == "new") {
-              updateStatus(o.trackingNumber, "picking", "picking");
-            }
-          }
+        if (response.result) {
+          page++;
+          total = response.data.total;
+          orders.addAll(response.data.orders);
+          notifyListeners();
         }
       })
       .doOnError((e, stacktrace) {
@@ -53,8 +42,6 @@ class DetailProvider extends BaseProvider {
       .doOnListen(() => loading = true)
       .doOnDone(() => loading = false);
 
-  Observable updateStatus(String number, String status, String reason) => _repo
-      .updateStatus(null, number, status, reason)
-      .doOnData((r) {});
-
+  Observable updateStatus(String number, String status, String reason) =>
+      _repo.updateStatus(null, number, status, reason).doOnData((r) {});
 }

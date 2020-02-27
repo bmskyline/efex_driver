@@ -31,16 +31,14 @@ class GithubRepo {
   }
 
   Observable logout() {
-    Map<String, String> someMap = {
-      "x-token": _spUtil.getString("TOKEN")
-    };
+    Map<String, String> someMap = {"x-token": _spUtil.getString("TOKEN")};
     return _remote.logout(someMap);
   }
 
   Observable getShops(
       int offset, int limit, String date, String status, int type) {
     Map<String, dynamic> someMap = {
-      "Offset": offset,
+      "Offset": offset*limit,
       "Limit": limit,
       "FromDate": date,
       "Status": status,
@@ -49,26 +47,28 @@ class GithubRepo {
     return _remote.getShops(someMap);
   }
 
-  Observable getShopDetail(Shop shop, String date, int limit, int offset, String status, int type) {
+  Observable getShopDetail(
+      Shop shop, String date, int limit, int offset, String status, int type) {
     Map<String, dynamic> someMap = {
       "FromAddress": shop.fromAddress,
       "FromPhone": shop.fromPhone,
       "FromName": shop.fromName,
       "FromDate": date,
       "Limit": limit,
-      "Offset": offset,
+      "Offset": offset*limit,
       "Status": status,
       "Type": type
     };
     return _remote.getShopDetail(someMap);
   }
 
-  Observable updateStatus(File image, String number, String status, String reason) {
+  Observable updateStatus(
+      File image, String number, String status, String reason) {
     FormData formData = FormData.from({
       "Trackingnumber": number,
       "Status": status,
       "Reason": reason,
-      "Img": image
+      "Img": image == null ? null : UploadFileInfo(image, "image")
     });
     return _remote.updateStatus(formData);
   }
@@ -76,13 +76,14 @@ class GithubRepo {
   Observable updateStatusList(File image, String list) {
     FormData formData = FormData.from({
       "Trackings": list,
-      "Img": image
+      "Img": image == null ? null : UploadFileInfo(image, "image")
     });
     return _remote.updateStatusList(formData);
   }
 
-  void saveToken(String token) {
+  void saveToken(String token, String name) {
     _spUtil.putString("TOKEN", token);
+    _spUtil.putString("USER", name);
   }
 
   void removeToken() {

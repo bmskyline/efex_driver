@@ -5,11 +5,13 @@ import 'package:driver_app/data/model/shop_model.dart';
 import 'package:driver_app/data/model/shop_response.dart';
 import 'package:driver_app/data/model/status.dart';
 import 'package:driver_app/data/repository.dart';
+import 'package:driver_app/utils/shared_preferences_utils.dart';
 import 'package:driver_app/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeProvider extends BaseProvider {
   final GithubRepo _repo;
+  final SpUtil spUtil;
   int _currentIndex = 0;
   bool _loadingNew = false;
   bool _loadingNewReturn = false;
@@ -44,7 +46,7 @@ class HomeProvider extends BaseProvider {
   int totalCancel = 0;
   int totalCancelReturn = 0;
   int limit = 10;
-  HomeProvider(this._repo);
+  HomeProvider(this._repo, this.spUtil);
 
   get currentIndex => _currentIndex;
 
@@ -110,7 +112,7 @@ class HomeProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable getShops(String status, int type) {
+  Observable getShops(String status, int type, bool isRefresh) {
     int page = 0;
     switch (status) {
       case "new":
@@ -118,6 +120,12 @@ class HomeProvider extends BaseProvider {
           page = pageNew;
         else
           page = pageNewReturn;
+        break;
+      case "wait_picking":
+        page = pageWait;
+        break;
+      case "wait_return":
+          page = pageWaitReturn;
         break;
       case "picked":
         if (type == 1)
@@ -147,6 +155,16 @@ class HomeProvider extends BaseProvider {
               shopsNewReturn.addAll(response.data.shops);
             }
             break;
+          case "wait_picking":
+            pageWait++;
+            totalWait = response.data.total;
+            shopsWait.addAll(response.data.shops);
+            break;
+          case "wait_return":
+            pageWaitReturn++;
+            totalWaitReturn = response.data.total;
+            shopsWaitReturn.addAll(response.data.shops);
+            break;
           case "picked":
             if (type == 1) {
               pageSuccess++;
@@ -170,6 +188,7 @@ class HomeProvider extends BaseProvider {
             }
             break;
         }
+        notifyListeners();
       }
     }).doOnError((e, stacktrace) {
       if (e is DioError) {
@@ -178,22 +197,36 @@ class HomeProvider extends BaseProvider {
     }).doOnListen(() {
       switch (status) {
         case "new":
-          if (type == 1)
-            loadingNew = true;
-          else
-            loadingNewReturn = true;
+          if(!isRefresh) {
+            if (type == 1)
+              loadingNew = true;
+            else
+              loadingNewReturn = true;
+          }
+          break;
+        case "wait_picking":
+          if(!isRefresh)
+            loadingWait = true;
+          break;
+        case "wait_return":
+          if(!isRefresh)
+            loadingWaitReturn = true;
           break;
         case "picked":
-          if (type == 1)
-            loadingSuccess = true;
-          else
-            loadingSuccessReturn = true;
+          if(!isRefresh) {
+            if (type == 1)
+              loadingSuccess = true;
+            else
+              loadingSuccessReturn = true;
+          }
           break;
         case "fail":
-          if (type == 1)
-            loadingCancel = true;
-          else
-            loadingCancelReturn = true;
+          if(!isRefresh) {
+            if (type == 1)
+              loadingCancel = true;
+            else
+              loadingCancelReturn = true;
+          }
           break;
       }
     }).doOnDone(() {
@@ -203,6 +236,12 @@ class HomeProvider extends BaseProvider {
             loadingNew = false;
           else
             loadingNewReturn = false;
+          break;
+        case "wait_picking":
+          loadingWait = false;
+          break;
+        case "wait_return":
+          loadingWaitReturn = false;
           break;
         case "picked":
           if (type == 1)
@@ -233,7 +272,7 @@ class HomeProvider extends BaseProvider {
           () => type == 1 ? loadingNew = false : loadingNewReturn = false);
 
   Observable getShopDetail(Shop shop, String status, int type) => _repo
-      .getShopDetail(shop, getDate(), limit, 0, status, type)
+      .getShopDetail(shop, getDate(), 1, 0, status, type)
       .doOnData((r) {})
       .doOnError((e, stacktrace) {
         if (e is DioError) {

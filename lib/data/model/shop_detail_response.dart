@@ -11,15 +11,11 @@ class ShopDetailResponse {
     this.data,
   });
 
-  factory ShopDetailResponse.fromJson(Map<String, dynamic> json) => ShopDetailResponse(
-    result: json["result"] == null ? null : json["result"],
-    msg: json["msg"] == null ? null : json["msg"],
-    data: json["data"] == null ? null : ShopDetailData.fromJson(json["data"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "result": result == null ? null : result,
-    "msg": msg == null ? null : msg,
-    "data": data == null ? null : data.toJson(),
-  };
+  factory ShopDetailResponse.fromJson(Map<String, dynamic> json) =>
+      ShopDetailResponse(
+        result: json["result"] == null ? null : json["result"],
+        msg: json["msg"] == null ? null : json["msg"],
+        data:
+            json["data"] == null ? null : ShopDetailData.fromJson(json["data"]),
+      );
 }

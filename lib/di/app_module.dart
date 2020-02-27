@@ -17,10 +17,10 @@ final viewModelModule = Module([
   factory<LoginProvider>(({params}) => LoginProvider(get())),
   single<PickupProvider>(({params}) => PickupProvider(get())),
   single<ReturnProvider>(({params}) => ReturnProvider(get())),
-  single<HomeProvider>(({params}) => HomeProvider(get())),
+  single<HomeProvider>(({params}) => HomeProvider(get(), get())),
   factory<DetailProvider>(({params}) => DetailProvider(get())),
-  factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get())),
-  factory<OrderListProvider>(({params}) => OrderListProvider(get())),
+  factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get(), get())),
+  factory<OrderListProvider>(({params}) => OrderListProvider(get(), get())),
   factory<ScanProvider>(({params}) => ScanProvider()),
 ])
   ..withScope(testScope, [
@@ -53,7 +53,7 @@ class AuthInterceptor extends Interceptor {
 
 final dio = Dio()
   ..options = BaseOptions(
-      baseUrl: 'https://apimobiletest.efex.vn/api/v1/',
+      baseUrl: 'https://apimobile.efex.vn/api/v1/',
       connectTimeout: 30,
       receiveTimeout: 30)
   ..interceptors.add(AuthInterceptor())

@@ -2,16 +2,19 @@ import 'dart:io';
 
 import 'package:driver_app/base/base.dart';
 import 'package:driver_app/data/repository.dart';
+import 'package:driver_app/utils/shared_preferences_utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 class OrderDetailProvider extends BaseProvider {
   final GithubRepo _repo;
+  final SpUtil spUtil;
   bool _loading = false;
   File _image;
-  String _selectedPick = "picking_fail";
-  String _selectedReturn = "return_fail";
-  OrderDetailProvider(this._repo);
-  String reason;
+  String _selected;
+  OrderDetailProvider(this._repo, this.spUtil);
+  String cancelReason;
+  String waitReason = "";
+  String reason = "";
 
   bool get loading => _loading;
   set loading(bool loading) {
@@ -27,17 +30,10 @@ class OrderDetailProvider extends BaseProvider {
   }
 
 
-  String get selectedPick => _selectedPick;
+  String get selected => _selected;
 
-  set selectedPick(String value) {
-    _selectedPick = value;
-    notifyListeners();
-  }
-
-  String get selectedReturn => _selectedReturn;
-
-  set selectedReturn(String value) {
-    _selectedReturn = value;
+  set selected(String value) {
+    _selected = value;
     notifyListeners();
   }
 
