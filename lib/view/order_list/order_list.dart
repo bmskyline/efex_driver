@@ -212,7 +212,7 @@ class _OrderListState extends State<_OrderListContentPage>
                       child: CupertinoButton(
                         onPressed: () {
                           mProvider
-                              .updateOrders(result, value.reason)
+                              .updateOrders(result, value.reason, widget.type, widget.orders[0].fromName)
                               .listen((r) {
                             LoginResponse res = LoginResponse.fromJson(r);
                             if (res.result) {

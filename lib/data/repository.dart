@@ -38,7 +38,7 @@ class GithubRepo {
   Observable getShops(
       int offset, int limit, String date, String status, int type) {
     Map<String, dynamic> someMap = {
-      "Offset": offset,
+      "Offset": offset*limit,
       "Limit": limit,
       "FromDate": date,
       "Status": status,
@@ -55,7 +55,7 @@ class GithubRepo {
       "FromName": shop.fromName,
       "FromDate": date,
       "Limit": limit,
-      "Offset": offset,
+      "Offset": offset*limit,
       "Status": status,
       "Type": type
     };
