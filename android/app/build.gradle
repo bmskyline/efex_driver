@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId "com.driver.driver_app"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
