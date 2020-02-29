@@ -5,6 +5,7 @@ import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/utils/toast_utils.dart';
 import 'package:driver_app/view/order_detail/order_detail.dart';
 import 'package:driver_app/view/order_list/order_list_provider.dart';
+import 'package:driver_app/view/scan/list_page.dart';
 import 'package:driver_app/view/scan/scan_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,7 @@ class _OrderListState extends State<_OrderListContentPage>
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: <Widget>[
           SingleChildScrollView(
+            padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -86,12 +88,11 @@ class _OrderListState extends State<_OrderListContentPage>
                           }
                         },
                         child: Container(
-                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.black54,
-                                blurRadius: 15.0,
-                                offset: Offset(0.0, 0.75))
-                          ], color: primaryColorHome),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white,width: 1
+                            )
+                          , color: primaryColorHome),
                           height: 64,
                           width: double.infinity,
                           padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
@@ -99,25 +100,30 @@ class _OrderListState extends State<_OrderListContentPage>
                         ),
                       ),
                     ),
-                    /*Expanded(
+                    Expanded(
                       child: InkWell(
                         onTap: () async {
-
+                          final res = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ListPage(widget.orders, result)));
+                          if (res != null) {
+                            this.result = (res as List<String>);
+                          }
                         },
                         child: Container(
-                          decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.black54,
-                                blurRadius: 15.0,
-                                offset: Offset(0.0, 0.75))
-                          ], color: primaryColorHome),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.white,width: 1
+                              )
+                              , color: primaryColorHome),
                           height: 64,
                           width: double.infinity,
-                          padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                          child: Text("Thêm"),
+                          child: Icon(Icons.playlist_add, color: Colors.white, size: 40),
                         ),
                       ),
-                    ),*/
+                    ),
                   ],
                 ),
                 ListView.builder(
@@ -138,8 +144,7 @@ class _OrderListState extends State<_OrderListContentPage>
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+                            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                             child: Row(
                               children: <Widget>[
                                 Expanded(
@@ -163,8 +168,7 @@ class _OrderListState extends State<_OrderListContentPage>
                     }),
                 Container(
                     color: Colors.white,
-                    margin: const EdgeInsets.only(
-                        left: 16, right: 16, top: 8, bottom: 8),
+                    margin: const EdgeInsets.only(top: 8, bottom: 8),
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: TextField(
                       maxLines: 4,
@@ -175,8 +179,7 @@ class _OrderListState extends State<_OrderListContentPage>
                 Container(
                     height: 200,
                     width: double.infinity,
-                    margin: const EdgeInsets.only(
-                        left: 16, right: 16, top: 8, bottom: 16),
+                    margin: const EdgeInsets.only(top: 8, bottom: 16),
                     color: Colors.white,
                     child: InkWell(
                       onTap: () {
@@ -202,7 +205,6 @@ class _OrderListState extends State<_OrderListContentPage>
                     )),
                 Container(
                   width: double.infinity,
-                  margin: EdgeInsets.only(right: 16.0, left: 16.0),
                   child: Consumer<OrderListProvider>(
                       builder: (context, value, child) {
                     return Visibility(

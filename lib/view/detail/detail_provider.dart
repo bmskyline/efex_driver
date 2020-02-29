@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 class DetailProvider extends BaseProvider {
   final GithubRepo _repo;
   bool _loading = false;
-  int limit = 50;
+  int limit = 200;
   int page = 0;
   int total = 0;
   List<Order> orders = List();

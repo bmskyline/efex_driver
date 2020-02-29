@@ -31,8 +31,8 @@ class OrderListProvider extends BaseProvider {
       String res = reason.isNotEmpty
           ? reason
           : (type == 1
-          ? "Nhân viên giao nhận ${spUtil.getString("USER")} đã lấy thành công đơn hàng ${list[i]} tại shop ${name}"
-          : "Nhân viên giao nhận ${spUtil.getString("USER")} đã trả thành công đơn hàng ${list[i]} tại shop ${name}");
+          ? "Nhân viên giao nhận ${spUtil.getString("USER")} đã lấy thành công đơn hàng ${list[i]} tại shop $name"
+          : "Nhân viên giao nhận ${spUtil.getString("USER")} đã trả thành công đơn hàng ${list[i]} tại shop $name");
       if (i == list.length - 1) {
         result +=
             "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$res\"}";

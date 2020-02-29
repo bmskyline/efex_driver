@@ -1,3 +1,4 @@
+import 'package:driver_app/utils/const.dart';
 import 'package:driver_app/view/home/home_page.dart';
 import 'package:driver_app/view/login/login_page.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,21 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Efex Driver',
       home: defaultHome,
+      theme: ThemeData(
+        primaryColor: primaryColorHome,
+        accentColor: Colors.white,
+
+        // Define the default font family.
+        fontFamily: 'Georgia',
+
+        // Define the default TextTheme. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 24.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
+      ),
       initialRoute: "/",
       routes: {
         '/login': (context) => LoginPage(),

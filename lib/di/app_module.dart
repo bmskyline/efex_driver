@@ -9,6 +9,7 @@ import 'package:driver_app/view/home/return/return_provider.dart';
 import 'package:driver_app/view/login/login_provider.dart';
 import 'package:driver_app/view/order_detail/order_detail_provider.dart';
 import 'package:driver_app/view/order_list/order_list_provider.dart';
+import 'package:driver_app/view/scan/list_provider.dart';
 import 'package:driver_app/view/scan/scan_provider.dart';
 
 const testScope = DartInScope('test');
@@ -22,6 +23,7 @@ final viewModelModule = Module([
   factory<OrderDetailProvider>(({params}) => OrderDetailProvider(get(), get())),
   factory<OrderListProvider>(({params}) => OrderListProvider(get(), get())),
   factory<ScanProvider>(({params}) => ScanProvider()),
+  factory<ListProvider>(({params}) => ListProvider()),
 ])
   ..withScope(testScope, [
     ///other scope
