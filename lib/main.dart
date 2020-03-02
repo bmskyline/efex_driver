@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: primaryColorHome,
         accentColor: Colors.white,
+        brightness: Brightness.dark,
 
         // Define the default font family.
         fontFamily: 'Georgia',
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 24.0, fontStyle: FontStyle.italic),
+          title: TextStyle(fontSize: 18.0, fontStyle: FontStyle.italic),
           body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),

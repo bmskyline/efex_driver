@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_mobile_vision/qr_camera.dart';
+import 'package:qr_mobile_vision/qr_mobile_vision.dart';
 import 'package:vibration/vibration.dart';
 
 class ScanPage extends PageProvideNode<ScanProvider> {
@@ -63,6 +64,7 @@ class _ScanPageState extends State<_ScanContentPage>
             SizedBox(
               height: 200.0,
               child: QrCamera(
+                formats: [BarcodeFormats.CODE_128],
                 qrCodeCallback: (code) async {
                   bool hasInList = false;
                   if (!mProvider.getListScan().contains(code)) {

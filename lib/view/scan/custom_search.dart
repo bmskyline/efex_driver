@@ -1,7 +1,17 @@
+import 'package:driver_app/data/model/order_model.dart';
 import 'package:driver_app/utils/const.dart';
+import 'package:driver_app/view/scan/list_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
+
+  final ListProvider provider;
+  final List<Order> orders;
+  List<Order> result = List();
+
+  CustomSearchDelegate(this.provider, this.orders);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -33,31 +43,55 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   @override
-  Widget buildResults(BuildContext context) {
-    if (query.length < 3) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Text(
-              "Search term must be longer than two letters.",
-            ),
-          )
-        ],
-      );
-    }
+  String get searchFieldLabel => 'Mã đơn hàng';
 
-    return Column(
-      children: <Widget>[
-        ListView.builder(
-          itemCount: 0,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(""),
-            );
-          },
-        ),
-      ],
+  @override
+  Widget buildResults(BuildContext context) {
+    result.clear();
+    orders.forEach((e) {
+      if(e.trackingNumber.contains(query)) {
+        result.add(e);
+      }
+    });
+
+    return ChangeNotifierProvider<ListProvider>.value(
+      value: provider,
+      child: Consumer<ListProvider>(builder: (context, value, child) {
+        return Container(
+          color: primaryColorHome,
+          padding: EdgeInsets.all(16.0),
+          child: ListView.separated(
+            separatorBuilder: (context, index) {
+              return Divider(color: Colors.white, thickness: 0.5,);
+            },
+            itemCount: result.length,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: (){
+                  value.list.contains(result[index].trackingNumber)
+                      ? value.remove(result[index].trackingNumber)
+                      : value.add(result[index].trackingNumber);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        result[index].trackingNumber,
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                    ),
+                    Checkbox(
+                      value: value.list.contains(result[index].trackingNumber),
+                      checkColor: Colors.white,
+                      onChanged: null,
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 
@@ -65,16 +99,51 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     // This method is called everytime the search term changes.
     // If you want to add search suggestions as the user enters their search term, this is the place to do that.
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: primaryColorHome,
-      padding: EdgeInsets.all(32),
-      child: Text(
-        "Ae bình tĩnh, chưa search được đâu!"
-            "\nKhi nào rảnh mới làm được"
-        , style: TextStyle(fontSize: 18, color: Colors.white),
-      ),
+    result.clear();
+    orders.forEach((e) {
+      if(e.trackingNumber.contains(query)) {
+        result.add(e);
+      }
+    });
+
+    return ChangeNotifierProvider<ListProvider>.value(
+      value: provider,
+      child: Consumer<ListProvider>(builder: (context, value, child) {
+        return Container(
+          color: primaryColorHome,
+          padding: EdgeInsets.all(16.0),
+          child: ListView.separated(
+            separatorBuilder: (context, index) {
+              return Divider(color: Colors.white, thickness: 0.5,);
+            },
+            itemCount: result.length,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: (){
+                  value.list.contains(result[index].trackingNumber)
+                      ? value.remove(result[index].trackingNumber)
+                      : value.add(result[index].trackingNumber);
+                },
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        result[index].trackingNumber,
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                    ),
+                    Checkbox(
+                      value: value.list.contains(result[index].trackingNumber),
+                      checkColor: Colors.white,
+                      onChanged: null,
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }

@@ -59,7 +59,7 @@ class ListContentState extends State<_ListContentPage>
               onPressed: () {
                 showSearch(
                   context: context,
-                  delegate: CustomSearchDelegate(),
+                  delegate: CustomSearchDelegate(provider, widget.orders),
                 );
               },
             ),
@@ -70,7 +70,7 @@ class ListContentState extends State<_ListContentPage>
             Expanded(
               child: Consumer<ListProvider>(builder: (context, value, child) {
                 return Container(
-                  margin: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: ListView.separated(
                     separatorBuilder: (context, index) {
                       return Divider(color: Colors.white, thickness: 0.5,);
