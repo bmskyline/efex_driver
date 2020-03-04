@@ -184,9 +184,12 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                             left: 16, right: 16, top: 8, bottom: 8),
                         padding: const EdgeInsets.only(left: 8, right: 8),
                         child: TextField(
-                          maxLines: 4,
+                          maxLength: 100,
+                          style: TextStyle(color: Colors.black),
+                          maxLines: 3,
                           onChanged: (val) => mProvider.reason = val,
                           decoration: InputDecoration(
+                            hintStyle: TextStyle(color: Colors.black45),
                               hintText: "Tài xế: ", fillColor: Colors.white),
                         )),
                 Container(

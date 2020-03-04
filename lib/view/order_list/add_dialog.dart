@@ -40,7 +40,9 @@ class _AddDialogContentState extends State<AddDialogContent> {
             width: double.infinity,
             color: Colors.white,
             child: TextField(
-              maxLines: 4,
+              maxLength: 100,
+              style: TextStyle(color: Colors.black),
+              maxLines: 3,
               onChanged: (value) => {},
               decoration: InputDecoration(
                   hintText: "Ghi chú!", fillColor: Colors.white),

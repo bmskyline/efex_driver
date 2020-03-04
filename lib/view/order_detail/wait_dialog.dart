@@ -85,7 +85,9 @@ class _WaitDialogContentState extends State<WaitDialogContent> {
             width: double.infinity,
             color: Colors.white,
             child: TextField(
-              maxLines: 4,
+              maxLength: 100,
+              style: TextStyle(color: Colors.black),
+              maxLines: 3,
               onChanged: (value) => mProvider.waitReason = value,
               decoration: InputDecoration(
                   hintText: "Ghi chú!", fillColor: Colors.white),

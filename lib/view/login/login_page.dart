@@ -133,6 +133,7 @@ class _LoginContentState extends State<_LoginContentPage>
                               Consumer<LoginProvider>(
                                   builder: (context, value, child) {
                                 return TextField(
+                                    style: TextStyle(color: Colors.black),
                                     keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.next,
                                     decoration: InputDecoration(
@@ -145,6 +146,7 @@ class _LoginContentState extends State<_LoginContentPage>
                                       contentPadding: EdgeInsets.only(
                                           left: 10.0, right: 10.0),
                                       hintText: '0999999999',
+                                      hintStyle: TextStyle(color: Colors.black54)
                                     ),
                                     onSubmitted: (v) {
                                       FocusScope.of(context)
@@ -156,6 +158,7 @@ class _LoginContentState extends State<_LoginContentPage>
                               Consumer<LoginProvider>(
                                   builder: (context, value, child) {
                                 return TextField(
+                                    style: TextStyle(color: Colors.black),
                                     focusNode: focus,
                                     obscureText: true,
                                     keyboardType: TextInputType.text,
@@ -169,6 +172,7 @@ class _LoginContentState extends State<_LoginContentPage>
                                       contentPadding: EdgeInsets.only(
                                           left: 10.0, right: 10.0),
                                       hintText: 'Password',
+                                      hintStyle: TextStyle(color: Colors.black45)
                                     ),
                                     autofocus: false,
                                     onChanged: (str) => value.password = str);

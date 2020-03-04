@@ -104,7 +104,9 @@ class _DialogContentState extends State<DialogContent> {
                 width: double.infinity,
                 color: Colors.white,
                 child: TextField(
-                  maxLines: 4,
+                  maxLength: 100,
+                  style: TextStyle(color: Colors.black),
+                  maxLines: 3,
                   onChanged: (value) => mProvider.cancelReason = value,
                   decoration: InputDecoration(
                       hintText: "Ghi chú!", fillColor: Colors.white),
