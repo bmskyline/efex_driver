@@ -236,7 +236,7 @@ class _OrderDetailState extends State<_OrderDetailContentPage>
                           visible: ((order.currentStatus == "picking" ||
                                       order.currentStatus == "picking1" ||
                                       order.currentStatus == "picking2" ||
-                                      order.currentStatus == "returning" ||
+                                      order.currentStatus == "returning_driver" ||
                                       order.currentStatus == "returning1" ||
                                       order.currentStatus == "returning2") &&
                                   (widget.status != "fail" &&
