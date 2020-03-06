@@ -23,8 +23,8 @@ class DetailProvider extends BaseProvider {
     notifyListeners();
   }
 
-  Observable getShopDetail(Shop shop, String status, int type) => _repo
-      .getShopDetail(shop, getDate(), limit, page, status, type)
+  Observable getShopDetail(String id, String status, int type) => _repo
+      .getShopDetail(id, limit, page, status, type)
       .doOnData((r) {
         ShopDetailResponse response = ShopDetailResponse.fromJson(r);
         if (response.result) {

@@ -183,7 +183,7 @@ class _WaitContentState extends State<_WaitContentPage>
                 homeContext,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DetailPage(value.shopsWait[index], "wait_picking", 1)));
+                        DetailPage(value.shopsWait[index].shopId, "wait_picking", 1)));
             if (res == null) {
               mProvider.shopsWait.clear();
               mProvider.totalWait = 0;
@@ -217,7 +217,7 @@ class _WaitContentState extends State<_WaitContentPage>
                 homeContext,
                 MaterialPageRoute(
                     builder: (context) => DetailPage(
-                        value.shopsWaitReturn[index], "wait_return", 2)));
+                        value.shopsWaitReturn[index].shopId, "wait_return", 2)));
             if (res == null) {
               mProvider.shopsWaitReturn.clear();
               mProvider.totalWaitReturn = 0;
@@ -276,11 +276,11 @@ class _WaitContentState extends State<_WaitContentPage>
                     children: <Widget>[
                       Text(
                         widget.type == 1
-                            ? value.shopsWait[index].fromName +
+                            ? value.shopsWait[index].name +
                                 " (" +
                                 value.shopsWait[index].totalOrders +
                                 ")"
-                            : value.shopsWaitReturn[index].fromName +
+                            : value.shopsWaitReturn[index].name +
                                 " (" +
                                 value.shopsWaitReturn[index].totalOrders +
                                 ")",
@@ -296,8 +296,8 @@ class _WaitContentState extends State<_WaitContentPage>
                         Expanded(
                           child: Text(
                             widget.type == 1
-                                ? value.shopsWait[index].fromAddress
-                                : value.shopsWaitReturn[index].fromAddress,
+                                ? value.shopsWait[index].address
+                                : value.shopsWaitReturn[index].address,
                             style:
                                 TextStyle(fontSize: 16, color: Colors.white60),
                             overflow: TextOverflow.ellipsis,
@@ -313,12 +313,12 @@ class _WaitContentState extends State<_WaitContentPage>
                           InkWell(
                             onTap: () => launch("tel://" +
                                 (widget.type == 1
-                                    ? value.shopsWait[index]?.fromPhone
-                                    : value.shopsWaitReturn[index]?.fromPhone)),
+                                    ? value.shopsWait[index]?.phone
+                                    : value.shopsWaitReturn[index]?.phone)),
                             child: Text(
                               widget.type == 1
-                                  ? value.shopsWait[index].fromPhone
-                                  : value.shopsWaitReturn[index].fromPhone,
+                                  ? value.shopsWait[index].phone
+                                  : value.shopsWaitReturn[index].phone,
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.blueAccent,

@@ -178,7 +178,7 @@ class _CancelContentState extends State<_CancelContentPage>
                 homeContext,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DetailPage(value.shopsCancel[index], "fail", 1)));
+                        DetailPage(value.shopsCancel[index].shopId, "fail", 1)));
             //}
             break;
           case 2:
@@ -187,7 +187,7 @@ class _CancelContentState extends State<_CancelContentPage>
                 homeContext,
                 MaterialPageRoute(
                     builder: (context) =>
-                        DetailPage(value.shopsCancelReturn[index], "fail", 2)));
+                        DetailPage(value.shopsCancelReturn[index].shopId, "fail", 2)));
             // }
             break;
         }
@@ -220,11 +220,11 @@ class _CancelContentState extends State<_CancelContentPage>
                     children: <Widget>[
                       Text(
                         widget.type == 1
-                            ? value.shopsCancel[index].fromName +
+                            ? value.shopsCancel[index].name +
                                 " (" +
                                 value.shopsCancel[index].totalOrders +
                                 ")"
-                            : value.shopsCancelReturn[index].fromName +
+                            : value.shopsCancelReturn[index].name +
                                 " (" +
                                 value.shopsCancelReturn[index].totalOrders +
                                 ")",
@@ -240,8 +240,8 @@ class _CancelContentState extends State<_CancelContentPage>
                         Expanded(
                           child: Text(
                             widget.type == 1
-                                ? value.shopsCancel[index].fromAddress
-                                : value.shopsCancelReturn[index].fromAddress,
+                                ? value.shopsCancel[index].address
+                                : value.shopsCancelReturn[index].address,
                             style:
                                 TextStyle(fontSize: 16, color: Colors.white60),
                             overflow: TextOverflow.ellipsis,
@@ -257,13 +257,13 @@ class _CancelContentState extends State<_CancelContentPage>
                           InkWell(
                             onTap: () => launch("tel://" +
                                 (widget.type == 1
-                                    ? value.shopsCancel[index]?.fromPhone
+                                    ? value.shopsCancel[index]?.phone
                                     : value
-                                        .shopsCancelReturn[index]?.fromPhone)),
+                                        .shopsCancelReturn[index]?.phone)),
                             child: Text(
                               widget.type == 1
-                                  ? value.shopsCancel[index].fromPhone
-                                  : value.shopsCancelReturn[index].fromPhone,
+                                  ? value.shopsCancel[index].phone
+                                  : value.shopsCancelReturn[index].phone,
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.blueAccent,

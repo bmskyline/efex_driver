@@ -10,8 +10,8 @@ import 'model/shop_model.dart';
 class GithubService {
   Observable login(map) => post("user/login", map);
   Observable logout(map) => post("user/logoff", map);
-  Observable getShops(map) => post("tracking", map);
-  Observable getShopDetail(map) => post("tracking/detail", map);
+  Observable getShops(map) => post("https://apimobile.efex.vn/api/v2/tracking", map);
+  Observable getShopDetail(map) => post("https://apimobile.efex.vn/api/v2/tracking/detail", map);
   Observable updateStatusList(map) => post("tracking/status/list", map);
   Observable updateStatus(map) => post("tracking/status", map);
 }
@@ -36,24 +36,19 @@ class GithubRepo {
   }
 
   Observable getShops(
-      int offset, int limit, String date, String status, int type) {
+      int offset, int limit, String status, int type) {
     Map<String, dynamic> someMap = {
       "Offset": offset*limit,
       "Limit": limit,
-      "FromDate": date,
       "Status": status,
       "Type": type
     };
     return _remote.getShops(someMap);
   }
 
-  Observable getShopDetail(
-      Shop shop, String date, int limit, int offset, String status, int type) {
+  Observable getShopDetail(String id, int limit, int offset, String status, int type) {
     Map<String, dynamic> someMap = {
-      "FromAddress": shop.fromAddress,
-      "FromPhone": shop.fromPhone,
-      "FromName": shop.fromName,
-      "FromDate": date,
+      "ShopID": id,
       "Limit": limit,
       "Offset": offset*limit,
       "Status": status,

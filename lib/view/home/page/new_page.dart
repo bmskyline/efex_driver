@@ -182,7 +182,7 @@ class _NewContentState extends State<_NewContentPage>
                   homeContext,
                   MaterialPageRoute(
                       builder: (context) =>
-                          DetailPage(value.shopsNew[index], "new", 1)));
+                          DetailPage(value.shopsNew[index].shopId, "new", 1)));
               if (res == null) {
                 mProvider.shopsNew.clear();
                 mProvider.totalNew = 0;
@@ -226,7 +226,7 @@ class _NewContentState extends State<_NewContentPage>
                   homeContext,
                   MaterialPageRoute(
                       builder: (context) =>
-                          DetailPage(value.shopsNewReturn[index], "new", 2)));
+                          DetailPage(value.shopsNewReturn[index].shopId, "new", 2)));
               if (res == null) {
                 mProvider.shopsNewReturn.clear();
                 mProvider.totalNewReturn = 0;
@@ -290,11 +290,11 @@ class _NewContentState extends State<_NewContentPage>
                   children: <Widget>[
                     Text(
                       widget.type == 1
-                          ? value.shopsNew[index].fromName +
+                          ? value.shopsNew[index].name +
                               " (" +
                               value.shopsNew[index].totalOrders +
                               ")"
-                          : value.shopsNewReturn[index].fromName +
+                          : value.shopsNewReturn[index].name +
                               " (" +
                               value.shopsNewReturn[index].totalOrders +
                               ")",
@@ -309,8 +309,8 @@ class _NewContentState extends State<_NewContentPage>
                       Expanded(
                         child: Text(
                           widget.type == 1
-                              ? value.shopsNew[index].fromAddress
-                              : value.shopsNewReturn[index].fromAddress,
+                              ? value.shopsNew[index].address
+                              : value.shopsNewReturn[index].address,
                           style: TextStyle(fontSize: 16, color: Colors.white60),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -325,12 +325,12 @@ class _NewContentState extends State<_NewContentPage>
                         InkWell(
                           onTap: () => launch("tel://" +
                               (widget.type == 1
-                                  ? value.shopsNew[index]?.fromPhone
-                                  : value.shopsNewReturn[index]?.fromPhone)),
+                                  ? value.shopsNew[index]?.phone
+                                  : value.shopsNewReturn[index]?.phone)),
                           child: Text(
                             widget.type == 1
-                                ? value.shopsNew[index].fromPhone
-                                : value.shopsNewReturn[index].fromPhone,
+                                ? value.shopsNew[index].phone
+                                : value.shopsNewReturn[index].phone,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blueAccent,
@@ -390,9 +390,9 @@ class _NewContentState extends State<_NewContentPage>
                           builder: (context) => AlertDialog(
                                 title: widget.type == 1
                                     ? Text(
-                                        "Đi tới shop ${value.shopsNew[index].fromName} lấy hàng")
+                                        "Đi tới shop ${value.shopsNew[index].name} lấy hàng")
                                     : Text(
-                                        "Đi tới shop ${value.shopsNewReturn[index].fromName} trả hàng"),
+                                        "Đi tới shop ${value.shopsNewReturn[index].name} trả hàng"),
                                 actions: <Widget>[
                                   FlatButton(
                                     child: Text("Hủy"),
@@ -412,7 +412,7 @@ class _NewContentState extends State<_NewContentPage>
                         if (widget.type == 1) {
                           if (!value.shopsNew[index].isActive) {
                             final s = mProvider
-                                .getShopDetail(value.shopsNew[index], "new", 1)
+                                .getShopDetail(value.shopsNew[index].shopId, "new", 1)
                                 .doOnListen(() {})
                                 .doOnDone(() {})
                                 .listen((data) {
@@ -432,7 +432,7 @@ class _NewContentState extends State<_NewContentPage>
                           if (!value.shopsNewReturn[index].isActive) {
                             final s = mProvider
                                 .getShopDetail(
-                                    value.shopsNewReturn[index], "new", 2)
+                                    value.shopsNewReturn[index].shopId, "new", 2)
                                 .doOnListen(() {})
                                 .doOnDone(() {})
                                 .listen((data) {

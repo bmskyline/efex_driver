@@ -140,7 +140,7 @@ class HomeProvider extends BaseProvider {
           page = pageCancelReturn;
         break;
     }
-    return _repo.getShops(page, limit, getDate(), status, type).doOnData((r) {
+    return _repo.getShops(page, limit, status, type).doOnData((r) {
       ShopResponse response = ShopResponse.fromJson(r);
       if (response.result) {
         switch (status) {
@@ -271,8 +271,8 @@ class HomeProvider extends BaseProvider {
       .doOnDone(
           () => type == 1 ? loadingNew = false : loadingNewReturn = false);
 
-  Observable getShopDetail(Shop shop, String status, int type) => _repo
-      .getShopDetail(shop, getDate(), 1, 0, status, type)
+  Observable getShopDetail(String id, String status, int type) => _repo
+      .getShopDetail(id, 1, 0, status, type)
       .doOnData((r) {})
       .doOnError((e, stacktrace) {
         if (e is DioError) {

@@ -11,24 +11,24 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends PageProvideNode<DetailProvider> {
-  final Shop _shop;
+  final String id;
   final String status;
   final int type;
-  DetailPage(this._shop, this.status, this.type);
+  DetailPage(this.id, this.status, this.type);
 
   @override
   Widget buildContent(BuildContext context) {
-    return _DetailContentPage(mProvider, _shop, status, type);
+    return _DetailContentPage(mProvider, id, status, type);
   }
 }
 
 class _DetailContentPage extends StatefulWidget {
   final DetailProvider provider;
-  final Shop _shop;
+  final String id;
   final String status;
   final int type;
 
-  _DetailContentPage(this.provider, this._shop, this.status, this.type);
+  _DetailContentPage(this.provider, this.id, this.status, this.type);
 
   @override
   State<StatefulWidget> createState() {
@@ -44,7 +44,7 @@ class _DetailPageState extends State<_DetailContentPage>
   void initState() {
     super.initState();
     mProvider = widget.provider;
-    _loadData(widget._shop, widget.status, widget.type);
+    _loadData(widget.id, widget.status, widget.type);
   }
 
   @override
@@ -154,7 +154,7 @@ class _DetailPageState extends State<_DetailContentPage>
                             mProvider.page * mProvider.limit < mProvider.total &&
                             scrollInfo.metrics.pixels ==
                                 scrollInfo.metrics.maxScrollExtent) {
-                          _loadData(widget._shop, widget.status, widget.type);
+                          _loadData(widget.id, widget.status, widget.type);
                       }
                   },
                       child: ListView.builder(
@@ -351,9 +351,9 @@ class _DetailPageState extends State<_DetailContentPage>
     });
   }
 
-  void _loadData(Shop shop, String status, int type) {
+  void _loadData(String id, String status, int type) {
     final s = mProvider
-        .getShopDetail(shop, status, type)
+        .getShopDetail(id, status, type)
         .doOnListen(() {})
         .doOnDone(() {})
         .listen((data) {

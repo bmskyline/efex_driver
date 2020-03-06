@@ -152,7 +152,7 @@ class _SuccessContentState extends State<_SuccessContentPage>
                                         homeContext,
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
-                                                value.shopsSuccess[index],
+                                                value.shopsSuccess[index].shopId,
                                                 "picked",
                                                 1)));
                                     break;
@@ -161,7 +161,7 @@ class _SuccessContentState extends State<_SuccessContentPage>
                                         homeContext,
                                         MaterialPageRoute(
                                             builder: (context) => DetailPage(
-                                                value.shopsSuccessReturn[index],
+                                                value.shopsSuccessReturn[index].shopId,
                                                 "picked",
                                                 2)));
                                     break;
@@ -221,11 +221,11 @@ class _SuccessContentState extends State<_SuccessContentPage>
                   children: <Widget>[
                     Text(
                       widget.type == 1
-                          ? value.shopsSuccess[index].fromName +
+                          ? value.shopsSuccess[index].name +
                               " (" +
                               value.shopsSuccess[index].totalOrders +
                               ")"
-                          : value.shopsSuccessReturn[index].fromName +
+                          : value.shopsSuccessReturn[index].name +
                               " (" +
                               value.shopsSuccessReturn[index].totalOrders +
                               ")",
@@ -240,8 +240,8 @@ class _SuccessContentState extends State<_SuccessContentPage>
                       Expanded(
                         child: Text(
                           widget.type == 1
-                              ? value.shopsSuccess[index].fromAddress
-                              : value.shopsSuccessReturn[index].fromAddress,
+                              ? value.shopsSuccess[index].address
+                              : value.shopsSuccessReturn[index].address,
                           style: TextStyle(fontSize: 16, color: Colors.white60),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -256,13 +256,13 @@ class _SuccessContentState extends State<_SuccessContentPage>
                         InkWell(
                           onTap: () => launch("tel://" +
                               (widget.type == 1
-                                  ? value.shopsSuccess[index]?.fromPhone
+                                  ? value.shopsSuccess[index]?.phone
                                   : value
-                                      .shopsSuccessReturn[index]?.fromPhone)),
+                                      .shopsSuccessReturn[index]?.phone)),
                           child: Text(
                             widget.type == 1
-                                ? value.shopsSuccess[index].fromPhone
-                                : value.shopsSuccessReturn[index].fromPhone,
+                                ? value.shopsSuccess[index].phone
+                                : value.shopsSuccessReturn[index].phone,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blueAccent,
