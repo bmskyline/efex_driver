@@ -10,8 +10,8 @@ import 'model/shop_model.dart';
 class GithubService {
   Observable login(map) => post("user/login", map);
   Observable logout(map) => post("user/logoff", map);
-  Observable getShops(map) => post("https://apimobile.efex.vn/api/v2/tracking", map);
-  Observable getShopDetail(map) => post("https://apimobile.efex.vn/api/v2/tracking/detail", map);
+  Observable getShops(map) => post("https://apimobiletest.efex.vn/api/v2/tracking", map);
+  Observable getShopDetail(map) => post("https://apimobiletest.efex.vn/api/v2/tracking/detail", map);
   Observable updateStatusList(map) => post("tracking/status/list", map);
   Observable updateStatus(map) => post("tracking/status", map);
 }

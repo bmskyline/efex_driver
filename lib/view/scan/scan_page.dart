@@ -65,7 +65,8 @@ class _ScanPageState extends State<_ScanContentPage>
               height: 200.0,
               child: QrCamera(
                 formats: [BarcodeFormats.CODE_128],
-                qrCodeCallback: (code) async {
+                qrCodeCallback: (barCode) async {
+                  String code = "RT" + barCode.toString();
                   bool hasInList = false;
                   if (!mProvider.getListScan().contains(code)) {
                     mProvider.getListScan().add(code);

@@ -28,21 +28,31 @@ class OrderListProvider extends BaseProvider {
   Observable updateOrders(List<String> list, String reason, int type, String name) {
     String result = "[";
     for (int i = 0; i < list.length; i++) {
-      String res = reason.isNotEmpty
-          ? reason
-          : (type == 1
-          ? "Nhân viên giao nhận ${spUtil.getString("USER")} đã lấy thành công đơn hàng ${list[i]} tại shop $name"
-          : "Nhân viên giao nhận ${spUtil.getString("USER")} đã trả thành công đơn hàng ${list[i]} tại shop $name");
-      if (i == list.length - 1) {
-        result +=
-            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$res\"}";
+      if(type == 1) {
+        String res = reason.isNotEmpty
+            ? reason
+            : "Nhân viên giao nhận ${spUtil.getString("USER")} đã lấy thành công đơn hàng ${list[i]} tại shop $name";
+        if (i == list.length - 1) {
+          result +=
+          "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$res\"}";
+        } else {
+          result +=
+          "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$res\"},";
+        }
       } else {
-        result +=
-            "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"picked\",\"Reason\":\"$res\"},";
+        String res = reason.isNotEmpty
+            ? reason
+            : "Nhân viên giao nhận ${spUtil.getString("USER")} đã trả thành công đơn hàng ${list[i]} tại shop $name";
+        if (i == list.length - 1) {
+          result +=
+          "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"returned\",\"Reason\":\"$res\"}";
+        } else {
+          result +=
+          "{\"Trackingnumber\":\"${list[i]}\",\"Status\":\"returned\",\"Reason\":\"$res\"},";
+        }
       }
     }
     result += "]";
-    print(result);
     return _repo
         .updateStatusList(image, result)
         .doOnData((r) {})
