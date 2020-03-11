@@ -55,7 +55,7 @@ class AuthInterceptor extends Interceptor {
 
 final dio = Dio()
   ..options = BaseOptions(
-      baseUrl: 'https://apimobiletest.efex.vn/api/v1/',
+      baseUrl: 'https://apimobile.efex.vn/api/v1/',
       connectTimeout: 30,
       receiveTimeout: 30)
   ..interceptors.add(AuthInterceptor())
